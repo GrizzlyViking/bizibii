@@ -1,0 +1,206 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Component: OwlCarousel]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// General Styles
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.owl-carousel {
+} // .owl-carousel
+
+.owl-carousel.owl-navigation {
+  padding-left: 4rem;
+  padding-right: 4rem;
+} // .owl-carousel.owl-navigation
+
+.owl-carousel.owl-navigation-inner {
+  padding-left: 0;
+  padding-right: 0;
+} // .owl-carousel.owl-navigation-inner
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Main Theme
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.owl-theme {
+
+  .owl-nav {
+
+    margin: 0;
+    height: 0;
+
+    [class*="owl-"] {
+
+      position: absolute;
+      top: 50%;
+
+      margin: 0;
+
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+
+      opacity: .85;
+
+      background: transparent;
+
+      border-radius: 0;
+      transform: translateY(-50%);
+      transition: var(--transition);
+
+      &:hover:not(.disabled) {
+        opacity: 1.0;
+        background: transparent;
+      } // &:hover:not(.disabled)
+
+      &.disabled {
+        opacity: .2;
+      } // &.disabled
+
+    } // [class*="owl-"]
+
+    .owl-prev { left: 0;  }
+    .owl-next { right: 0; }
+
+    .icon {
+      color: var(--text-heading-color);
+      font-size: 24px;
+      text-align: center;
+    } // .icon
+
+    &.disabled {
+      & + .owl-dots {
+        margin-top: var(--offset-y);
+      } // & + .owl-dots
+    } // &.disabled
+
+  } // .owl-nav
+
+  .owl-dots {
+
+    text-align: center;
+    margin-top: var(--offset-y-sm);
+
+    -webkit-tap-highlight-color: transparent;
+
+    .owl-dot {
+
+      display: inline-block;
+      zoom: 1;
+      *display: inline;
+
+      span {
+
+        display: block;
+
+        width: 20px;
+        height: 5px;
+
+        background: var(--border-color);
+        border-radius: 0;
+
+        transition: var(--transition);
+
+      } // span
+
+      &:hover {
+        span {
+          background: var(--text-color);
+        } // span
+      } // &:hover
+
+      &.active {
+        span {
+          background: var(--color-primary);
+        } // span
+      } // &.active
+
+    } // .owl-dot
+
+  } // .owl-dots
+
+} // .owl-theme
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// No overflow
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.owl-theme.owl-no-overflow {
+
+  .owl-stage-outer {
+    overflow: visible;
+  } // .owl-stage-outer
+
+  .owl-item {
+    transition: opacity .3s ease-in-out;
+  } // .owl-item
+
+  .owl-item:not(.active) {
+    opacity: .2;
+  } // .owl-item:not(.active)
+
+} // .owl-theme.owl-no-overflow
+
+.owl-no-overflow-column-spacer {
+
+  position: relative;
+  z-index: 2;
+
+  &::before,
+  &::after {
+
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    z-index: 2;
+    background-color: inherit;
+
+  } // &::before, &::after
+
+  &::before {
+    width: 100vw;
+    right: calc(100% - 15px);
+  } // &::before
+
+  &::after {
+    right: -15px;
+    width: 30px;
+  } // &::after
+
+  &.owl-no-overflow-column-spacer-left {
+
+    &::before {
+      right: auto;
+      left: -15px;
+      width: 30px;
+    } // &::before
+
+    &::after {
+      left: calc(100% - 15px);
+      right: auto;
+      width: 100vh;
+    } // &::after
+
+  } // &.owl-no-overflow-column-spacer-left
+
+} // .owl-no-overflow-column-spacer
+
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Custom Animation
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.animated  {
+  animation-fill-mode: both;
+  animation-duration: 1800ms !important;
+}
+.owl-animated-in  { z-index: 0; }
+.owl-animated-out { z-index: 1; }

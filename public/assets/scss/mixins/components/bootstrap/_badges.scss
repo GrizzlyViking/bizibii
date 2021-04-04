@@ -1,0 +1,72 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Mixins: Component: Bootstrap: Badges]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Base Color
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin badge-variant($class, $color-name) {
+
+  .badge.#{$class} {
+    color: var(--color-#{$color-name}-fore);
+    border-color: var(--color-#{$color-name});
+    background-color: var(--color-#{$color-name});
+  } // .badge.#{$class}
+
+  a.badge.#{$class},
+  .btn.badge.#{$class} {
+
+    &:hover,
+    &:focus {
+      color: var(--color-#{$color-name}-hover-fore);
+      border-color: var(--color-#{$color-name}-hover);
+      background-color: var(--color-#{$color-name}-hover);
+    } // &:hover, &:focus
+
+    &:active {
+      color: var(--color-#{$color-name}-active-fore);
+      border-color: var(--color-#{$color-name}-active);
+      background-color: var(--color-#{$color-name}-active);
+    } // &:active
+
+  } // a.badge.#{$class}, .btn.badge.#{$class}
+
+} // @mixin button-variant(...)
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Outline Color
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin badge-outline-variant($class, $color-name) {
+
+  .badge.#{$class} {
+    color: var(--color-#{$color-name});
+    border-color: var(--color-#{$color-name});
+    background-color: transparent;
+  } // .badge.#{$class}
+
+  a.badge.#{$class},
+  .btn.badge.#{$class} {
+
+    &:hover,
+    &:focus {
+      color: var(--color-#{$color-name}-hover-fore);
+      border-color: var(--color-#{$color-name}-hover);
+      background-color: var(--color-#{$color-name}-hover);
+    } // &:hover, &:focus
+
+    &:active {
+      color: var(--color-#{$color-name}-active-fore);
+      border-color: var(--color-#{$color-name}-active);
+      background-color: var(--color-#{$color-name}-active);
+    } // &:active
+
+  } // a.badge.#{$class}, .btn.badge.#{$class}
+
+} // @mixin button-variant(...)
+
+

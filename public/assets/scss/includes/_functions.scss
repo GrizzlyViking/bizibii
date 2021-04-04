@@ -1,0 +1,61 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Functions]
+//
+//   - function color
+//   - function color-bg
+//   - function color-fore
+//   - function pf-brightness
+//   - function pf-foreground-color
+//
+// ---------------------------------------------------------------------------------------------------------------------
+
+@function rgba-to-rgb($rgba, $background: #fff) {
+  @return mix(rgb(red($rgba), green($rgba), blue($rgba)), $background, alpha($rgba) * 100%)
+} // @function rgba-to-rgb($rgba, $background: #fff)
+
+@function pf-brightness($color) {
+
+  //
+  // https://www.w3.org/TR/AERT
+  // ((Red value X 299) + (Green value X 587) + (Blue value X 114)) / 1000
+  // =====================================================================
+
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  @return round(($r * 299 + $g * 587 + $b * 114) / 1000);
+
+} // @function pf-brightness($color)
+
+@function pf-foreground-color($color, $color-text-dark: #000, $color-text-light: #fff) {
+
+  $color-brightness:            pf-brightness($color);
+  $color-text-dark-brightness:  pf-brightness($color-text-dark);
+  $color-text-light-brightness: pf-brightness($color-text-light);
+
+  @if (abs($color-brightness - $color-text-light-brightness) > abs($color-brightness - $color-text-dark-brightness)) {
+    @return $color-text-light;
+  }
+
+  @return $color-text-dark;
+
+} // @function pf-foreground-color($color, $color-text-dark, $color-text-light)
+
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+} // @function breakpoint-min($name, $breakpoints: $grid-breakpoints)
+
+@function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
+  @return if(breakpoint-min($name, $breakpoints) == null, "", "-#{$name}");
+} // @function breakpoint-infix($name, $breakpoints: $grid-breakpoints)
+
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+
+  $min: breakpoint-min($name, $breakpoints);
+
+  @if $min { @media (min-width: $min) { @content; }
+  } @else { @content; }
+
+} // @mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints)

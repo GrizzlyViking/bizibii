@@ -1,0 +1,273 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [General]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Base Variables
+// ---------------------------------------------------------------------------------------------------------------------
+
+:root {
+
+  // Base
+  --grid-gutter-width                       : #{$grid-gutter-width};
+  --grid-gutter-half-width                  : #{$grid-gutter-half-width};
+
+  // Font family
+  --font-family-primary                     : #{$font-family-primary};
+  --font-family-secondary                   : #{$font-family-secondary};
+
+  // Font sizes
+  --font-size                               : #{$font-size};
+  --font-size-lg                            : #{$font-size-lg};
+  --font-size-sm                            : #{$font-size-sm};
+
+  // Line heights
+  --line-height                             : #{$line-height};
+  --line-height-lg                          : #{$line-height-lg};
+  --line-height-sm                          : #{$line-height-sm};
+  --line-height-computed                    : #{$line-height-computed};
+
+  // Heading font sizes
+  --h1-font-size                            : #{$h1-font-size};
+  --h2-font-size                            : #{$h2-font-size};
+  --h3-font-size                            : #{$h3-font-size};
+  --h4-font-size                            : #{$h4-font-size};
+  --h5-font-size                            : #{$h5-font-size};
+  --h6-font-size                            : #{$h6-font-size};
+
+  // Font weights
+  --font-weight                             : #{$body-font-weight};
+  --font-weight-primary-thin                : #{$font-weight-primary-thin};
+  --font-weight-primary-light               : #{$font-weight-primary-light};
+  --font-weight-primary-regular             : #{$font-weight-primary-regular};
+  --font-weight-primary-medium              : #{$font-weight-primary-medium};
+  --font-weight-primary-bold                : #{$font-weight-primary-bold};
+  --font-weight-secondary-thin              : #{$font-weight-secondary-thin};
+  --font-weight-secondary-light             : #{$font-weight-secondary-light};
+  --font-weight-secondary-regular           : #{$font-weight-secondary-regular};
+  --font-weight-secondary-medium            : #{$font-weight-secondary-medium};
+  --font-weight-secondary-bold              : #{$font-weight-secondary-bold};
+
+  // H1-H6 margins
+  --h1-margin                               : #{$h1-margin};
+  --h2-margin                               : #{$h2-margin};
+  --h3-margin                               : #{$h3-margin};
+  --h4-margin                               : #{$h4-margin};
+  --h5-margin                               : #{$h5-margin};
+  --h6-margin                               : #{$h6-margin};
+
+  // General headings
+  --heading-font-weight                     : #{$heading-font-weight};
+
+  // H1-H6 line heights
+  --h1-line-height                          : #{$h1-line-height};
+  --h2-line-height                          : #{$h2-line-height};
+  --h3-line-height                          : #{$h3-line-height};
+  --h4-line-height                          : #{$h4-line-height};
+  --h5-line-height                          : #{$h5-line-height};
+  --h6-line-height                          : #{$h6-line-height};
+
+  // Custom style for H1
+  --h1-font-family                          : #{$h1-font-family};
+  --h1-font-weight                          : #{$h1-font-weight};
+
+  // Links
+  --link-font-weight                        : #{$link-font-weight};
+
+  // Sidebar
+  --sidebar-width                           : #{$sidebar-width};
+  --sidebar-expanded-width                  : #{$sidebar-expanded-width};
+
+  --sidebar-nav-padding-x                   : #{$sidebar-nav-padding-x};
+  --sidebar-nav-padding-y                   : #{$sidebar-nav-padding-y};
+
+  // Section
+  --section-padding-y                       : #{$section-padding-y};
+  --section-padding-y-sm                    : #{$section-padding-y-sm};
+
+  // Offsets
+  --offset-y                                : #{$line-height-computed};
+  --offset-y-sm                             : #{$line-height-computed * .5};
+
+  // Transition
+  --transition                              : #{$transition};
+  --transition-duration                     : #{$transition-duration};
+  --transition-function                     : #{$transition-function};
+
+  // Border radius
+  --border-radius                           : #{$border-radius};
+  --border-radius-lg                        : #{$border-radius-lg};
+  --border-radius-sm                        : #{$border-radius-sm};
+  --border-radius-rounded                   : #{$border-radius-rounded};
+
+  --navbar-z-index                          : #{$navbar-z-index};
+  --navbar-padding-y                        : #{$navbar-padding-y};
+  --navbar-padding-x                        : #{$navbar-padding-x};
+  --navbar-nav-link-padding-y               : #{$navbar-nav-link-padding-y};
+  --navbar-nav-link-padding-x               : #{$navbar-nav-link-padding-x};
+  --navbar-nav-link-font-size               : #{$navbar-nav-link-font-size};
+  --navbar-nav-link-padding-y-lg            : #{$navbar-nav-link-padding-y-lg};
+  --navbar-nav-link-padding-x-lg            : #{$navbar-nav-link-padding-x-lg};
+  --navbar-nav-link-font-size-lg            : #{$navbar-nav-link-font-size-lg};
+  --navbar-nav-link-padding-y-sm            : #{$navbar-nav-link-padding-y-sm};
+  --navbar-nav-link-padding-x-sm            : #{$navbar-nav-link-padding-x-sm};
+  --navbar-nav-link-font-size-sm            : #{$navbar-nav-link-font-size-sm};
+  --navbar-nav-link-font-weight             : #{$navbar-nav-link-font-weight};
+  --navbar-height                           : #{$navbar-height};
+
+  // Labels
+  --label-font-weight                       : #{$label-font-weight};
+
+  // Controls
+
+  // Buttons
+  --button-font-family                      : #{$button-font-family};
+  --button-font-weight                      : #{$button-font-weight};
+  --button-padding-y                        : #{$button-padding-y};
+  --button-padding-x                        : #{$button-padding-x};
+  --button-padding-y-lg                     : #{$button-padding-y-lg};
+  --button-padding-x-lg                     : #{$button-padding-x-lg};
+  --button-padding-y-sm                     : #{$button-padding-y-sm};
+  --button-padding-x-sm                     : #{$button-padding-x-sm};
+  --button-font-size                        : #{$button-font-size};
+  --button-font-size-lg                     : #{$button-font-size-lg};
+  --button-font-size-sm                     : #{$button-font-size-sm};
+  --button-line-height                      : #{$button-line-height};
+  --button-line-height-lg                   : #{$button-line-height-lg};
+  --button-line-height-sm                   : #{$button-line-height-sm};
+  --button-border-radius                    : #{$button-border-radius};
+  --button-border-radius-lg                 : #{$button-border-radius-lg};
+  --button-border-radius-sm                 : #{$button-border-radius-sm};
+  --button-border-radius-rounded            : #{$button-border-radius-rounded};
+  --button-focus-box-shadow-size            : #{$button-focus-box-shadow-size};
+  --button-size                             : #{$button-font-size * $button-line-height + 2 * $button-padding-y + 2 * $control-border-width-rem};
+
+  // Inputs
+  --input-padding-y                         : #{$input-padding-y};
+  --input-padding-x                         : #{$input-padding-x};
+  --input-padding-y-lg                      : #{$input-padding-y-lg};
+  --input-padding-x-lg                      : #{$input-padding-x-lg};
+  --input-padding-y-sm                      : #{$input-padding-y-sm};
+  --input-padding-x-sm                      : #{$input-padding-x-sm};
+  --input-font-size                         : #{$input-font-size};
+  --input-font-size-lg                      : #{$input-font-size-lg};
+  --input-font-size-sm                      : #{$input-font-size-sm};
+  --input-line-height                       : #{$input-line-height};
+  --input-line-height-lg                    : #{$input-line-height-lg};
+  --input-line-height-sm                    : #{$input-line-height-sm};
+  --input-border-radius                     : #{$input-border-radius};
+  --input-border-radius-lg                  : #{$input-border-radius-lg};
+  --input-border-radius-sm                  : #{$input-border-radius-sm};
+  --input-border-radius-rounded             : #{$input-border-radius-rounded};
+  --input-border-width-rem                  : #{$input-border-width-rem};
+
+  // Breadcrumb
+  --breadcrumb-font-size                    : #{$breadcrumb-font-size};
+  --breadcrumb-padding-y                    : #{$breadcrumb-padding-y};
+  --breadcrumb-padding-x                    : #{$breadcrumb-padding-x};
+
+  // Header
+  --header-padding-y                        : #{$header-padding-y};
+
+  // Blog
+  --blog-menu-link-padding-y                : #{$blog-menu-link-padding-y};
+  --blog-menu-link-padding-x                : #{$blog-menu-link-padding-x};
+
+  // Badge
+  --badge-font-size                         : #{$badge-font-size};
+  --badge-font-size-lg                      : #{$badge-font-size-lg};
+  --badge-font-size-sm                      : #{$badge-font-size-sm};
+  --badge-line-height                       : #{$badge-line-height};
+  --badge-line-height-lg                    : #{$badge-line-height-lg};
+  --badge-line-height-sm                    : #{$badge-line-height-sm};
+  --badge-font-weight                       : #{$badge-font-weight};
+  --badge-padding-y                         : #{$badge-padding-y};
+  --badge-padding-x                         : #{$badge-padding-x};
+  --badge-padding-y-lg                      : #{$badge-padding-y-lg};
+  --badge-padding-x-lg                      : #{$badge-padding-x-lg};
+  --badge-padding-y-sm                      : #{$badge-padding-y-sm};
+  --badge-padding-x-sm                      : #{$badge-padding-x-sm};
+  --badge-padding-y-xs                      : #{$badge-padding-y-xs};
+  --badge-padding-x-xs                      : #{$badge-padding-x-xs};
+  --badge-border-radius                     : #{$badge-border-radius};
+  --badge-border-radius-lg                  : #{$badge-border-radius-lg};
+  --badge-border-radius-sm                  : #{$badge-border-radius-sm};
+  --badge-border-radius-xs                  : #{$badge-border-radius-xs};
+  --badge-pill-padding-x                    : #{$badge-pill-padding-x};
+  --badge-pill-padding-x-lg                 : #{$badge-pill-padding-x-lg};
+  --badge-pill-padding-x-sm                 : #{$badge-pill-padding-x-sm};
+  --badge-pill-border-radius                : #{$badge-pill-border-radius};
+  --badge-pill-border-radius-lg             : #{$badge-pill-border-radius-lg};
+  --badge-pill-border-radius-sm             : #{$badge-pill-border-radius-sm};
+
+  // Separator
+  --separator                               : #{$separator};
+
+} // :root
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Remove outline
+// ---------------------------------------------------------------------------------------------------------------------
+
+* {
+  outline: none !important;
+} // *
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Selection
+// ---------------------------------------------------------------------------------------------------------------------
+
+::selection,
+::-moz-selection {
+
+} // ::selection, ::-moz-selection
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General
+// ---------------------------------------------------------------------------------------------------------------------
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+} // html, body
+
+body {
+
+  width: 100%;
+
+  color: var(--text-color);
+  line-height: var(--line-height);
+
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  font-family: var(--font-family-primary);
+
+  background-color: var(--navbar-mobile-bg);
+
+} // body
+
+.navbar-open {
+
+  max-height: 100%;
+  overflow-y: hidden;
+
+  body {
+    overflow-y: hidden;
+  } // body
+
+} // &.navbar-open
+
+.no-overlay {
+
+  max-height: 100%;
+  overflow-y: hidden;
+
+  body {
+    overflow-y: hidden;
+  } // body
+
+} // .no-overlay

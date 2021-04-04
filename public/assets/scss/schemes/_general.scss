@@ -1,0 +1,149 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Theme Colors]
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Color System
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Color names array
+$colors: ();
+// Themes array
+$themes: ();
+// Elements array
+$elements: ();
+// Layouts array
+$layouts: ();
+
+// Import brand colors
+@import 'brand';
+// Import themes
+@import 'themes/main';
+// Import layouts
+@import 'layouts/main';
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Generate Themes
+// ---------------------------------------------------------------------------------------------------------------------
+
+@each $theme-name, $theme in $themes {
+
+  // Theme postfix
+  $_data: '[data-theme="#{$theme-name}"]';
+
+  // Common parts
+  @if $theme-name == '__ignore' {
+    $_data: '';
+  }
+
+  // Styles
+  :root#{$_data} {
+
+    // Colors loop
+    @each $color-name, $color in $theme {
+
+      // Add color name to colors list
+      @if not(index($color-name, $colors)) {
+        $colors: append($colors, $color-name)
+      } // @if not(index($color-name, $colors))
+
+
+      // Calc length
+      $_length: length($color);
+
+      // Base colors
+      $_color             : nth($color, 1);
+      $_color-fore        : nth($color, 2);
+
+      // Hover colors
+      $_color-hover       : state-color-hover($_color);
+      $_color-hover-fore  : $_color-fore;
+
+      // Active colors
+      $_color-active      : state-color-active($_color);
+      $_color-active-fore : $_color-fore;
+
+      // If hover colors are defined
+      @if $_length > 3 {
+        $_color-hover:       nth($color, 3);
+        $_color-hover-fore:  nth($color, 4);
+      } // @if $_length > 3
+
+      // If active colors are defined
+      @if $_length > 5 {
+        $_color-active:      nth($color, 5);
+        $_color-active-fore: nth($color, 6);
+      } // @if $_length > 3
+
+
+      // Background colors
+      --color-#{$color-name}             : #{$_color};
+      --color-#{$color-name}-hover       : #{$_color-hover};
+      --color-#{$color-name}-active      : #{$_color-active};
+
+      // Foreground colors
+      --color-#{$color-name}-fore        : #{$_color-fore};
+      --color-#{$color-name}-hover-fore  : #{$_color-hover-fore};
+      --color-#{$color-name}-active-fore : #{$_color-active-fore};
+
+    } // @each $color-name, $color in $theme
+
+  } // :root[data-theme="#{$theme-name}"]
+
+} // @each $theme-name, $theme in $themes
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Generate Element Colors
+// ---------------------------------------------------------------------------------------------------------------------
+
+@each $theme-name, $theme in $elements {
+
+  // Theme postfix
+  $_data: '[data-theme="#{$theme-name}"]';
+
+  // Common parts
+  @if $theme-name == '__ignore' {
+    $_data: '';
+  }
+
+  // Styles
+  :root#{$_data} {
+
+    // Colors loop
+    @each $var-name, $color in $theme {
+      --#{$var-name}: #{$color};
+    } // @each $var-name, $color in $theme
+
+  } // :root[data-theme="#{$theme-name}"]
+
+} // @each $theme-name, $theme in $elements
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Generate Layouts
+// ---------------------------------------------------------------------------------------------------------------------
+
+@each $theme-name, $theme in $layouts {
+
+  // Theme postfix
+  $_data: '[data-layout="#{$theme-name}"]';
+
+  // Common parts
+  @if $theme-name == '__ignore' {
+    $_data: '';
+  }
+
+  // Styles
+  :root#{$_data} {
+
+    // Colors loop
+    @each $var-name, $color in $theme {
+      --#{$var-name}: #{$color};
+    } // @each $var-name, $color in $theme
+
+  } // :root[data-theme="#{$theme-name}"]
+
+} // @each $theme-name, $theme in $layouts

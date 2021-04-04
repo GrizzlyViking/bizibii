@@ -1,0 +1,28 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Component: Bootstrap: Breadcrumb]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General Styles
+// ---------------------------------------------------------------------------------------------------------------------
+
+.breadcrumb {
+
+  margin: 0;
+
+  color: var(--text-color);
+  font-size: var(--breadcrumb-font-size);
+  padding: var(--breadcrumb-padding-y) var(--breadcrumb-padding-x);
+
+  background-color: transparent;
+  border-radius: 0;
+
+} // .breadcrumb
+
+.breadcrumb-item + .breadcrumb-item {
+
+  &::before {
+    content: $separator;
+  } // &::before
+
+} // .breadcrumb-item + .breadcrumb-item

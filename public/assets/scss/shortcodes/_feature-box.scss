@@ -1,0 +1,52 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Shortcode: Feature Box]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+.feature-box {
+
+  display: block;
+
+  .icon {
+    font-size: 4rem;
+    color: var(--text-heading-color);
+    margin-bottom: var(--offset-y);
+  } // .icon
+
+  .title {
+
+    font-size: var(--h5-font-size);
+    color: var(--text-heading-color);
+    font-weight: var(--heading-font-weight);
+
+    margin-bottom: var(--offset-y-sm);
+
+  } // .title
+
+  .text {
+    margin-bottom: var(--offset-y-sm);
+  } // .text
+
+  .link {
+    font-weight: var(--font-weight);
+  } // .link
+
+} // .feature-box
+
+.feature-box.feature-box-sm {
+
+  .icon {
+    font-size: 2rem;
+    margin-bottom: var(--offset-y-sm);
+  } // .icon
+
+  .title {
+    margin-bottom: 0;
+    font-size: var(--font-size);
+  } // .title
+
+  .text {
+    margin-bottom: 0;
+  } // .text
+
+} // .feature-box.feature-box-sm

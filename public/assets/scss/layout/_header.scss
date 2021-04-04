@@ -1,0 +1,22 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Layout: Header]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+.header {
+
+  padding-top: calc(var(--header-padding-y) + var(--navbar-height));
+  padding-bottom: var(--header-padding-y);
+
+  .title {
+  } // .title
+
+  .subtitle {
+    color: var(--text-muted-color);
+  } // .subtitle
+
+  .breadcrumb {
+    margin-top: .25rem;
+    margin-bottom: .5rem;
+  } // .breadcrumb
+
+} // .header

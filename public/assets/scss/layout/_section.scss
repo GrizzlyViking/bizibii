@@ -1,0 +1,234 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Layout: Section]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Base Styles
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.section {
+
+  display: block;
+  position: relative;
+  overflow: hidden;
+
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+
+  .container {
+    position: relative;
+  } // .container
+
+  &:not(.section-right) .section-content {
+    justify-content: flex-end;
+  } // &.section-right .section-content
+
+  &.section-sm {
+    padding-top: var(--section-padding-y-sm);
+    padding-bottom: var(--section-padding-y-sm);
+  } // &.section-sm
+
+} // .section
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Section Header
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.section .section-header {
+
+  display: flex;
+
+  position: relative;
+  margin-bottom: var(--section-padding-y);
+
+  .section-navigation {
+
+    margin-right: 15px;
+
+    font-size: 3rem;
+
+    a {
+
+      position: relative;
+
+      display: block;
+      padding-left: 1rem;
+
+      line-height: 1;
+      color: var(--text-heading-color);
+      font-weight: var(--font-weight-primary-regular);
+
+      span {
+
+        position: absolute;
+        display: block;
+
+        font-size: .75rem;
+        text-transform: uppercase;
+        color: var(--text-heading-color);
+
+      } // span
+
+      &:first-child span {
+        bottom: 7px;
+        left: 0;
+        transform: translateX(-100%) rotate(90deg);
+        transform-origin: bottom right;
+      } // &:first-child span
+
+      &:last-child span {
+        top: 7px;
+        left: 0;
+        transform: translateY(-100%) rotate(90deg);
+        transform-origin: bottom left;
+      } // &:last-child span
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--text-color);
+      } // &:not(:last-child)
+
+      &:hover, &:focus {
+        color: var(--link-hover-color);
+      } // &:hover, &:focus
+
+    } // a
+
+  } // .section-navigation
+
+  .section-pin {
+
+    margin-right: 15px;
+
+    font-size: 1.7rem;
+    color: var(--text-muted-color);
+
+    &:hover, &:focus {
+      color: var(--text-color);
+    } // &:hover, &:focus
+
+  } // .section-pin
+
+  .section-heading {
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    .section-title {
+      margin: 0;
+      font-size: var(--h4-font-size);
+      color: var(--text-heading-color);
+      font-weight: var(--heading-font-weight);
+    } // .section-title
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--text-color);
+    } // .section-subtitle
+
+  } // .section-heading
+
+} // .section .section-header
+
+.section.section-right .section-header {
+
+  flex-direction: row-reverse;
+
+  .section-navigation {
+
+    text-align: right;
+
+    margin-right: 0;
+    margin-left: 15px;
+
+    a {
+
+      padding-left: 0;
+      padding-right: 15px;
+
+      span {
+      } // span
+
+      &:first-child span {
+        bottom: 7px;
+        right: 0;
+        left: auto;
+        transform: translateX(100%) rotate(270deg);
+        transform-origin: bottom left;
+      } // &:first-child span
+
+      &:last-child span {
+        top: 7px;
+        right: 0;
+        left: auto;
+        transform: rotate(-90deg) translateY(-100%);
+        transform-origin: top right;
+      } // &:last-child span
+
+      &:not(:last-child) {
+        border-bottom-color: var(--text-color);
+      } // &:not(:last-child)
+
+    } // a
+
+  } // .section-navigation
+
+  .section-pin {
+    margin-left: 15px;
+    margin-right: 0;
+  } // .section-pin
+
+  .section-heading {
+    text-align: right;
+  } // .section-heading
+
+} // .section.section-right .section-header
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Section Muted Title
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.section .section-muted-title {
+
+  position: absolute;
+  left: 4rem;
+  top: 9rem;
+
+  span {
+
+    display: block;
+    position: relative;
+
+    line-height: 1;
+    font-size: 110px;
+    color: var(--text-color);
+    text-transform: lowercase;
+    font-weight: var(--font-weight-primary-light);
+
+    opacity: .1;
+
+    transform: translateY(-100%) rotate(90deg);
+    transform-origin: bottom left;
+
+  } // span
+
+} // .section .section-muted-title
+
+.section.section-right .section-muted-title {
+
+  left: auto;
+  right: 4rem;
+
+  span {
+    transform-origin: bottom right;
+    transform: translateY(-100%) rotate(-90deg);
+  } // span
+
+} // section.section-right .section-muted-title
+
+.section.section-no-header .section-muted-title {
+  top: 3rem;
+} // .section.section-no-header .section-muted-title

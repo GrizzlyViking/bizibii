@@ -1,0 +1,385 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Template Variables]
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Google Fonts Import
+// ---------------------------------------------------------------------------------------------------------------------
+
+//noinspection CssUnknownTarget
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Roboto:100,300,400,500,700&display=swap);
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Fonts
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Font family
+$font-family-primary                        : 'Roboto', sans-serif;
+$font-family-secondary                      : 'Open Sans', sans-serif;
+
+
+// Font weight primary
+$font-weight-primary-thin                   : 100;
+$font-weight-primary-light                  : 300;
+$font-weight-primary-regular                : 400;
+$font-weight-primary-medium                 : 500;
+$font-weight-primary-bold                   : 700;
+
+// Font weight secondary
+$font-weight-secondary-thin                 : 300;
+$font-weight-secondary-light                : 300;
+$font-weight-secondary-regular              : 400;
+$font-weight-secondary-medium               : 600;
+$font-weight-secondary-bold                 : 700;
+
+// Font size
+$font-size                                  : .875rem;
+$font-size-lg                               : 1rem;
+$font-size-sm                               : .8125rem;
+
+// Line height
+$line-height                                : 1.8;
+$line-height-lg                             : $line-height;
+$line-height-sm                             : $line-height;
+$line-height-computed                       : $font-size * $line-height;
+
+// Heading font size
+$h1-font-size                               : 2.75rem;
+$h2-font-size                               : 2.125rem;
+$h3-font-size                               : 1.5rem;
+$h4-font-size                               : 1.25rem;
+$h5-font-size                               : 1rem;
+$h6-font-size                               : .875rem;
+
+// Heading line height
+$h1-line-height                             : 1.23;
+$h2-line-height                             : 1.29;
+$h3-line-height                             : 1.42;
+$h4-line-height                             : 1.50;
+$h5-line-height                             : 1.625;
+$h6-line-height                             : 1.71;
+
+// Heading font weights
+$heading-font-weight                        : $font-weight-primary-medium;
+
+// Heading margins
+$h1-margin                                  : 0 0 $line-height-computed;
+$h2-margin                                  : 0 0 $line-height-computed;
+$h3-margin                                  : 0 0 $line-height-computed;
+$h4-margin                                  : 0 0 $line-height-computed;
+$h5-margin                                  : 0 0 $line-height-computed;
+$h6-margin                                  : 0 0 $line-height-computed;
+
+// Custom style for H1
+$h1-font-family                             : $font-family-secondary;
+$h1-font-weight                             : $font-weight-secondary-light;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General
+// ---------------------------------------------------------------------------------------------------------------------
+
+$grid-gutter-width                          : 30px;
+$grid-gutter-half-width                     : $grid-gutter-width / 2;
+$px1-to-rem                                 : 1rem / 16;
+$separator                                  : '\00b7';
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+$spacers: (
+   0: 0,
+   1: $line-height-computed *  .25,
+   2: $line-height-computed *  .50,
+   3: $line-height-computed *  .75,
+   4: $line-height-computed * 1.00,
+   5: $line-height-computed * 1.25,
+   6: $line-height-computed * 1.50,
+   7: $line-height-computed * 1.75,
+   8: $line-height-computed * 2.00,
+   9: $line-height-computed * 2.25,
+  10: $line-height-computed * 2.50,
+  11: $line-height-computed * 2.75,
+  12: $line-height-computed * 3.00
+);
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Body
+// ---------------------------------------------------------------------------------------------------------------------
+
+$body-font-size                             : $font-size;
+$body-line-height                           : $line-height;
+$body-font-family                           : $font-family-primary;
+$body-font-weight                           : $font-weight-primary-light;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Links
+// ---------------------------------------------------------------------------------------------------------------------
+
+$link-font-weight                           : $font-weight-primary-medium;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Labels
+// ---------------------------------------------------------------------------------------------------------------------
+
+$label-font-weight                          : $font-weight-primary-medium;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Transition
+// ---------------------------------------------------------------------------------------------------------------------
+
+$transition-function                        : cubic-bezier(.4, 0, .2, 1);
+$transition-duration                        : .3s;
+$transition                                 : all $transition-duration $transition-function;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Controls (Buttons + Forms)
+// ---------------------------------------------------------------------------------------------------------------------
+
+$control-font-family                        : $font-family-primary;
+$control-font-weight                        : $font-weight-primary-medium;
+
+$control-padding-y                          : .6rem;
+$control-padding-x                          : 1rem;
+
+$control-padding-y-lg                       : .75rem;
+$control-padding-x-lg                       : 1.75rem;
+
+$control-padding-y-sm                       : .25rem;
+$control-padding-x-sm                       : 1rem;
+
+$control-line-height                        : $line-height;
+$control-line-height-lg                     : $line-height-lg;
+$control-line-height-sm                     : $line-height-sm;
+
+$control-border-width-rem                   : $px1-to-rem;
+
+$border-radius                              : .125rem;
+$border-radius-lg                           : .125rem;
+$border-radius-sm                           : .125rem;
+$border-radius-rounded                      : .25rem;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Inputs
+// ---------------------------------------------------------------------------------------------------------------------
+
+$input-padding-y                            : $control-padding-y;
+$input-padding-x                            : $control-padding-x;
+
+$input-padding-y-lg                         : $control-padding-y-lg;
+$input-padding-x-lg                         : $control-padding-x-lg;
+
+$input-padding-y-sm                         : $control-padding-y-sm;
+$input-padding-x-sm                         : $control-padding-x-sm;
+
+$input-font-size                            : $font-size-sm;
+$input-font-size-lg                         : $input-font-size;
+$input-font-size-sm                         : $input-font-size;
+
+$input-line-height                          : $control-line-height;
+$input-line-height-lg                       : $control-line-height-lg;
+$input-line-height-sm                       : $control-line-height-sm;
+
+$input-border-radius                        : $border-radius;
+$input-border-radius-lg                     : $border-radius-lg;
+$input-border-radius-sm                     : $border-radius-sm;
+$input-border-radius-rounded                : 5rem;
+
+$input-border-width-rem                     : $control-border-width-rem;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Buttons
+// ---------------------------------------------------------------------------------------------------------------------
+
+$button-font-family                         : $control-font-family;
+$button-font-weight                         : $control-font-weight;
+
+$button-padding-y                           : $control-padding-y;
+$button-padding-x                           : $control-padding-x;
+
+$button-padding-y-lg                        : $control-padding-y-lg;
+$button-padding-x-lg                        : $control-padding-x-lg;
+
+$button-padding-y-sm                        : $control-padding-y-sm;
+$button-padding-x-sm                        : $control-padding-x-sm;
+
+$button-font-size                           : $font-size-sm;
+$button-font-size-lg                        : $button-font-size;
+$button-font-size-sm                        : $button-font-size;
+
+$button-line-height                         : $control-line-height;
+$button-line-height-lg                      : $control-line-height-lg;
+$button-line-height-sm                      : $control-line-height-sm;
+
+$button-border-radius                       : $border-radius;
+$button-border-radius-lg                    : $border-radius-lg;
+$button-border-radius-sm                    : $border-radius-sm;
+$button-border-radius-rounded               : 5rem;
+
+$button-focus-box-shadow-size               : .2rem;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Breadcrumb
+// ---------------------------------------------------------------------------------------------------------------------
+
+$breadcrumb-font-size                       : $font-size;
+$breadcrumb-padding-y                       : $control-padding-y;
+$breadcrumb-padding-x                       : $control-padding-x;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Section
+// ---------------------------------------------------------------------------------------------------------------------
+
+$section-padding-y                          : 8rem;
+$section-padding-y-sm                       : 4rem;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Navbar
+// ---------------------------------------------------------------------------------------------------------------------
+
+$navbar-z-index                             : 1000;
+
+$navbar-padding-y                           : 0;
+$navbar-padding-x                           : 0;
+
+$navbar-nav-link-padding-y                  : 1.5rem;
+$navbar-nav-link-padding-x                  : 1rem;
+$navbar-nav-link-font-size                  : $font-size-sm;
+
+$navbar-nav-link-padding-y-lg               : 2rem;
+$navbar-nav-link-padding-x-lg               : 1rem;
+$navbar-nav-link-font-size-lg               : $font-size-sm;
+
+$navbar-nav-link-padding-y-sm               : 0.85rem;
+$navbar-nav-link-padding-x-sm               : 1rem;
+$navbar-nav-link-font-size-sm               : $font-size-sm;
+
+$navbar-nav-link-font-weight                : $font-weight-primary-medium;
+
+$navbar-height                              : $navbar-nav-link-padding-y * 2 + $navbar-nav-link-font-size;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Header
+// ---------------------------------------------------------------------------------------------------------------------
+
+$header-padding-y                           : 8rem;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Footer
+// ---------------------------------------------------------------------------------------------------------------------
+
+$footer-brand-font-size                     : 1.15rem;
+$footer-nav-link-font-size                  : $font-size-sm;
+$footer-nav-link-font-weight                : $font-weight-primary-light;
+$footer-nav-link-padding-y                  : .125rem;
+$footer-nav-link-padding-x                  : 0;
+
+$footer-line-padding-y                      : 2rem;
+$footer-line-padding-x                      : 2rem;
+$footer-line-font-size                      : $font-size-sm;
+
+$footer-line-padding-y-lg                   : 4rem;
+$footer-line-padding-x-lg                   : 4rem;
+$footer-line-font-size-lg                   : $font-size-sm;
+
+$footer-line-padding-y-sm                   : .75rem;
+$footer-line-padding-x-sm                   : .75rem;
+$footer-line-font-size-sm                   : $font-size-sm;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Dropdown
+// ---------------------------------------------------------------------------------------------------------------------
+
+$dropdown-padding-y                         : .5rem;
+$dropdown-font-size                         : $font-size-sm;
+$dropdown-font-weight                       : $navbar-nav-link-font-weight;
+
+$dropdown-item-padding-y                    : .4rem;
+$dropdown-item-padding-x                    : 1.5rem;
+
+$dropdown-border-radius                     : 0;
+$dropdown-border-width                      : 1px;
+$dropdown-border-style                      : solid;
+
+$dropdown-header-font-size                  : .75rem;
+$dropdown-header-font-weight                : $font-weight-primary-bold;
+
+$dropdown-box-shadow                        : 0 16px 28px -5px rgba(0, 0, 0, 0.08);
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Sidebar
+// ---------------------------------------------------------------------------------------------------------------------
+
+$sidebar-width                              : 90px;
+$sidebar-expanded-width                     : 300px;
+
+$sidebar-nav-padding-x                      : .75rem;
+$sidebar-nav-padding-y                      : .25rem;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Blog: Widget: Menu
+// ---------------------------------------------------------------------------------------------------------------------
+
+$blog-menu-link-padding-y                  : .3rem;
+$blog-menu-link-padding-x                  : 0;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Badges
+// ---------------------------------------------------------------------------------------------------------------------
+
+$badge-font-size                            : 90%;
+$badge-font-size-lg                         : $badge-font-size;
+$badge-font-size-sm                         : $badge-font-size;
+
+$badge-line-height                          : 1.3; // html 1.4 -> 1.7, badge 1 -> 1.3
+$badge-line-height-lg                       : $badge-line-height;
+$badge-line-height-sm                       : $badge-line-height;
+
+$badge-font-weight                          : $body-font-weight;
+
+$badge-padding-y                            : .25em;
+$badge-padding-x                            : .4em;
+
+$badge-padding-y-lg                         : $badge-padding-y * 2;
+$badge-padding-x-lg                         : $badge-padding-x * 2;
+
+$badge-padding-y-sm                         : $badge-padding-y * .25;
+$badge-padding-x-sm                         : $badge-padding-x * .25;
+
+$badge-padding-y-xs                         : 0em; // for states
+$badge-padding-x-xs                         : 0em; // for states
+
+$badge-border-radius                        : $border-radius;
+$badge-border-radius-lg                     : $badge-border-radius;
+$badge-border-radius-sm                     : $badge-border-radius;
+$badge-border-radius-xs                     : $badge-border-radius;
+
+$badge-pill-padding-x                       : $badge-padding-x * 2;
+$badge-pill-padding-x-lg                    : $badge-pill-padding-x * 1.25;
+$badge-pill-padding-x-sm                    : $badge-pill-padding-x * .8;
+
+$badge-pill-border-radius                   : 10rem;
+$badge-pill-border-radius-lg                : $badge-pill-border-radius;
+$badge-pill-border-radius-sm                : $badge-pill-border-radius;

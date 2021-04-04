@@ -1,0 +1,78 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Component: Bootstrap: Forms]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General Styles
+// ---------------------------------------------------------------------------------------------------------------------
+
+.form-control {
+
+  font-weight: inherit;
+  border: 1px solid var(--border-color);
+
+  transition: border-color var(--transition-duration) var(--transition-function);
+
+  &, &:hover, &:focus {
+    box-shadow: none;
+  } // &, &:hover, &:focus
+
+  &:hover, &:focus {
+    border-color: var(--border-hover-color);
+  } // &:hover, &:focus
+
+  &, &.form-control-lg, .form-control-sm {
+    height: auto;
+    font-weight: inherit;
+  } // &, &.form-control-lg, .form-control-sm
+
+  &::placeholder {
+    transition: var(--transition);
+  } // &::placeholder
+
+  &:focus {
+
+    &::placeholder {
+      opacity: .0;
+      transform: translateY(-100%);
+    } // &::placeholder
+
+  } // &:focus
+
+} // .form-control
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Sizes
+// ---------------------------------------------------------------------------------------------------------------------
+
+.form-control {
+  font-size: var(--input-font-size);
+  line-height: var(--input-line-height);
+  padding: var(--input-padding-y) var(--input-padding-x);
+  border-radius: var(--input-border-radius);
+} // .form-control
+
+.form-control-lg {
+  font-size: var(--input-font-size-lg);
+  line-height: var(--input-line-height-lg);
+  padding: var(--input-padding-y-lg) var(--input-padding-x-lg);
+  border-radius: var(--input-border-radius-lg);
+} // .form-control-lg
+
+.form-control-sm {
+  font-size: var(--input-font-size-sm);
+  line-height: var(--input-line-height-sm);
+  padding: var(--input-padding-y-sm) var(--input-padding-x-sm);
+  border-radius: var(--input-border-radius-sm);
+} // .form-control-sm
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Form Groups
+// ---------------------------------------------------------------------------------------------------------------------
+
+.form-group {
+  position: relative;
+} // .form-group
+

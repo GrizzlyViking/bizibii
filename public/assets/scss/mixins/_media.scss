@@ -1,0 +1,8 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Media Breakpoints]
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin media-max-lg() { @media (max-width: $grid-breakpoints-lg-max) { @content; } }
+@mixin media-max-md() { @media (max-width: $grid-breakpoints-md-max) { @content; } }
+@mixin media-max-sm() { @media (max-width: $grid-breakpoints-sm-max) { @content; } }
+@mixin media-max-xs() { @media (max-width: $grid-breakpoints-xs-max) { @content; } }
