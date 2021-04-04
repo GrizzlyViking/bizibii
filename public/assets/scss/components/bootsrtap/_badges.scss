@@ -1,0 +1,93 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Component: Bootstrap: Badge]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General
+// ---------------------------------------------------------------------------------------------------------------------
+
+.badge {
+
+  padding: var(--badge-padding-y) var(--badge-padding-x);
+  margin: 0 .45rem .35rem 0;
+
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+
+  border-radius: var(--button-border-radius);
+
+  &:empty {
+    &, &.badge-pill {
+
+      display: inline-block;
+      padding: 0;
+
+      width: 12px;
+      height: 12px;
+
+      vertical-align: middle;
+      border-radius: 50%;
+      border: 1px solid #fff;
+
+    } // &, &.badge-pill
+  } // &:empty
+
+} // .badge
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Outline
+// ---------------------------------------------------------------------------------------------------------------------
+
+.badge[class*="outline-"] {
+  border: 1px solid transparent;
+} // .badge[class*="outline-"]
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Pills
+// ---------------------------------------------------------------------------------------------------------------------
+
+.badge.badge-pill {
+
+  padding-left: var(--badge-pill-padding-x);
+  padding-right: var(--badge-pill-padding-x);
+
+  border-radius: var(--badge-pill-padding-x);
+
+} // .badge.badge-pill
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Remove bootstrap 'top = -1px' fix for buttons
+// ---------------------------------------------------------------------------------------------------------------------
+
+.btn .badge {
+  top: 0;
+} // .btn .badge
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Alternate Colors
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Color names array for skip default styles generation
+$badge-variant-exclude: ();
+$badge-outline-variant-exclude: ();
+
+// Create alternate colors
+@each $color-name in $colors {
+
+  // Ignore excluded color names
+  @if not(index($color-name, $badge-variant-exclude)) {
+    // Include mixin
+    @include badge-variant(badge-#{$color-name}, $color-name);
+  } // @if not(index($color-name, $btn-variant-exclude))
+
+  // Ignore excluded color names
+  @if not(index($color-name, $badge-outline-variant-exclude)) {
+    // Include mixin
+    @include badge-outline-variant(badge-outline-#{$color-name}, $color-name);
+  } // @if not(index($color-name, $btn-variant-exclude))
+
+} // @each $color-name, $color in $theme-colors

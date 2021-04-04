@@ -1,0 +1,35 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Color Theme: Main]
+// ---------------------------------------------------------------------------------------------------------------------
+
+$themes: map-merge($themes, (
+
+  __ignore: (
+
+    // Brand Colors
+    'facebook'       : (#3b5998, #fff),
+    'twitter'        : (#00aced, #fff),
+    'linkedin'       : (#007bb6, #fff),
+    'skype'          : (#00aff0, #fff),
+    'googleplus'     : (#dd4b39, #fff),
+    'pinterest'      : (#cb2027, #fff),
+    'youtube'        : (#bb0000, #fff),
+    'vine'           : (#00b488, #fff),
+    'dribbble'       : (#ea4c89, #fff),
+    'flickr'         : (#ff0084, #fff),
+    'behance'        : (#1769ff, #fff),
+    'vimeo'          : (#1ab7ea, #fff),
+    'tumblr'         : (#32506d, #fff),
+    'instagram'      : (#bc2a8d, #fff),
+    'vk'             : (#45668e, #fff),
+    'wordpress'      : (#21759b, #fff),
+    'yahoo'          : (#7B0099, #fff),
+    'blogger'        : (#fb8f3d, #fff),
+    'soundcloud'     : (#ff3a00, #fff),
+    'android'        : (#a4c827, #fff),
+    'apple'          : (#646c6f, #fff)
+
+  )
+
+));
+

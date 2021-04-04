@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+/*!------------------------------------------------------------------------------------------------------------------ *
+ *                                                                                                                    *
+ * [Master Stylesheet]                                                                                                *
+ *                                                                                                                    *
+ * Project      Clarity                                                                                               *
+ * Version      3.0.0                                                                                                 *
+ * Description  Responsive Multipurpose Clean and Minimal Site Template                                               *
+ *                                                                                                                    *
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General includes
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// General
+@import 'includes/functions';
+@import 'includes/control-states';
+@import 'includes/variables';
+
+// Color schemes
+@import 'schemes/general';
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Mixins
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Component: Bootstrap
+@import 'mixins/components/bootstrap/badges';
+@import 'mixins/components/bootstrap/buttons';
+
+// Component: Material Design
+
+// Theme
+@import 'mixins/clearfix';
+@import 'mixins/media';
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Styles
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Component: Bootstrap
+@import 'components/bootsrtap/backgrounds';
+@import 'components/bootsrtap/badges';
+@import 'components/bootsrtap/breadcrumbs';
+@import 'components/bootsrtap/buttons';
+@import 'components/bootsrtap/dropdown';
+@import 'components/bootsrtap/forms';
+@import 'components/bootsrtap/navbar';
+@import 'components/bootsrtap/spacing';
+
+// Component: Magnific Popup
+
+// Component: OwlCarousel
+@import 'components/owl-carousel/general';
+// Component: Magnific Popup
+@import 'components/magnific-popup/general';
+
+// Layout
+@import 'layout/footer';
+@import 'layout/header';
+@import 'layout/hero';
+@import 'layout/main';
+@import 'layout/navigation';
+@import 'layout/page-title';
+@import 'layout/section';
+
+
+// General Styles
+@import 'theme/general';
+@import 'theme/helper';
+@import 'theme/typography';
+
+// Theme Elements
+@import 'theme/custom-buttons';
+@import 'theme/search';
+
+// Shortcodes
+@import 'shortcodes/blog-post';
+@import 'shortcodes/feature-box';
+@import 'shortcodes/gallery-image';
+@import 'shortcodes/price-box';
+@import 'shortcodes/testimonial-item';
+@import 'shortcodes/thumb';
+
+// Widgets
+
+// Sections
+@import 'sections/about';

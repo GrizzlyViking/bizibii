@@ -1,0 +1,51 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Control States Color Functions]
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+$percents-darken                            : 6.5%;
+$percents-lighten                           : 6.5%;
+$percents-darken-hover                      : 7.5%;
+$percents-darken-focus                      : 7.5%;
+$percents-darken-active                     : 10%;
+$percents-lighten-disabled                  : 20%;
+
+
+@function state-color-fix($color, $color-alt: null) {
+
+  @if (lighten($color, 2 * $percents-lighten) == white) {
+    $color: if($color-alt == null, darken($color, $percents-darken), $color-alt);
+  }
+
+  @return $color;
+
+} // @function state-border-color-fix($color, $color-alt: null)
+
+@function state-color-fix-rgba($color, $color-alt: null) {
+
+  $color-rgb: rgba-to-rgb($color);
+
+  @if (lighten($color-rgb, $percents-lighten) == white) {
+    $color: if($color-alt == null, darken($color-rgb, $percents-darken), $color-alt);
+  }
+
+  @return $color;
+
+} // @function state-border-color-fix-rgba($color, $color-alt: null)
+
+
+@function state-color-hover($color) {
+  @return /*state-color-fix(*/lighten($color, $percents-lighten)/*)*/;
+} // @function state-color-hover($color)
+
+@function state-color-focus($color) {
+  @return /*state-color-fix(*/darken($color, $percents-darken-focus)/*)*/;
+} // @function state-color-focus($color)
+
+@function state-color-active($color) {
+  @return /*state-color-fix(*/darken($color, $percents-darken-active)/*)*/;
+} // @function state-color-active($color)
+
+@function state-color-disabled($color) {
+  @return /*state-color-fix(*/lighten($color, $percents-lighten-disabled)/*)*/;
+} // @function state-color-disabled($color)

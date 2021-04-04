@@ -1,0 +1,53 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Search]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+.page-search {
+
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: var(--offset-y);
+
+  z-index: 11;
+
+  opacity: .0;
+  visibility: hidden;
+
+  transform: scale(.85) translateY(20%);
+  transition: var(--transition);
+
+  &.active {
+    opacity: 1.0;
+    transform: none;
+    visibility: visible;
+  } // &.active
+
+} // .page-search
+
+.page-search .page-search-close {
+
+  position: absolute;
+  top: var(--offset-y);
+  right: var(--grid-gutter-half-width);
+
+} // .page-search .page-search-close
+
+// After input, move search input element to up
+
+.page-search .page-search-control {
+
+  font-size: var(--font-size-lg);
+
+  padding: 0;
+
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+
+} // .page-search .page-search-control

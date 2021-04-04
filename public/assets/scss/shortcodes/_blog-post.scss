@@ -1,0 +1,249 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Shortcode: Blog: Post]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+.blog-post {
+
+  margin-bottom: var(--section-padding-y); // calc(3 * var(--offset-y));
+
+  .blog-post-header {
+  } // .blog-post-header
+
+  .blog-post-body {
+    padding-top: var(--offset-y);
+    padding-bottom: var(--offset-y-sm);
+  } // .blog-post-body
+
+  .blog-post-footer {
+  } // .blog-post-footer
+
+} // .blog-post
+
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Blog Post Elements
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.blog-post .blog-post-title {
+
+  font-size: var(--h5-font-size);
+  color: var(--text-heading-color);
+  font-weight: var(--heading-font-weight);
+
+  margin-bottom: 0;
+
+} // .blog-post .blog-post-title
+
+
+.blog-post .blog-post-media {
+  margin-bottom: var(--offset-y);
+} // .blog-post .blog-post-media
+
+.blog-post .blog-post-meta {
+
+  font-size: var(--font-size-sm);
+
+  .link {
+    font-weight: var(--font-weight);
+  } // .link
+
+} // .blog-post .blog-post-meta
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Small for Widgets
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.blog-post-small {
+
+  margin-bottom: var(--offset-y-sm);
+
+  .blog-post-thumb {
+    width: 80px;
+    margin-right: var(--line-height-computed);
+    border-radius: var(--border-radius-rounded);
+  } // .blog-post-thumb
+
+  .blog-post-title {
+    margin: 0;
+  } // .blog-post-title
+
+} // .blog-post-small
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: General
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget {
+
+  display: block;
+  margin-bottom: calc(2 * var(--offset-y));
+
+  .widget-header {
+
+    margin-bottom: var(--offset-y);
+
+    .widget-title {
+      margin: 0;
+      padding: 0;
+      color: var(--text-heading-color);
+    } // .widget-title
+
+  } // .widget-heading
+
+  .widget-body {
+  } // .widget-body
+
+  .widget-footer {
+  } // .widget-footer
+
+} // .widget
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Blog Menu
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.blog-menu {
+
+  .blog-menu-link {
+
+    display: block;
+    padding: var(--blog-menu-link-padding-y) var(--blog-menu-link-padding-x);
+
+    font-weight: var(--font-weight);
+
+    &:first-child {
+      margin-top: calc(-1 * var(--blog-menu-link-padding-y));
+    } // &:first-child
+
+    &:not(:last-child) {
+    } // &:not(:last-child)
+
+  } // .blog-menu-link
+
+} // .blog-menu
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Categories
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget-blog-categories {
+} // .widget-blog-categories
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Recent Posts
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget-blog-recent-posts {
+} // .widget-blog-recent-posts
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Advert
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget-blog-advert {
+} // .widget-blog-advert
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Tag Cloud
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget-tag-cloud {
+} // .widget-tag-cloud
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Recent Comments
+// ------------------------------------------------------------------------------------------------------------------- /
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Meta Menu
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget-blog-meta {
+} // .widget-blog-meta
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Comments
+// ------------------------------------------------------------------------------------------------------------------- /
+
+.widget-comments {
+
+  .avatar {
+
+  } // .avatar
+
+} // .widget-comments
+
+.blog-post-comment {
+
+  &:not(:last-child) {
+    margin-bottom: var(--offset-y);
+  } // &:not(:last-child)
+
+  .avatar {
+
+    width: 4.75rem;
+    height: 4.75rem;
+
+    margin-right: 1.1rem;
+
+    overflow: hidden;
+    border-radius: 50%;
+
+  } // .blog-post-comment-avatar
+
+  .blog-post-comment-info {
+    margin: 0 0 var(--offset-y-sm);
+  } // .blog-post-comment-author
+
+  .blog-post-comment-text {
+    margin: 0 0 var(--offset-y-sm);
+  } // .blog-post-comment-text
+
+  .blog-post-comment-author {
+
+    padding-top: .15rem;
+
+    .blog-post-comment-author-link {
+      font-size: var(--h5-font-size);
+      color: var(--text-heading-color);
+      font-weight: var(--font-weight-primary-medium);
+    } // .blog-post-comment-author-link
+
+  } // .blog-post-comment-author
+
+  .blog-post-comment-date {
+  } // .blog-post-comment-date
+
+  .blog-post-comment {
+    margin-top: var(--offset-y);
+  } // .blog-post-comment
+
+  > .blog-post-comment-body > .blog-post-comment-actions a {
+
+    opacity: .5;
+    transition:var(--transition);
+    font-size: var(--font-size-sm);
+
+    &:hover, &:focus {
+      opacity: 1.0;
+    } // &:hover, &:focus
+
+  } // > .blog-post-comment-body > .blog-post-comment-actions a
+
+} // .blog-post-comment
+
+
+// ------------------------------------------------------------------------------------------------------------------- /
+// Widget: Leave a Comment
+// ------------------------------------------------------------------------------------------------------------------- /

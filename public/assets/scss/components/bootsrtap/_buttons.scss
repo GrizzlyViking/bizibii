@@ -1,0 +1,184 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Component: Bootstrap: Buttons]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General Styles
+// ---------------------------------------------------------------------------------------------------------------------
+
+.btn {
+
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+
+  transition: var(--transition);
+
+  &, &:hover, &:focus {
+    box-shadow: none !important;
+  } // &, &:hover, &:focus
+
+} // .btn
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Sizes
+// ---------------------------------------------------------------------------------------------------------------------
+
+.btn {
+
+  padding: var(--button-padding-y) var(--button-padding-x);
+
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+
+  border-radius: var(--button-border-radius);
+
+  &.btn-square,
+  &.btn-circle {
+    width: var(--button-size);
+    height: var(--button-size);
+  } // &.btn-square, &.btn-circle
+
+} // .btn
+
+.btn-lg {
+
+  padding: var(--button-padding-y-lg) var(--button-padding-x-lg);
+
+  font-size: var(--button-font-size-lg);
+  line-height: var(--button-line-height-lg);
+
+  border-radius: var(--button-border-radius-lg);
+
+  &.btn-square,
+  &.btn-circle {
+    width: var(--button-size-lg);
+    height: var(--button-size-lg);
+  } // &.btn-square, &.btn-circle
+} // .btn-lg
+
+.btn-sm {
+
+  padding: var(--button-padding-y-sm) var(--button-padding-x-sm);
+
+  font-size: var(--button-font-size-sm);
+  line-height: var(--button-line-height-sm);
+
+  border-radius: var(--button-border-radius-sm);
+
+  &.btn-square,
+  &.btn-circle {
+    width: var(--button-size-sm);
+    height: var(--button-size-sm);
+  } // &.btn-square, &.btn-circle
+
+} // .btn-sm
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Custom Styles
+// ---------------------------------------------------------------------------------------------------------------------
+
+.btn-rounded {
+  border-radius: var(--border-radius-rounded);
+} // .btn-rounded
+
+.btn-strong {
+  font-weight: var(--font-weight-medium);
+} // .btn-strong
+
+.btn-square, .btn-circle {
+  padding-left:  0 !important;
+  padding-right: 0 !important;
+} // .btn-square, .btn-circle
+
+.btn-circle {
+
+  border-radius: 50%;
+
+  &:not([class*='btn-outline-']) {
+    border: none;
+  } // &:not([class*='btn-outline-'])
+
+} // .btn-circle
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Light Button
+// ---------------------------------------------------------------------------------------------------------------------
+
+.btn-outline-light-custom {
+
+  color: var(--text-color);
+  border-color: var(--color-secondary);
+  background-color: transparent;
+  box-shadow: none;
+
+  &:hover, .hover,
+  &:focus, .focus {
+    color: var(--text-color);
+    border-color: var(--color-secondary-hover);
+    background-color: #fafafa;
+    box-shadow: none;
+  } // &:hover, .hover, &:focus, .focus
+
+  &:active, .active {
+    color: var(--text-color);
+    border-color: var(--color-secondary);
+    background-color: #f0f0f0;
+    box-shadow: none;
+  } // &:hover, .hover, &:focus, .focus
+
+
+  &:disabled, &.disabled {
+    opacity: .6;
+    color: var(--text-color);
+    border-color: var(--color-secondary);
+    background-color: #f0f0f0;
+    box-shadow: none;
+  } // &:disabled, &.disabled
+
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled).active,
+  .show > &.dropdown-toggle {
+
+    color: var(--text-color);
+    border-color: var(--color-secondary);
+    background-color: #f0f0f0;
+    box-shadow: none;
+
+    &:focus {
+      box-shadow: none;
+    } // &:focus
+
+  } // &:not(:disabled):not(.disabled):active, &:not(:disabled):not(.disabled).active, .show > &.dropdown-toggle
+
+} // .btn-outline-light-custom
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Alternate Colors
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Color names array for skip default styles generation
+$btn-variant-exclude: ();
+$btn-outline-variant-exclude: ();
+
+// Create alternate colors
+@each $color-name in $colors {
+
+  // Ignore excluded color names
+  @if not(index($color-name, $btn-variant-exclude)) {
+    // Include mixin
+    @include button-variant(btn-#{$color-name}, $color-name);
+  } // @if not(index($color-name, $btn-variant-exclude))
+
+  // Outline ignore excluded color names
+  @if not(index($color-name, $btn-outline-variant-exclude)) {
+    // Include mixin
+    @include button-outline-variant(btn-outline-#{$color-name}, $color-name);
+  } // @if not(index($color-name, $btn-outline-variant-exclude))
+
+} // @each $color-name, $color in $theme-colors

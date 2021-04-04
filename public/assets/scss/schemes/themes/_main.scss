@@ -1,0 +1,167 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// [Color Theme: Main]
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Variables
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Theme Colors
+$theme-main-blue                            : #00aeef;
+$theme-main-blue-fore                       : #fff;
+$theme-main-indigo                          : #6610f2;
+$theme-main-indigo-fore                     : #fff;
+$theme-main-purple                          : #6f42c1;
+$theme-main-purple-fore                     : #fff;
+$theme-main-pink                            : #e83e8c;
+$theme-main-pink-fore                       : #fff;
+$theme-main-red                             : #fc574e;
+$theme-main-red-fore                        : #fff;
+$theme-main-orange                          : #fd7e14;
+$theme-main-orange-fore                     : #fff;
+$theme-main-yellow                          : #ffc107;
+$theme-main-yellow-fore                     : #fff;
+$theme-main-green                           : #28a745;
+$theme-main-green-fore                      : #fff;
+$theme-main-teal                            : #20c997;
+$theme-main-teal-fore                       : #fff;
+$theme-main-cyan                            : #17a2b8;
+$theme-main-cyan-fore                       : #fff;
+$theme-main-black                           : #000000;
+$theme-main-black-fore                      : #fff;
+$theme-main-white                           : #ffffff;
+$theme-main-white-fore                      : #fff;
+$theme-main-light                           : #f8f9fa;
+$theme-main-light-fore                      : #fff;
+$theme-main-dark                            : #212429;
+$theme-main-dark-fore                       : #fff;
+
+// Bootstrap Colors
+$theme-main-primary                         : #222222;
+$theme-main-primary-fore                    : #fff;
+$theme-main-secondary                       : #dadada;
+$theme-main-secondary-fore                  : #444;
+$theme-main-success                         : #28a745;
+$theme-main-success-fore                    : #fff;
+$theme-main-info                            : #6610f2;
+$theme-main-info-fore                       : #fff;
+$theme-main-warning                         : #fd7e14;
+$theme-main-warning-fore                    : #fff;
+$theme-main-danger                          : #e83e8c;
+$theme-main-danger-fore                     : #fff;
+
+
+// Text Colors
+$theme-main-text-color                      : #444;
+$theme-main-text-muted-color                : #777;
+$theme-main-text-heading-color              : #232323;
+// Light Text Colors
+$theme-main-text-light-color                : rgba(255, 255, 255, .85);
+$theme-main-text-light-muted-color          : rgba(255, 255, 255, .65);
+$theme-main-text-light-heading-color        : #ffffff;
+// Link Colors
+$theme-main-link-color                      : darken($theme-main-text-color, 10%);
+$theme-main-link-hover-color                : state-color-hover($theme-main-link-color);
+$theme-main-link-active-color               : state-color-active($theme-main-link-color);
+// Light Link Colors
+$theme-main-link-light-color                : #fff;
+$theme-main-link-light-hover-color          : state-color-hover($theme-main-link-light-color);
+$theme-main-link-light-active-color         : state-color-active($theme-main-link-light-color);
+// Border Colors
+$theme-main-border-color                    : #dddddd;
+$theme-main-border-muted-color              : #eaeaea;
+$theme-main-border-hover-color              : #232323;
+
+// Light Border Colors
+$theme-main-border-light-color              : #eaeaea;
+$theme-main-border-light-muted-color        : #eaeaea;
+
+// Navigation
+$theme-main-navbar-link-color               : $theme-main-link-color;
+$theme-main-navbar-mobile-bg                : $theme-main-light;
+
+// Page
+$theme-main-body-bg                         : #fff;
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Arrays
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Append to themes
+$themes: map-merge($themes, (
+
+  main: (
+
+    // Theme Colors
+    'blue'           : ($theme-main-blue,      $theme-main-blue-fore),
+    'indigo'         : ($theme-main-indigo,    $theme-main-indigo-fore),
+    'purple'         : ($theme-main-purple,    $theme-main-purple-fore),
+    'pink'           : ($theme-main-pink,      $theme-main-pink-fore),
+    'red'            : ($theme-main-red,       $theme-main-red-fore),
+    'orange'         : ($theme-main-orange,    $theme-main-orange-fore),
+    'yellow'         : ($theme-main-yellow,    $theme-main-yellow-fore),
+    'green'          : ($theme-main-green,     $theme-main-green-fore),
+    'teal'           : ($theme-main-teal,      $theme-main-teal-fore),
+    'cyan'           : ($theme-main-cyan,      $theme-main-cyan-fore),
+    'black'          : ($theme-main-black,     $theme-main-black-fore),
+    'white'          : ($theme-main-white,     $theme-main-white-fore),
+    'light'          : ($theme-main-light,     $theme-main-light-fore),
+    'dark'           : ($theme-main-dark,      $theme-main-dark-fore),
+
+    // Bootstrap Colors
+    'primary'        : ($theme-main-primary,   $theme-main-primary-fore),
+    'secondary'      : ($theme-main-secondary, $theme-main-secondary-fore),
+    'success'        : ($theme-main-success,   $theme-main-success-fore),
+    'info'           : ($theme-main-info,      $theme-main-info-fore),
+    'warning'        : ($theme-main-warning,   $theme-main-warning-fore),
+    'danger'         : ($theme-main-danger,    $theme-main-danger-fore)
+
+  )
+
+));
+
+// Append to elements
+$elements: map-merge($elements, (
+
+  main: (
+
+    // Text Colors
+    'text-color'               : $theme-main-text-color,
+    'text-muted-color'         : $theme-main-text-muted-color,
+    'text-heading-color'       : $theme-main-text-heading-color,
+
+    // Light Text Colors
+    'text-light-color'         : $theme-main-text-light-color,
+    'text-light-muted-color'   : $theme-main-text-light-muted-color,
+    'text-light-heading-color' : $theme-main-text-light-heading-color,
+
+    // Link Colors
+    'link-color'               : $theme-main-link-color,
+    'link-hover-color'         : $theme-main-link-hover-color,
+    'link-active-color'        : $theme-main-link-active-color,
+
+    // Light Link Colors
+    'link-light-color'         : $theme-main-link-light-color,
+    'link-light-hover-color'   : $theme-main-link-light-hover-color,
+    'link-light-active-color'  : $theme-main-link-light-active-color,
+
+    // Border Colors
+    'border-color'             : $theme-main-border-color,
+    'border-muted-color'       : $theme-main-border-muted-color,
+    'border-hover-color'       : $theme-main-border-hover-color,
+
+    // Light Border Colors
+    'border-light-color'       : $theme-main-border-light-color,
+    'border-light-muted-color' : $theme-main-border-light-muted-color,
+
+    // Navigation
+    'navbar-link-color'        : $theme-main-navbar-link-color,
+    'navbar-mobile-bg'         : $theme-main-navbar-mobile-bg,
+    'body-bg'                  : $theme-main-body-bg
+  )
+
+));
+
+

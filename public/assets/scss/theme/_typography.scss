@@ -1,0 +1,194 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Typography]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Headings
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ase styles for all headings
+.h1, h1, .h2, h2, .h3, h3,
+.h4, h4, .h5, h5, .h6, h6 {
+  color: var(--text-heading-color);
+  font-weight: var(--heading-font-weight);
+} // .h1, h1, .h2, h2, .h3, h3, .h4, h4, .h5, h5, .h6, h6
+
+// Custom styles for heading groups
+.h1, h1, .h2, h2, .h3, h3 {}
+.h4, h4, .h5, h5, .h6, h6 {}
+
+// Special styles for each h
+.h1, h1 { font-size: var(--h1-font-size); }
+.h2, h2 { font-size: var(--h2-font-size); }
+.h3, h3 { font-size: var(--h3-font-size); }
+.h4, h4 { font-size: var(--h4-font-size); }
+.h5, h5 { font-size: var(--h5-font-size); }
+.h6, h6 { font-size: var(--h6-font-size); }
+
+// Custom styles for H1
+.h1, h1 {
+  font-family: var(--h1-font-family);
+  font-weight: var(--h1-font-weight);
+} // .h1, h1
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Text Style
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Font weights
+.fw-base              { font-weight: var(--font-weight)             !important; }
+.fw-primary-thin      { font-weight: $font-weight-primary-thin      !important; }
+.fw-primary-light     { font-weight: $font-weight-primary-light     !important; }
+.fw-primary-regular   { font-weight: $font-weight-primary-regular   !important; }
+.fw-primary-medium    { font-weight: $font-weight-primary-medium    !important; }
+.fw-primary-bold      { font-weight: $font-weight-primary-bold      !important; }
+.fw-secondary-thin    { font-weight: $font-weight-secondary-thin    !important; }
+.fw-secondary-light   { font-weight: $font-weight-secondary-light   !important; }
+.fw-secondary-regular { font-weight: $font-weight-secondary-regular !important; }
+.fw-secondary-medium  { font-weight: $font-weight-secondary-medium  !important; }
+.fw-secondary-bold    { font-weight: $font-weight-secondary-bold    !important; }
+
+// Font sizes
+.fs-1x      { font-size:   $font-size           !important; }
+.fs-2x      { font-size:   $font-size * 2       !important; }
+.fs-3x      { font-size:   $font-size * 3       !important; }
+.fs-4x      { font-size:   $font-size * 4       !important; }
+.fs-5x      { font-size:   $font-size * 5       !important; }
+.fs-sm      { font-size:   $font-size-sm        !important; }
+.fs-lg      { font-size:   $font-size-lg        !important; }
+.fs-1       { font-size:   1rem                 !important; }
+.fs-1p5     { font-size:   1.5rem               !important; }
+.fs-2       { font-size:   2rem                 !important; }
+.fs-3       { font-size:   3rem                 !important; }
+.fs-4       { font-size:   4rem                 !important; }
+.fs-5       { font-size:   5rem                 !important; }
+
+// Strong text
+.strong, strong {
+} // .strong, strong
+
+// Small text
+.small, small {
+} // // .small, small
+
+.label, label {
+  font-weight: var(--label-font-weight);
+} // .label, label
+
+p {
+} // p
+
+.nowrap {
+  word-wrap: normal;
+  white-space: nowrap;
+} // .nowrap
+
+ul {
+} // ul
+
+.blockquote, blockquote {
+} // .blockquote, blockquote
+
+.tag {
+  font-size: var(--font-size);
+} // .tag
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Links
+// ---------------------------------------------------------------------------------------------------------------------
+
+a {
+
+  display: inline-block;
+  color: var(--link-color);
+  font-weight: var(--link-font-weight);
+
+
+  &:hover, &:focus {
+    color: var(--link-hover-color);
+  } // &:hover, &:focus
+
+  &:active {
+    color: var(--link-active-color);
+  } // &:active
+
+  &, &:hover, &:focus {
+    text-decoration: none;
+  } // &, &:hover, &:focus
+
+} // a
+
+a.link {
+
+  position: relative;
+  transition: var(--transition);
+
+  &::after {
+
+    content: '';
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3px;
+
+    height: 0;
+    border-bottom: dotted 1px var(--link-color);
+
+  } // &::after
+
+  &:hover, &:focus {
+    &::after {
+      border-bottom: solid 1px var(--link-hover-color);
+    } // &::after
+  } // &:hover, &:focus
+
+} // a.link
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Text Schemes Color
+// ---------------------------------------------------------------------------------------------------------------------
+
+//
+// Light colors scheme
+// ===================
+
+.text-color-base,
+.text-scheme-light .text-color-base {
+  color: var(--text-color);
+} // .text-color-base, .text-scheme-light .text-color-base
+
+.text-color-heading,
+.text-scheme-light .text-color-heading {
+  color: var(--text-heading-color);
+} // .text-color-heading, .text-scheme-light .text-color-heading
+
+.text-color-muted,
+.text-scheme-light .text-color-muted {
+  color: var(--text-muted-color);
+} // .text-color-muted, .text-scheme-light .text-color-muted
+
+//
+// Dark colors scheme
+// ==================
+
+.text-scheme-dark .text-color-base {
+  color: var(--text-light-color);
+} // .text-scheme-dark .text-color-base
+
+.text-scheme-dark .text-color-heading {
+  color: var(--text-light-heading-color);
+} // .text-scheme-dark .text-color-heading
+
+.text-scheme-dark .text-color-muted {
+  color: var(--text-light-muted-color);
+} // .text-scheme-dark .text-color-muted
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Alternate Text Colors
+// ---------------------------------------------------------------------------------------------------------------------

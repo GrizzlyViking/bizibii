@@ -1,0 +1,88 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Shortcode: Price Box]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+.price-box {
+
+  padding: 2rem 1rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+
+  &.featured {
+    border-color: var(--text-heading-color);
+  } // &.featured
+
+  .title {
+
+    font-size: var(--h5-font-size);
+    color: var(--text-heading-color);
+    font-weight: var(--heading-font-weight);
+
+  } // .title
+
+  .value {
+
+    padding-top: var(--offset-y);
+    padding-bottom: var(--offset-y);
+
+    .int {
+      font-size: 3rem;
+      color: var(--text-heading-color);
+      font-weight: var(--font-weight-bold);
+    } // .int
+
+    .real {
+
+    } // .real
+
+    .divider {
+
+    } // .divider
+
+  } // .value
+
+  .content {
+
+    margin-bottom: var(--offset-y);
+
+    .feature {
+
+      padding-top: var(--offset-y-sm);
+      color: var(--text-color);
+
+      &:not(:last-child) {
+        border-bottom: 1px dotted var(--border-color);
+      } // &:not(:last-child)
+
+      span {
+
+        position: relative;
+        cursor: help;
+
+        &::after {
+
+          content: '';
+
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 1px;
+
+          height: 0;
+          border-bottom: dotted 1px var(--link-color);
+
+        } // &::after
+
+        &:hover, &:focus {
+          &::after {
+            border-bottom: solid 1px var(--link-hover-color);
+          } // &::after
+        } // &:hover, &:focus
+
+      } // span
+
+    } // .feature
+
+  } // .content
+
+} // .price-box

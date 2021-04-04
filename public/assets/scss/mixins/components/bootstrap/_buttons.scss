@@ -1,0 +1,115 @@
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * [Mixins: Component: Bootstrap: Buttons]
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Base Color
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin button-variant($class, $color-name) {
+
+  .#{$class} {
+
+    color: var(--color-#{$color-name}-fore);
+    border-color: var(--color-#{$color-name});
+    background-color: var(--color-#{$color-name});
+    box-shadow: none;
+
+    &:hover, .hover,
+    &:focus, .focus {
+      color: var(--color-#{$color-name}-hover-fore);
+      border-color: var(--color-#{$color-name}-hover);
+      background-color: var(--color-#{$color-name}-hover);
+      box-shadow: none;
+    } // &:hover, .hover, &:focus, .focus
+
+    &:active, .active {
+      color: var(--color-#{$color-name}-active-fore);
+      border-color: var(--color-#{$color-name}-active);
+      background-color: var(--color-#{$color-name}-active);
+      box-shadow: none;
+    } // &:hover, .hover, &:focus, .focus
+
+
+    &:disabled, &.disabled {
+      color: var(--color-#{$color-name}-fore);
+      border-color: var(--color-#{$color-name});
+      background-color: var(--color-#{$color-name});
+      box-shadow: none;
+    } // &:disabled, &.disabled
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+
+      color: var(--color-#{$color-name}-active-fore);
+      border-color: var(--color-#{$color-name}-active);
+      background-color: var(--color-#{$color-name}-active);
+
+      &:focus {
+        box-shadow: none;
+      } // &:focus
+
+    } // &:not(:disabled):not(.disabled):active, &:not(:disabled):not(.disabled).active, .show > &.dropdown-toggle
+
+  } // .#{$class}
+
+} // @mixin button-variant(...)
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Outline Color
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin button-outline-variant($class, $color-name) {
+
+  .#{$class} {
+
+    color: var(--color-#{$color-name});
+    border-color: var(--color-#{$color-name});
+    background-color: transparent;
+    box-shadow: none;
+
+    &:hover, .hover,
+    &:focus, .focus {
+      color: var(--color-#{$color-name}-hover-fore);
+      border-color: var(--color-#{$color-name}-hover);
+      background-color: var(--color-#{$color-name}-hover);
+      box-shadow: none;
+    } // &:hover, .hover, &:focus, .focus
+
+    &:active, .active {
+      color: var(--color-#{$color-name}-active-fore);
+      border-color: var(--color-#{$color-name}-active);
+      background-color: var(--color-#{$color-name}-active);
+      box-shadow: none;
+    } // &:hover, .hover, &:focus, .focus
+
+
+    &:disabled, &.disabled {
+      color: var(--color-#{$color-name}-fore);
+      border-color: var(--color-#{$color-name});
+      background-color: var(--color-#{$color-name});
+      box-shadow: none;
+    } // &:disabled, &.disabled
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+
+      color: var(--color-#{$color-name}-active-fore);
+      border-color: var(--color-#{$color-name}-active);
+      background-color: var(--color-#{$color-name}-active);
+
+      &:focus {
+        box-shadow: none;
+      } // &:focus
+
+    } // &:not(:disabled):not(.disabled):active, &:not(:disabled):not(.disabled).active, .show > &.dropdown-toggle
+
+  } // .#{$class}
+
+} // @mixin button-variant(...)
