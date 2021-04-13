@@ -24,7 +24,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return response()->view('admin.article.create')->withSlot('here be dragons');
+        $slot = 'test';
+        return response(view('admin.article.create', compact('slot')));
     }
 
     /**
