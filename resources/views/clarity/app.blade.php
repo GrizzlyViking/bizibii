@@ -280,116 +280,20 @@
     </section>
     <!-- /Section: Team -->
 
-    <!-- Section: Partners -->
-    <section id="partners" class="section section-partners">
+    <!-- Section: Contact Form -->
+    <section id="our-team" class="section section-right section-our-team">
         <div class="container">
 
             <!-- Section Muted Title -->
             <div class="section-muted-title z-5" data-stellar-ratio=".9">
-                <span>Partners</span>
+                <span>Contact</span>
             </div>
             <!-- /Section Muted Title -->
 
-            <!-- Section Content Row -->
-            <div class="row section-content">
-
-                <!-- Column -->
-                <div class="col-12 col-lg-5">
-
-                    <h3 class="mb-4">Our Partners</h3>
-                    <p>
-                        It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, as opposed to using 'Content here, content here', making it look like
-                        readable English. Many desktop publishing packages.
-                    </p>
-                    <p>
-                        And web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem
-                        ipsum' will uncover many web sites still in their infancy. Various versions have evolved over
-                        the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </p>
-
-                </div>
-                <!-- /Column -->
-
-                <!-- Column -->
-                <div class="col-12 col-lg-7">
-
-                    <!-- Row -->
-                    <div class="row">
-
-                        <!-- Column -->
-                        <div class="col-6 col-lg-4">
-                            <!-- Partner Link -->
-                            <a href="#" class="partner">
-                                <img src="images/partner-01.jpg" alt="" title="" class="img-fluid">
-                            </a>
-                            <!-- /Partner Link -->
-                        </div>
-                        <!-- /Column -->
-
-                        <!-- Column -->
-                        <div class="col-6 col-lg-4">
-                            <!-- Partner Link -->
-                            <a href="#">
-                                <img src="images/partner-04.jpg" alt="" title="" class="img-fluid">
-                            </a>
-                            <!-- /Partner Link -->
-                        </div>
-                        <!-- /Column -->
-
-                        <!-- Column -->
-                        <div class="col-6 col-lg-4">
-                            <!-- Partner Link -->
-                            <a href="#">
-                                <img src="images/partner-05.jpg" alt="" title="" class="img-fluid">
-                            </a>
-                            <!-- /Partner Link -->
-                        </div>
-                        <!-- /Column -->
-
-                        <!-- Column -->
-                        <div class="col-6 col-lg-4">
-                            <!-- Partner Link -->
-                            <a href="#">
-                                <img src="images/partner-06.jpg" alt="" title="" class="img-fluid">
-                            </a>
-                            <!-- /Partner Link -->
-                        </div>
-                        <!-- /Column -->
-
-                        <!-- Column -->
-                        <div class="col-6 col-lg-4">
-                            <!-- Partner Link -->
-                            <a href="#">
-                                <img src="images/partner-05.jpg" alt="" title="" class="img-fluid">
-                            </a>
-                            <!-- /Partner Link -->
-                        </div>
-                        <!-- /Column -->
-
-                        <!-- Column -->
-                        <div class="col-6 col-lg-4">
-                            <!-- Partner Link -->
-                            <a href="#">
-                                <img src="images/partner-06.jpg" alt="" title="" class="img-fluid">
-                            </a>
-                            <!-- /Partner Link -->
-                        </div>
-                        <!-- /Column -->
-
-                    </div>
-                    <!-- /Row -->
-
-                </div>
-                <!-- /Column -->
-
-            </div>
-            <!-- /Section Content Row -->
-
+            @livewire('contact-form')
         </div>
     </section>
-    <!-- /Section: Partners -->
+    <!-- /Section: Contact Form -->
 
     <!-- Footer -->
     @include('clarity._partials.footer')
@@ -443,6 +347,7 @@
 <!-- Scripts -->
 <script src="assets/js/core.min.js"></script>
 <script src="assets/js/theme.min.js"></script>
+@livewireScripts
 <!-- /Scripts -->
 
 </body>

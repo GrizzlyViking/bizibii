@@ -17,7 +17,7 @@ class PageController extends Controller
     public function index(): Response
     {
         $all = Page::all();
-        return response(view('page.index', compact('all')));
+        return response(view('admin.page.list', compact('all')));
     }
 
     /**
@@ -42,7 +42,7 @@ class PageController extends Controller
 
         Page::create($validated);
 
-        return response()->redirectToRoute('page.index');
+        return response()->redirectToRoute('page.list');
     }
 
     /**
@@ -77,7 +77,7 @@ class PageController extends Controller
         $validate = $request->validate([]);
         $page->update($validate);
 
-        return response()->redirectToRoute('page.index');
+        return response()->redirectToRoute('page.list');
     }
 
     /**
@@ -90,6 +90,6 @@ class PageController extends Controller
     {
         $page->delete();
 
-        return \response()->redirectToRoute('page.index');
+        return \response()->redirectToRoute('page.list');
     }
 }
