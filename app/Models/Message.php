@@ -28,6 +28,7 @@ class Message extends Model
         'name',
         'email',
         'message',
+        'read',
     ];
 
     public static array $rules = [
