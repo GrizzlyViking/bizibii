@@ -16,6 +16,19 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('page.list') }}" :active="request()->routeIs('page.list')">
+                        {{ __('Pages') }}
+                    </x-jet-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('message.list') }}" :active="request()->routeIs('message.list')">
+                        {{ __('Messages') }}
+                    </x-jet-nav-link>
+                </div>
+                <!-- /Navigation Links -->
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">

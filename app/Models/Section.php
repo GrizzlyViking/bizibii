@@ -8,30 +8,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * Class Article
+ * Class Section
  * @package App\Models
+ *
  * @property int $id
  * @property string $title
+ * @property string $subtitle
+ * @property string $slug
+ * @property int $page_id
+ * @property Page $page
  * @property string $content
- * @property int $author_id
- * @property bool $publish
+ * @property boolean $published
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property ?Carbon $deleted_at
- * @property User $author
- *
- * @method Article updateOrCreate(array $attributes, array $values)
+ * @property Carbon $deleted_at
  */
-class Article extends Model
+class Section extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $casts = [
-        'publish' => 'bool'
-    ];
-
-    public function author()
+    public function getRouteKeyName()
     {
-        return $this->belongsTo(User::class);
+        return 'slug';
     }
 }
