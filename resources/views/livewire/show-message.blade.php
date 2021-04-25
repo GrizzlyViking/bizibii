@@ -1,11 +1,16 @@
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
-            Message
-        </h3>
-        <p class="mt-1 max-w-2xl text-sm text-gray-500">
-            Message posted on form at the bottom of landing page
-        </p>
+    <div class="flex content-start">
+        <div class="px-4 py-5 sm:px-6 w-full">
+            <h3 class="w-11/12 text-lg leading-6 font-medium text-gray-900">
+                Message
+            </h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                Message posted on form at the bottom of landing page
+            </p>
+        </div>
+        <div class="w-1/12 px-4 py-5 sm:px-6">
+            <a href="{{ route('message.list') }}" class="text-indigo-600 hover:text-indigo-900">< back</a>
+        </div>
     </div>
     <div class="border-t border-gray-200">
         <dl>
@@ -41,7 +46,7 @@
                     {{ $message->message }}
                 </dd>
             </div>
-            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div class="flex content-evenly bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <button
                     type='submit'
                     wire:click="deleteMessage"
