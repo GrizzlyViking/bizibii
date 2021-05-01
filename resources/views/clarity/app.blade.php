@@ -42,24 +42,12 @@
                 <div class="col-12 col-lg-8">
 
                     <!-- Header Title -->
-                    <h1 class="title">We are Design Studio since 2010</h1>
+                    <h1 class="title">{{ $sections->get('start')->subtitle }}</h1>
                     <!-- /Header Title -->
-
-                    <!-- Breadcrumb -->
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a href="#" class="link">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">About</li>
-                        </ol>
-                    </nav>
-                    <!-- /Breadcrumb -->
 
                     <!-- Header Subtitle -->
                     <p class="subtitle">
-                        It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, as opposed to using 'Content here, content here', making it look like
-                        readable English.
+                        {!! $sections->get('start')->content !!}
                     </p>
                     <!-- /Header Subtitle -->
 
@@ -75,7 +63,7 @@
 
             <!-- Section Muted Title -->
             <div class="section-muted-title z-5" data-stellar-ratio=".9">
-                <span>About</span>
+                <span>{{ $sections->get('about')->title }}</span>
             </div>
             <!-- /Section Muted Title -->
 
@@ -85,18 +73,8 @@
                 <!-- Column -->
                 <div class="col-12 col-lg-5 bg-white owl-no-overflow-column-spacer">
 
-                    <h3 class="mb-4">A few Words About Us</h3>
-                    <p>
-                        It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, as opposed to using 'Content here, content here', making it look like
-                        readable English. Many desktop publishing packages.
-                    </p>
-                    <p>
-                        And web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem
-                        ipsum' will uncover many web sites still in their infancy. Various versions have evolved over
-                        the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </p>
+                    <h3 class="mb-4">{{ $sections->get('about')->subtitle }}</h3>
+                    {!! $sections->get('about')->content !!}
 
                     <!-- OwlCarousel Navigation -->
                     <div class="about-carousel-navigation owl-navigation-custom">
@@ -199,7 +177,7 @@
 
             <!-- Section Muted Title -->
             <div class="section-muted-title z-5" data-stellar-ratio=".9">
-                <span>Team</span>
+                <span>{{ $sections->get('team')->title }}</span>
             </div>
             <!-- /Section Muted Title -->
 
@@ -239,18 +217,8 @@
                 <!-- Column -->
                 <div class="col-12 col-lg-7 bg-white owl-no-overflow-column-spacer owl-no-overflow-column-spacer-left">
 
-                    <h3 class="mb-4">Our Team</h3>
-                    <p>
-                        It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, as opposed to using 'Content here, content here', making it look like
-                        readable English. Many desktop publishing packages.
-                    </p>
-                    <p>
-                        And web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem
-                        ipsum' will uncover many web sites still in their infancy. Various versions have evolved over
-                        the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </p>
+                    <h3 class="mb-4">{{ $sections->get('about')->subtitle }}</h3>
+                    {!! $sections->get('about')->content !!}
 
                     <!-- OwlCarousel Navigation -->
                     <div class="about-carousel-navigation owl-navigation-custom">
