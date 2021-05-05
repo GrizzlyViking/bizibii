@@ -62,9 +62,9 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return Response
      */
-    public function edit(Section $section): Response
+    public function edit(Page $page, Section $section): Response
     {
-        return \response(view('admin.section.edit'), compact('section'));
+        return \response(view('admin.section.edit', ['section' => $section]));
     }
 
     /**
