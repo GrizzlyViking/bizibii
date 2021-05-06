@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PageController extends Controller
 {
+
+    public function home()
+    {
+
+        /** @var Page $page */
+        $page = Page::where('slug', 'home')->first();
+
+        return view('home', ['sections' => $page->sections()->get()->keyBy('slug')]);
+    }
+
     /**
      * Display a listing of the resource.
      *

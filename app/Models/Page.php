@@ -24,7 +24,21 @@ class Page extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'title', 'slug', 'published', 'access'
+    ];
+
     protected $casts = [
         'access' => 'array'
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
 }

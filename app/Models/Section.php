@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * Class Section
@@ -23,12 +24,55 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Section extends Model
+class Section extends Model implements ListableInterface
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'title',
+        'subtitle',
+        'slug',
+        'page_id',
+        'content',
+    ];
 
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getSubtitle(): string
+    {
+        return $this->subtitle;
+    }
+
+    public function getName(): string
+    {
+        return $this->slug;
+    }
+
+    public function getPosition(): string
+    {
+        return $this->page->slug;
+    }
+
+    public function getContent(int $char_limit = 20): string
+    {
+        return Str::limit($this->content, $char_limit);
+    }
+
+    public function getRouteShow(): string
+    {
+        return route('section.show', [$this->page->slug, $this->slug]);
     }
 }

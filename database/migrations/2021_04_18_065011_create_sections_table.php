@@ -16,7 +16,7 @@ class CreateSectionsTable extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->string('title', 20);
-            $table->string('subtitle', 40)->nullable(true);
+            $table->string('subtitle', 80)->nullable(true);
             $table->string('slug', 40);
             $table->unsignedInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');

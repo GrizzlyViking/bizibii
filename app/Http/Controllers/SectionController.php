@@ -17,8 +17,7 @@ class SectionController extends Controller
      */
     public function index(Page $page): Response
     {
-        $all = Section::all();
-        return response(view('section.index', compact('all')));
+        return response(view('admin.section.list', ['sections' => $page->sections()->get()]));
     }
 
     /**
@@ -28,7 +27,7 @@ class SectionController extends Controller
      */
     public function create(): Response
     {
-        return response(view('section.create'));
+        return response(view('admin.section.create'));
     }
 
     /**
@@ -52,9 +51,9 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return Response
      */
-    public function show(Section $section): Response
+    public function show(Page $page, Section $section): Response
     {
-        return response(view('section.show', compact('section')));
+        return response(view('admin.section.show', compact('section')));
     }
 
     /**
@@ -63,9 +62,9 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return Response
      */
-    public function edit(Section $section): Response
+    public function edit(Page $page, Section $section): Response
     {
-        return \response(view('section.edit'), compact('section'));
+        return \response(view('admin.section.edit', ['section' => $section]));
     }
 
     /**

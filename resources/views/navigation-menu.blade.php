@@ -18,8 +18,8 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('page.list') }}" :active="request()->routeIs('page.list')">
-                        {{ __('Pages') }}
+                    <x-jet-nav-link href="{{ route('section.list', App\Models\Page::where('slug', 'home')->first()) }}" :active="request()->routeIs('section.list')">
+                        {{ __('Landing Page') }}
                     </x-jet-nav-link>
                 </div>
 
@@ -28,6 +28,10 @@
                         {{ __('Messages') }}
                     </x-jet-nav-link>
                 </div>
+
+                <!-- page and section -->
+                <!-- /page and section -->
+
                 <!-- /Navigation Links -->
             </div>
 

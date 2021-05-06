@@ -8,6 +8,13 @@ use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
 use Laravel\Jetstream\Team as JetstreamTeam;
 
+/**
+ * Class Team
+ * @package App\Models
+ * @property string $name
+ * @property bool $personal_team
+ * @property int $user_id
+ */
 class Team extends JetstreamTeam
 {
     use HasFactory;
