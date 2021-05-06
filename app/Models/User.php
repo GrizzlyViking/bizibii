@@ -58,4 +58,16 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public static function createWithPersonalTeam(array $attributes = []): self
+    {
+        /** @var User $user */
+        $user = self::create($attributes);
+        $user->ownedTeams()->create([
+            'name' => isset($attributes['name']) ? preg_replace('/^(\w+)\s?$/u', "$1's team", $attributes['name']) : 'Team',
+            'personal_team' => true
+        ]);
+
+        return $user;
+    }
 }

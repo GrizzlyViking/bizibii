@@ -10,7 +10,7 @@ class EditSection extends Component
     public ?Section $section;
     public $rules = [
         'section.title' => ['required', 'regex:/^[\w\d\s\-]+$/u', 'min:2', 'max:20'],
-        'section.subtitle' => ['required', 'regex:/^[\w\d\s\-]+$/u', 'min:2', 'max:40'],
+        'section.subtitle' => ['required', 'regex:/^[\w\d\s\-]+$/u', 'min:2', 'max:80'],
         'section.content' => 'required',
         'section.slug' => 'required|max:40',
         'section.published' => 'boolean',

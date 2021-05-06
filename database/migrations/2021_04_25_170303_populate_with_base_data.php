@@ -2,8 +2,10 @@
 
 use App\Models\Page;
 use App\Models\Section;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class PopulateWithBaseData extends Migration
@@ -15,7 +17,19 @@ class PopulateWithBaseData extends Migration
      */
     public function up()
     {
-        Schema::table('pages', function (Blueprint $blueprint) {
+        /** @var User $user */
+        $user = User::createWithPersonalTeam([
+            'name' => 'Sebastian Scheel Edelmann',
+            'email' => 'sebastian@edelmann.co.uk',
+            'password' => Hash::make('Darl1ch10'),
+        ]);
+
+        $user->switchTeam($team = $user->ownedTeams()->create([
+            'name' => 'Founders',
+            'personal_team' => false,
+        ]));
+
+        Schema::table('pages', function (Blueprint $table) {
             /** @var Page $page */
             $page = Page::create([
                 'title' => 'BiziBii',
