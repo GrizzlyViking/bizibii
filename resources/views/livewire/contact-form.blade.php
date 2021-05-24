@@ -14,9 +14,9 @@
 
         <!-- Form -->
         <form wire:submit.prevent="submitForm" class="form-ajax">
-            @csrf
+        @csrf
 
-            <!-- Form Hidden Fields -->
+        <!-- Form Hidden Fields -->
             <input type="hidden" name="form" value="Contact">
             <!-- /Form Hidden Fields -->
 
@@ -27,7 +27,7 @@
                 <div class="form-group col-md-6">
                     <label for="frm-contact-name">Your Name</label>
                     <input
-                        wire:model.debounce.500="name"
+                        wire:model.debounce.500ms="name"
                         id="frm-contact-name"
                         type="text"
                         name="name"
@@ -46,7 +46,7 @@
                 <div class="form-group col-md-6">
                     <label for="frm-contact-email">E-mail Address</label>
                     <input
-                        wire:model.debounce.500="email"
+                        wire:model.debounce.500ms="email"
                         id="frm-contact-email"
                         type="email"
                         name="email"
@@ -67,7 +67,7 @@
             <div class="form-group mb-4">
                 <label for="frm-contact-message">Message</label>
                 <textarea
-                    wire:model.debounce.500="message"
+                    wire:model.debounce.500ms="message"
                     id="frm-contact-message"
                     name="message"
                     class="form-control bg-transparent"

@@ -1,130 +1,486 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.clarity')
 
-        <title>Laravel</title>
+@section('content')
+    <!-- Hero -->
+    <header id="home" class="hero" style="background-image: url({{ asset('images/home.png') }});" data-stellar-background-ratio=".5">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+        <!-- Hero Middle Parallax Wrapper -->
+        <div class="hero-content-wrapper" data-stellar-ratio=".75">
+            <div class="hero-content">
 
-        <!-- Styles -->
-        <style>
-            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}[hidden]{display:none}html{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}*,:after,:before{box-sizing:border-box;border:0 solid #e2e8f0}a{color:inherit;text-decoration:inherit}svg,video{display:block;vertical-align:middle}video{max-width:100%;height:auto}.bg-white{--bg-opacity:1;background-color:#fff;background-color:rgba(255,255,255,var(--bg-opacity))}.bg-gray-100{--bg-opacity:1;background-color:#f7fafc;background-color:rgba(247,250,252,var(--bg-opacity))}.border-gray-200{--border-opacity:1;border-color:#edf2f7;border-color:rgba(237,242,247,var(--border-opacity))}.border-t{border-top-width:1px}.flex{display:flex}.grid{display:grid}.hidden{display:none}.items-center{align-items:center}.justify-center{justify-content:center}.font-semibold{font-weight:600}.h-5{height:1.25rem}.h-8{height:2rem}.h-16{height:4rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.leading-7{line-height:1.75rem}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.ml-2{margin-left:.5rem}.mt-4{margin-top:1rem}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.ml-12{margin-left:3rem}.-mt-px{margin-top:-1px}.max-w-6xl{max-width:72rem}.min-h-screen{min-height:100vh}.overflow-hidden{overflow:hidden}.p-6{padding:1.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pt-8{padding-top:2rem}.fixed{position:fixed}.relative{position:relative}.top-0{top:0}.right-0{right:0}.shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06)}.text-center{text-align:center}.text-gray-200{--text-opacity:1;color:#edf2f7;color:rgba(237,242,247,var(--text-opacity))}.text-gray-300{--text-opacity:1;color:#e2e8f0;color:rgba(226,232,240,var(--text-opacity))}.text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}.text-gray-500{--text-opacity:1;color:#a0aec0;color:rgba(160,174,192,var(--text-opacity))}.text-gray-600{--text-opacity:1;color:#718096;color:rgba(113,128,150,var(--text-opacity))}.text-gray-700{--text-opacity:1;color:#4a5568;color:rgba(74,85,104,var(--text-opacity))}.text-gray-900{--text-opacity:1;color:#1a202c;color:rgba(26,32,44,var(--text-opacity))}.underline{text-decoration:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.w-5{width:1.25rem}.w-8{width:2rem}.w-auto{width:auto}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.sm\:rounded-lg{border-radius:.5rem}.sm\:block{display:block}.sm\:items-center{align-items:center}.sm\:justify-start{justify-content:flex-start}.sm\:justify-between{justify-content:space-between}.sm\:h-20{height:5rem}.sm\:ml-0{margin-left:0}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pt-0{padding-top:0}.sm\:text-left{text-align:left}.sm\:text-right{text-align:right}}@media (min-width:768px){.md\:border-t-0{border-top-width:0}.md\:border-l{border-left-width:1px}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}@media (prefers-color-scheme:dark){.dark\:bg-gray-800{--bg-opacity:1;background-color:#2d3748;background-color:rgba(45,55,72,var(--bg-opacity))}.dark\:bg-gray-900{--bg-opacity:1;background-color:#1a202c;background-color:rgba(26,32,44,var(--bg-opacity))}.dark\:border-gray-700{--border-opacity:1;border-color:#4a5568;border-color:rgba(74,85,104,var(--border-opacity))}.dark\:text-white{--text-opacity:1;color:#fff;color:rgba(255,255,255,var(--text-opacity))}.dark\:text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}}
-        </style>
+                <!-- Content Container -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center">
 
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
-            }
-        </style>
-    </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
+                            <!-- Hero Title -->
+                            <h1 class="hero-title fw-light">{{ ucwords(config('app.name')) }}</h1>
+                            <!-- /Hero Title -->
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0 w-5">
-                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                        <img class="h-16 w-auto text-gray-700 h-16" src="/images/large_bizibii_with_bee_and_hive.jpeg">
-                    </div>
-                </div>
-
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <div class="p-6">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a></div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laracasts.com" class="underline text-gray-900 dark:text-white">Laracasts</a></div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel-news.com/" class="underline text-gray-900 dark:text-white">Laravel News</a></div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">Vibrant Ecosystem</div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="underline">Forge</a>, <a href="https://vapor.laravel.com" class="underline">Vapor</a>, <a href="https://nova.laravel.com" class="underline">Nova</a>, and <a href="https://envoyer.io" class="underline">Envoyer</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="underline">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="underline">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="underline">Echo</a>, <a href="https://laravel.com/docs/horizon" class="underline">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="underline">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="underline">Telescope</a>, and more.
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- /Content Container -->
 
-                <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
-                    <div class="text-center text-sm text-gray-500 sm:text-left">
-                        <div class="flex items-center">
-                            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
-                                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
+            </div>
+        </div>
+        <!-- /Hero Middle Parallax Wrapper -->
 
-                            <a href="https://laravel.bigcartel.com" class="ml-1 underline">
-                                Shop
-                            </a>
+        <!-- Scroll Button -->
+        <a href="#about" class="hero-scroll smooth-scroll"></a>
+        <!-- /Scroll Button -->
 
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
-                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
+        <!-- Copyright Button -->
+        <a href="https://www.freepik.com/free-photos-vectors/mockup" target="_blank" class="hero-copyright">Plant created by qeaql-studio</a>
+        <!-- /Copyright Button -->
 
-                            <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
-                                Sponsor
-                            </a>
+    </header>
+    <!-- /Hero -->
+
+    <!-- Section: About -->
+    <x-section
+        title="about"
+        sectionTitle="About Company"
+        sectionSubtitle="Just a few words will give you an idea of our company"
+        prevSection="home"
+        nextSection="projects"
+    >
+        <div class="row">
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Feature Box -->
+                <div class="feature-box mb-8 mb-lg-0">
+                    <div class="title">Web-Design</div>
+                    <p class="text">
+                        It is a long established fact that a reader will be distracted by the readable
+                        content of a page when looking.
+                    </p>
+                    <a href="#" class="link">Read More</a>
+                </div>
+                <!-- /Feature Box -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Feature Box -->
+                <div class="feature-box mb-8 mb-lg-0">
+                    <div class="title">Photography</div>
+                    <p class="text">
+                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
+                        piece of classical.
+                    </p>
+                    <a href="#" class="link">Read More</a>
+                </div>
+                <!-- /Feature Box -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Feature Box -->
+                <div class="feature-box">
+                    <div class="title">Software Development</div>
+                    <p class="text">
+                        There are many variations of passages of Lorem Ipsum available, but the majority
+                        have suffered alteration.
+                    </p>
+                    <a href="#" class="link">Read More</a>
+                </div>
+                <!-- /Feature Box -->
+            </div>
+            <!-- /Column -->
+
+        </div>
+    </x-section>
+    <!-- /Section: About -->
+
+    <!-- Section: Projects -->
+    <x-section
+        title="projects"
+        sectionTitle="Our Best Works"
+        sectionSubtitle="Here are our latest projects in which we have invested our love"
+        prevSection="about"
+        nextSection="best"
+        alignment="right"
+        sectionNumber="2"
+    >
+        <div class="row">
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Gallery Item -->
+                <a href="images/3x4/image-01.jpg" class="gallery-image popup-image mb-4">
+                    <img src="images/3x4/image-01.jpg" alt="" title="" class="img-fluid">
+                </a>
+                <!-- /Gallery Item -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Gallery Item -->
+                <a href="images/3x4/image-02.jpg" class="gallery-image popup-image mb-4">
+                    <img src="images/3x4/image-02.jpg" alt="" title="" class="img-fluid">
+                </a>
+                <!-- /Gallery Item -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Gallery Item -->
+                <a href="images/3x4/image-03.jpg" class="gallery-image popup-image mb-4">
+                    <img src="images/3x4/image-03.jpg" alt="" title="" class="img-fluid">
+                </a>
+                <!-- /Gallery Item -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Gallery Item -->
+                <a href="images/3x4/image-04.jpg" class="gallery-image popup-image mb-4">
+                    <img src="images/3x4/image-04.jpg" alt="" title="" class="img-fluid">
+                </a>
+                <!-- /Gallery Item -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Gallery Item -->
+                <a href="images/3x4/image-05.jpg" class="gallery-image popup-image mb-4">
+                    <img src="images/3x4/image-05.jpg" alt="" title="" class="img-fluid">
+                </a>
+                <!-- /Gallery Item -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- Gallery Item -->
+                <a href="images/3x4/image-06.jpg" class="gallery-image popup-image">
+                    <img src="images/3x4/image-06.jpg" alt="" title="" class="img-fluid">
+                </a>
+                <!-- /Gallery Item -->
+            </div>
+            <!-- /Column -->
+
+        </div>
+    </x-section>
+    <!-- /Section: Projects -->
+
+    <!-- Section: Features -->
+    <x-section
+        title="best"
+        sectionTitle="Nice Features"
+        sectionSubtitle="We provide you with a wide range of services. Here are some features"
+        prevSection="works"
+        nextSection="clients"
+        alignment="left"
+        sectionNumber="3"
+    >
+        <div class="row">
+
+            <!-- Column -->
+            <div class="col-lg-4">
+                <!-- Feature box -->
+                <div class="feature-box mb-8 mb-lg-0 text-center">
+                    <i class="icon icon-paintbrush"></i>
+                    <div class="title">Clean Design</div>
+                    <p class="text">
+                        We try to maintain a very clean minimalistic design for this template.
+                    </p>
+                </div>
+                <!-- /Feature box -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-lg-4">
+                <!-- Feature box -->
+                <div class="feature-box mb-8 mb-lg-0 text-center">
+                    <i class="icon icon-mobile"></i>
+                    <div class="title">Mobile Friendly</div>
+                    <p class="text">
+                        This template is equally well displayed on all possible devices.
+                    </p>
+                </div>
+                <!-- /Feature box -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-lg-4">
+                <!-- Feature box -->
+                <div class="feature-box text-center">
+                    <i class="icon icon-heart"></i>
+                    <div class="title">Made with <span class="text-danger">Love</span></div>
+                    <p class="text">
+                        We invest a lot of energy and love to develop our products to make you like.
+                    </p>
+                </div>
+                <!-- /Feature box -->
+            </div>
+            <!-- /Column -->
+
+        </div>
+    </x-section>
+    <!-- /Section: Features -->
+
+    <!-- Section: Testimonials -->
+    <x-section
+        title="clients"
+        sectionTitle="Clients Say"
+        sectionSubtitle="We really appreciate our customers and this is what they say about us"
+        prevSection="best"
+        nextSection="price"
+        alignment="right"
+        sectionNumber="4"
+    >
+        <div class="row">
+            <div class="col-12 col-lg-10">
+                <div class="row">
+
+                    <!-- Column -->
+                    <div class="col-12">
+
+                        <!-- OwlCarousel -->
+                        <div class="owl-carousel owl-theme owl-navigation" data-items="1">
+
+                            <!-- OwlSlide Item -->
+                            <div class="owl-slide">
+                                <!-- Testimonial Item -->
+                                <div class="testimonial-item">
+
+                                    <!-- Avatar -->
+                                    <div class="avatar">
+                                        <img src="images/avatar-01.jpg" alt="" title="">
+                                    </div>
+                                    <!-- /Avatar -->
+
+                                    <!-- Information -->
+                                    <div class="body">
+
+                                        <!-- Text -->
+                                        <div class="text">
+                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                                        </div>
+                                        <!-- /Text -->
+
+                                        <!-- Name -->
+                                        <div class="name">Anna Estrada</div>
+                                        <!-- /Name -->
+
+                                        <!-- Additional -->
+                                        <div class="additional">Company Founder & CEO</div>
+                                        <!-- /Additional -->
+
+                                    </div>
+                                    <!-- /Information -->
+
+                                </div>
+                                <!-- /Testimonial Item -->
+                            </div>
+                            <!-- /OwlSlide Item -->
+
+                            <!-- OwlSlide Item -->
+                            <div class="owl-slide">
+                                <!-- Testimonial Item -->
+                                <div class="testimonial-item">
+
+                                    <!-- Avatar -->
+                                    <div class="avatar">
+                                        <img src="images/avatar-02.jpg" alt="" title="">
+                                    </div>
+                                    <!-- /Avatar -->
+
+                                    <!-- Information -->
+                                    <div class="body">
+
+                                        <!-- Text -->
+                                        <div class="text">
+                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                                        </div>
+                                        <!-- /Text -->
+
+                                        <!-- Name -->
+                                        <div class="name">Julie Warren</div>
+                                        <!-- /Name -->
+
+                                        <!-- Additional -->
+                                        <div class="additional">SEO Specialist</div>
+                                        <!-- /Additional -->
+
+                                    </div>
+                                    <!-- /Information -->
+
+                                </div>
+                                <!-- /Testimonial Item -->
+                            </div>
+                            <!-- /OwlSlide Item -->
+
+                            <!-- OwlSlide Item -->
+                            <div class="owl-slide">
+                                <!-- Testimonial Item -->
+                                <div class="testimonial-item">
+
+                                    <!-- Avatar -->
+                                    <div class="avatar">
+                                        <img src="images/avatar-03.jpg" alt="" title="">
+                                    </div>
+                                    <!-- /Avatar -->
+
+                                    <!-- Information -->
+                                    <div class="body">
+
+                                        <!-- Text -->
+                                        <div class="text">
+                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                                        </div>
+                                        <!-- /Text -->
+
+                                        <!-- Name -->
+                                        <div class="name">Samantha Evans</div>
+                                        <!-- /Name -->
+
+                                        <!-- Additional -->
+                                        <div class="additional">Account Manager</div>
+                                        <!-- /Additional -->
+
+                                    </div>
+                                    <!-- /Information -->
+
+                                </div>
+                                <!-- /Testimonial Item -->
+                            </div>
+                            <!-- /OwlSlide Item -->
+
                         </div>
-                    </div>
+                        <!-- /OwlCarousel -->
 
-                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
+                    <!-- /Column -->
+
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </x-section>
+    <!-- /Section: Testimonials -->
+
+    <!-- Section: Price -->
+    <x-section
+        title="price"
+        sectionTitle="Special Offers"
+        sectionSubtitle="We offer you the best solutions at the best prices"
+        prevSection="clients"
+        nextSection="contact"
+        alignment="left"
+        sectionNumber="5"
+    >
+        <div class="row justify-content-end">
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- PriceBox -->
+                <div class="price-box mb-8 mb-lg-0">
+                    <div class="title">Basic</div>
+                    <div class="value">
+                        $
+                        <span class="int">9</span>
+                        <span class="real">99</span>
+                        <span class="divider">/ month</span>
+                    </div>
+                    <div class="content text-center">
+                        <div class="feature"><span data-toggle="tooltip" data-title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.">3GB</span> Disk Storage</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="As opposed to using 'Content here, content here', making it look like readable English.">512MB</span> RAM</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.">3</span> Sites</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">10</span> Databases</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="There are many variations of passages of Lorem Ipsum available, but the majority.">3</span> Mail</div>
+                    </div>
+                    <button class="btn btn-outline-primary">Select Plan</button>
+                </div>
+                <!-- /PriceBox -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- PriceBox -->
+                <div class="price-box mb-8 mb-lg-0 featured">
+                    <div class="title">Extended</div>
+                    <div class="value">
+                        $
+                        <span class="int">19</span>
+                        <span class="real">99</span>
+                        <span class="divider">/ month</span>
+                    </div>
+                    <div class="content text-center">
+                        <div class="feature"><span data-toggle="tooltip" data-title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.">10GB</span> Disk Storage</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="As opposed to using 'Content here, content here', making it look like readable English.">2048MB</span> RAM</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.">10</span> Sites</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">Unlimited</span> Databases</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="There are many variations of passages of Lorem Ipsum available, but the majority.">Unlimited</span> Mail</div>
+                    </div>
+                    <button class="btn btn-primary">Select Plan</button>
+                </div>
+                <!-- /PriceBox -->
+            </div>
+            <!-- /Column -->
+
+            <!-- Column -->
+            <div class="col-12 col-lg-4">
+                <!-- PriceBox -->
+                <div class="price-box">
+                    <div class="title">Ultra</div>
+                    <div class="value">
+                        $
+                        <span class="int">59</span>
+                        <span class="real">99</span>
+                        <span class="divider">/ month</span>
+                    </div>
+                    <div class="content text-center">
+                        <div class="feature"><span data-toggle="tooltip" data-title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.">100GB</span> Disk Storage</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="As opposed to using 'Content here, content here', making it look like readable English.">4048MB</span> RAM</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.">Unlimited</span> Sites</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">Unlimited</span> Databases</div>
+                        <div class="feature"><span data-toggle="tooltip" data-title="There are many variations of passages of Lorem Ipsum available, but the majority.">Unlimited</span> Mail</div>
+                    </div>
+                    <button class="btn btn-outline-primary">Select Plan</button>
+                </div>
+                <!-- /PriceBox -->
+            </div>
+            <!-- /Column -->
+
+        </div>
+    </x-section>
+    <!-- /Section: Price -->
+
+    <!-- Section: Contact -->
+    <x-section
+        title="contact"
+        sectionTitle="Contact Us"
+        sectionSubtitle="Contact us in any convenient way and we will reply to you"
+        prevSection="price"
+        nextSection="home"
+        alignment="right"
+        sectionNumber="6"
+    >
+        <!-- Form Row -->
+        <div class="row">
+            <!-- Column -->
+            <div class="col-12 pt-5">
+
+                <!-- Form -->
+                @livewire('contact-form')
+                <!-- Form -->
+
+            </div>
+            <!-- /Column -->
+        </div>
+        <!-- /Form Row -->
+    </x-section>
+    <!-- /Section: Contact -->
+@endsection

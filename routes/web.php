@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function () {
     Route::name('page.')->group(function () {
