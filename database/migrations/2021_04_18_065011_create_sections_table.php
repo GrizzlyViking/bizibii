@@ -18,8 +18,7 @@ class CreateSectionsTable extends Migration
             $table->string('title', 20);
             $table->string('subtitle', 80)->nullable(true);
             $table->string('slug', 40);
-            $table->unsignedInteger('page_id');
-            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->foreignId('page_id')->constrained('pages')->onDelete('cascade');
             $table->text('content')->nullable(true);
             $table->boolean('published')->default(false);
             $table->timestamps();
