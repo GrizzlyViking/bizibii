@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Tag;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,9 +19,11 @@ return new class extends Migration
         });
 
         Schema::create('taggables', function (Blueprint $table) {
-            $table->id();
+            $table->string('tag_name');
             $table->morphs('taggable');
         });
+
+        \App\Models\Tag::insert(Tag::all()->map(function(Tag $tag){ return ['name' => $tag->value]; })->toArray());
     }
 
     /**

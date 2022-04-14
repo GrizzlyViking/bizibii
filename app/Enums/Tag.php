@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Illuminate\Support\Collection;
 
-enum Tag: string implements TagInterface
+enum Tag: string implements TaxonomyInterface
 {
 
     case Food = 'food';

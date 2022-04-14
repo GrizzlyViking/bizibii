@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bank_account_id')->constrained()->onDelete('cascade');
+            $table->string('category');
             $table->float('amount');
             $table->string('description');
             $table->timestamps();

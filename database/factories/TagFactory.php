@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\Tag as Enum;
+use App\Enums\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
@@ -19,7 +18,7 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            'name' => Arr::random(Enum::all(), 1)
+            'name' => Tag::all()->random(1)->first(),
         ];
     }
 }
