@@ -18,7 +18,8 @@ class TransactionsPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
+        // return $user->is(request()->user);
     }
 
     /**
@@ -31,7 +32,7 @@ class TransactionsPolicy
      */
     public function view(User $user, Transaction $transactions)
     {
-        //
+        return $user->is(request()->user);
     }
 
     /**
@@ -42,7 +43,7 @@ class TransactionsPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -55,7 +56,7 @@ class TransactionsPolicy
      */
     public function update(User $user, Transaction $transactions)
     {
-        //
+        return $transactions->bankAccount->user->is($user);
     }
 
     /**
@@ -68,7 +69,7 @@ class TransactionsPolicy
      */
     public function delete(User $user, Transaction $transactions)
     {
-        //
+        return $transactions->bankAccount->user->is($user);
     }
 
     /**
@@ -81,7 +82,7 @@ class TransactionsPolicy
      */
     public function restore(User $user, Transaction $transactions)
     {
-        //
+        return $transactions->bankAccount->user->is($user);
     }
 
     /**
@@ -94,6 +95,6 @@ class TransactionsPolicy
      */
     public function forceDelete(User $user, Transaction $transactions)
     {
-        //
+        return $transactions->bankAccount->user->is($user);
     }
 }

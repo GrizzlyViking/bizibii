@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\BankAccount;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBankAccountRequest extends FormRequest
@@ -13,7 +14,9 @@ class StoreBankAccountRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        $account = BankAccount::find($this->route('BankAccount'));
+
+        return $account && $this->user()->can('store', $account);
     }
 
     /**
@@ -24,7 +27,8 @@ class StoreBankAccountRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|alpha_dash|max:255',
+            'description' => 'nullable|string',
         ];
     }
 }

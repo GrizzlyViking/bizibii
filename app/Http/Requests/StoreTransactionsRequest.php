@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Transaction;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTransactionsRequest extends FormRequest
@@ -13,7 +14,9 @@ class StoreTransactionsRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        $transaction = Transaction::find($this->route('transaction'));
+
+        return $transaction && $this->user()->can('store', $transaction);
     }
 
     /**
@@ -24,7 +27,7 @@ class StoreTransactionsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            ''
         ];
     }
 }
