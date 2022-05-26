@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Illuminate\Support\Collection;
 
-enum Tag: string implements TaxonomyInterface
+enum Tag: string implements EnumInterface
 {
 
     case Food = 'food';
@@ -16,6 +16,8 @@ enum Tag: string implements TaxonomyInterface
     case Mortgage = 'mortgage';
 
     case Medicine = 'medicine';
+
+    case CouncilTax = 'council tax';
 
     case Car = 'car';
 
@@ -33,13 +35,26 @@ enum Tag: string implements TaxonomyInterface
 
     case PublicTransport = 'public transport';
 
+    case Unknown = 'unknown';
+
     public function category(): Category
     {
         return match ($this) {
-            Tag::Car, Tag::PublicTransport => Category::Transport,
-            Tag::Pension, Tag::LoanRepayment, Tag::Interest, Tag::Insurance, Tag::Mortgage => Category::Financial,
-            Tag::BookAndMagazineSubscription, Tag::StreamingService => Category::Entertainment,
-            Tag::Food, Tag::Medicine, Tag::Child => Category::Miscellaneous
+            self::Car,
+            self::PublicTransport => Category::Transport,
+            self::Pension,
+            self::LoanRepayment,
+            self::Interest,
+            self::Insurance,
+            self::Mortgage => Category::Financial,
+            self::BookAndMagazineSubscription,
+            self::StreamingService => Category::Entertainment,
+            self::Food,
+            self::Medicine,
+            self::Child => Category::Miscellaneous,
+            self::Salary => Category::Income,
+            self::CouncilTax => Category::Tax,
+            self::Unknown => Category::Unknown
         };
     }
 
@@ -59,6 +74,8 @@ enum Tag: string implements TaxonomyInterface
             self::BookAndMagazineSubscription,
             self::LoanRepayment,
             self::PublicTransport,
+            self::Unknown,
         ]);
     }
+
 }

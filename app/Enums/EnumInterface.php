@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Illuminate\Support\Collection;
 
-interface TaxonomyInterface
+interface EnumInterface
 {
     public static function all(): Collection;
 }

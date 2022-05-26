@@ -2,36 +2,30 @@
 
 namespace App\Models;
 
+use App\Enums\Tag as TagEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
- * @property string $name
- *
- * @property \App\Models\Transaction[] $transactions
+ * @property TagEnum $type
+ * @property Collection|\App\Models\Transaction[] $transactions
  *
  */
 class Tag extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'name';
-    public $incrementing = false;
-
-    protected $fillable = ['name'];
+    protected $fillable = ['type'];
+    public $timestamps = false;
 
     protected $casts = [
-        'name' => \App\Enums\Tag::class
+        'type' => TagEnum::class
     ];
 
-    public function transactions()
+    public function taggable()
     {
-        return $this->morphedByMany(Transaction::class, 'taggable');
-    }
-
-    public function accounts()
-    {
-        return $this->morphedByMany(BankAccount::class, 'taggable');
+        return $this->morphTo();
     }
 }

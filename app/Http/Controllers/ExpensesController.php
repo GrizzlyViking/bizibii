@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTransactionsRequest;
-use App\Http\Requests\UpdateTransactionsRequest;
-use App\Models\Transaction;
+use App\Http\Requests\StoreExpensesRequest;
+use App\Http\Requests\UpdateExpensesRequest;
+use App\Models\Expenses;
 
-class TransactionsController extends Controller
+class ExpensesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        return view('admin.transaction.list');
+        //
     }
 
     /**
@@ -31,10 +31,10 @@ class TransactionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTransactionsRequest  $request
+     * @param  \App\Http\Requests\StoreExpensesRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTransactionsRequest $request)
+    public function store(StoreExpensesRequest $request)
     {
         //
     }
@@ -42,11 +42,10 @@ class TransactionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transaction $transactions
-     *
+     * @param  \App\Models\Expenses  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transactions)
+    public function show(Expenses $expenses)
     {
         //
     }
@@ -54,11 +53,10 @@ class TransactionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transaction  $transactions
-     *
+     * @param  \App\Models\Expenses  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transactions)
+    public function edit(Expenses $expenses)
     {
         //
     }
@@ -66,12 +64,11 @@ class TransactionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTransactionsRequest  $request
-     * @param \App\Models\Transaction  $transactions
-     *
+     * @param  \App\Http\Requests\UpdateExpensesRequest  $request
+     * @param  \App\Models\Expenses  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransactionsRequest $request, Transaction $transactions)
+    public function update(UpdateExpensesRequest $request, Expenses $expenses)
     {
         //
     }
@@ -79,11 +76,10 @@ class TransactionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Transaction  $transactions
-     *
+     * @param  \App\Models\Expenses  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transactions)
+    public function destroy(Expenses $expenses)
     {
         //
     }

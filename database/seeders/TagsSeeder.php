@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Tag;
+use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +17,11 @@ class TagsSeeder extends Seeder
      */
     public function run()
     {
-        //
+
+        /** @var \App\Models\User $user */
+        $user = User::where('email', 'sebastian@edelmann.co.uk')->first();
+        $user->bankAccounts()->first()->transactions->map(function (Transaction $transaction) {
+            $transaction->addTags(Tag::all()->random(3));
+        });
     }
 }

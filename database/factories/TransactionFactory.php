@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\Category;
+use App\Models\Tag;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +12,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TransactionFactory extends Factory
 {
+    public function configure() {
+        return $this->afterCreating(function (Transaction $transaction) {
+            $transaction->tags()->attach(Tag::all()->random(3));
+        });
+    }
+
     /**
      * Define the model's default state.
      *

@@ -5,8 +5,8 @@ use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\TransactionsController;
 use App\Models\Page;
-use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,7 +52,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
     });
 
     Route::resource('bankAccount', BankAccountController::class);
-    Route::resource('transaction', Transaction::class);
+    Route::resource('transaction', TransactionsController::class);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

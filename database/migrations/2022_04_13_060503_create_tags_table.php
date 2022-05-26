@@ -15,15 +15,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tags', function (Blueprint $table) {
-            $table->string('name');
-        });
-
-        Schema::create('taggables', function (Blueprint $table) {
-            $table->string('tag_name');
+            $table->id();
+            $table->string('type');
             $table->morphs('taggable');
         });
-
-        \App\Models\Tag::insert(Tag::all()->map(function(Tag $tag){ return ['name' => $tag->value]; })->toArray());
     }
 
     /**
@@ -34,6 +29,5 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('tags');
-        Schema::dropIfExists('taggables');
     }
 };

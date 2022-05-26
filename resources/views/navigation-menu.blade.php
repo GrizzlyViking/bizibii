@@ -29,6 +29,12 @@
                     </x-jet-nav-link>
                 </div>
 
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('transaction.index') }}" :active="request()->routeIs('transaction.index')">
+                        {{ __('Transactions') }}
+                    </x-jet-nav-link>
+                </div>
+
                 <!-- page and section -->
                 <!-- /page and section -->
 
