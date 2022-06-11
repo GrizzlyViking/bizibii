@@ -30,15 +30,16 @@ class UpdateExpensesRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required',
-            'category' => ['required', new Enum(Category::class)],
-            'frequency' => ['required', new Enum(Frequency::class)],
-            'due_date' => [new Enum(DueDate::class)],
-            'due_date_meta' => 'required_if:due_date,'.DueDate::DateInMonth->value,
-            'amount' => 'nullable|numeric',
-            'applied' => 'nullable|boolean',
-            'start' => 'nullable|date',
-            'end' => 'nullable|date',
+            'bank_account_id' => 'sometimes|required|exists:bank_accounts,id',
+            'description'     => 'sometimes|required',
+            'category'        => ['sometimes', 'required', new Enum(Category::class)],
+            'frequency'       => ['sometimes', 'required', new Enum(Frequency::class)],
+            'due_date'        => ['sometimes', 'required', new Enum(DueDate::class)],
+            'due_date_meta'   => ['sometimes', Rule::requiredIf(fn () => $this->request->get('due_date') == DueDate::DateInMonth->value)],
+            'amount'          => 'sometimes|required|numeric',
+            'applied'         => 'nullable|boolean',
+            'start'           => 'nullable|date',
+            'end'             => 'nullable|date',
         ];
     }
 

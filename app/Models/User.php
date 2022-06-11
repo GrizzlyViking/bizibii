@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,6 +11,14 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property string $name
+ * @property string $email
+ * @property \Illuminate\Support\Carbon $email_verified_at
+ *
+ * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Expense> $expenses
+ * @property \Illuminate\Database\Eloquent\Collection<\App\Models\BankAccount> $bankAccounts
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -71,8 +79,13 @@ class User extends Authenticatable
         return $user;
     }
 
-    public function bankAccounts()
+    public function bankAccounts(): Relation
     {
         return $this->hasMany(BankAccount::class);
+    }
+
+    public function expenses(): Relation
+    {
+        return $this->hasManyThrough(Expense::class, BankAccount::class);
     }
 }

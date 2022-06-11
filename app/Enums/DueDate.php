@@ -4,9 +4,8 @@ namespace App\Enums;
 
 use Illuminate\Support\Collection;
 
-enum DueDate: string
+enum DueDate: string implements EnumInterface
 {
-
     case FirstOfMonth = 'first day of month';
 
     case FirstWorkingDayOfMonth = 'first working day of month';
@@ -33,6 +32,8 @@ enum DueDate: string
 
     case DateInMonth = 'first working day after date in month';
 
+    case Daily = 'daily';
+
     public static function all(): Collection
     {
         return collect([
@@ -49,6 +50,7 @@ enum DueDate: string
             self::Saturday,
             self::Sunday,
             self::DateInMonth,
+            self::Daily,
         ]);
     }
 
@@ -67,8 +69,13 @@ enum DueDate: string
             self::Friday,
             self::Saturday,
             self::Sunday => 'weekday',
+            self::Daily => 'daily',
             self::DateInMonth => 'custom'
         };
     }
 
+    public function equals(EnumInterface $enum): bool
+    {
+        return $this->value == $enum->value && $this->name == $enum->name;
+    }
 }

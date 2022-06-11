@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SectionController;
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
 
     Route::resource('bankAccount', BankAccountController::class);
     Route::resource('transaction', TransactionsController::class);
+    Route::resource('expenses', ExpensesController::class);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

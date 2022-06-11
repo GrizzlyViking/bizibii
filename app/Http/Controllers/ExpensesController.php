@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreExpensesRequest;
+use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpensesRequest;
-use App\Models\Expenses;
+use App\Models\Expense;
+use Illuminate\Http\Response;
 
 class ExpensesController extends Controller
 {
@@ -30,22 +31,22 @@ class ExpensesController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreExpensesRequest  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreExpensesRequest $request)
+    public function store(StoreExpenseRequest $request): Response
     {
-        //
+        $expense = Expense::create($request->validated());
+
+        return response($expense->id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(Expenses $expenses)
+    public function show(Expense $expenses)
     {
         //
     }
@@ -53,10 +54,11 @@ class ExpensesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Expenses $expenses)
+    public function edit(Expense $expenses)
     {
         //
     }
@@ -65,10 +67,11 @@ class ExpensesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateExpensesRequest  $request
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateExpensesRequest $request, Expenses $expenses)
+    public function update(UpdateExpensesRequest $request, Expense $expenses)
     {
         //
     }
@@ -76,10 +79,11 @@ class ExpensesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Expenses $expenses)
+    public function destroy(Expense $expenses)
     {
         //
     }

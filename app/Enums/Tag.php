@@ -78,4 +78,8 @@ enum Tag: string implements EnumInterface
         ]);
     }
 
+    public function equals(EnumInterface $enum): bool
+    {
+        return $this->value == $enum->value && $this->name == $enum->name;
+    }
 }

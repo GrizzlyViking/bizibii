@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Expenses;
+use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -25,10 +25,11 @@ class ExpensesPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Expenses $expenses)
+    public function view(User $user, Expense $expenses)
     {
         //
     }
@@ -48,10 +49,11 @@ class ExpensesPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Expenses $expenses)
+    public function update(User $user, Expense $expenses)
     {
         //
     }
@@ -60,10 +62,11 @@ class ExpensesPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Expenses $expenses)
+    public function delete(User $user, Expense $expenses)
     {
         //
     }
@@ -72,10 +75,11 @@ class ExpensesPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Expenses $expenses)
+    public function restore(User $user, Expense $expenses)
     {
         //
     }
@@ -84,10 +88,11 @@ class ExpensesPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Expenses  $expenses
+     * @param  \App\Models\Expense  $expenses
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Expenses $expenses)
+    public function forceDelete(User $user, Expense $expenses)
     {
         //
     }
