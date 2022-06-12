@@ -125,7 +125,7 @@ class Expense extends Model
                 }
                 throw new \Exception('Due Date is ' . $this->due_date->name . ' but no sensible due date meta was set.');
         }
-        
+
         return false;
     }
 
