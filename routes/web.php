@@ -52,9 +52,15 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
         Route::delete('message/{message}', [MessageController::class, 'destroy'])->name('destroy');
     });
 
+    Route::name('expenses.')->group(function () {
+        Route::get('expenses', [ExpensesController::class, 'list'])->name('list');
+        Route::get('expenses/{expense}/edit', [ExpensesController::class, 'edit'])->name('edit');
+        Route::get('expenses/create', [ExpensesController::class, 'create'])->name('create');
+        Route::get('expenses/charts', [ExpensesController::class, 'charts'])->name('charts');
+    });
+
     Route::resource('bankAccount', BankAccountController::class);
     Route::resource('transaction', TransactionsController::class);
-    Route::resource('expenses', ExpensesController::class);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

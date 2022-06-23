@@ -46,27 +46,27 @@ class Section extends Model implements ListableInterface
         return $this->belongsTo(Page::class);
     }
 
-    public function getTitle(): string
+    public function getColumn1(): string
     {
         return $this->title;
     }
 
-    public function getSubtitle(): string
+    public function getColumn1Sub(): string
     {
         return $this->subtitle;
     }
 
-    public function getName(): string
+    public function getColumn2(): string
     {
         return $this->slug;
     }
 
-    public function getPosition(): string
+    public function getColumn3(): string
     {
         return $this->page->slug;
     }
 
-    public function getContent(int $char_limit = 20): string
+    public function getColumn4(int $char_limit = 20): string
     {
         return Str::limit($this->content, $char_limit);
     }

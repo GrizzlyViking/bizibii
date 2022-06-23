@@ -10,9 +10,12 @@ class ListItems extends Component
     /** @var ListableInterface[] */
     public $items;
 
-    public function mount($items)
+    public array $columnHeaders = [];
+
+    public function mount($items, array $columnHeaders = [])
     {
         $this->items = $items;
+        $this->columnHeaders = $columnHeaders;
     }
 
     public function render()

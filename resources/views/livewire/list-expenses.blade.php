@@ -10,28 +10,16 @@
                                     <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col"  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __($columnHeaders[0] ?? 'Title') }}
+                                            Expenses
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __($columnHeaders[1] ?? 'Name') }}
+                                            Due
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __($columnHeaders[2] ?? 'Status') }}
+                                            Amount
                                         </th>
-                                        @if(!empty($items->first()->getColumn4()))
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __($columnHeaders[3] ?? 'Content') }}
-                                        </th>
-                                        @endif
-                                        @if(!empty($items->first()->getColumn4()))
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __($columnHeaders[4]) ?? 'Column 4' }}
-                                        </th>
-                                        @endif
                                         <th scope="col" class="relative px-6 py-3">
                                             <span class="sr-only">Edit</span>
                                         </th>
@@ -44,32 +32,36 @@
                                                 <div class="flex items-center">
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">
-                                                            {{ $item->getColumn1() }}
+                                                            {{ $item->description }}
                                                         </div>
                                                         <div class="text-sm text-gray-500">
-                                                            {{ $item->getColumn1Sub() }}
+                                                            {{ $item->category->value }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">
+                                                            {{ $item->due_date->value }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $item->frequency->value }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{ Str::limit($item->getColumn2(), 30) }}
+                                                    {{ $item->amount }}
                                                 </div>
                                             </td>
-                                            @if($item->getColumn3())
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $item->getColumn3() }}
-                                            </td>
-                                            @endif
-                                            @if($item->getColumn4() && !empty($columnHeaders[3]))
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $item->getColumn4() }}
-                                            </td>
-                                            @endif
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="{{ $item->getRouteShow() }}"
-                                                   class="text-indigo-600 hover:text-indigo-900">{{ $columnHeaders[4] ?? 'View' }}</a>
+                                                <a href="{{ route('expenses.edit', $item->id) }}"
+                                                   class="text-indigo-600 hover:text-indigo-900">edit</a>
+                                                <a wire:click.prevent="delete({{ $item->id }})"
+                                                   class="text-red-400 hover:text-indigo-900">delete</a>
                                             </td>
                                         </tr>
                                     @endforeach

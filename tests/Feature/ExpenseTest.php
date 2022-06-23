@@ -294,4 +294,45 @@ class ExpenseTest extends TestCase
         $response->assertInvalid('due_date_meta');
     }
 
+    /** @test */
+    public function expenses_must_use_start_and_end_date()
+    {
+        $expense = Expense::factory()->make([
+            'bank_account_id' => $this->user->bankAccounts->first()->id,
+            'description'     => 'test expense',
+            'category'        => Category::all()->random(1)->first()->value,
+            'frequency'       => Frequency::Monthly->value,
+            'due_date'        => DueDate::FirstOfMonth->value,
+            'amount'          => $this->faker->randomFloat(),
+            'start'           => Carbon::createFromDate(2022,05,01),
+            'end'             => Carbon::createFromDate(2022,07,01)
+        ]);
+
+        $before = Carbon::createFromDate(2022, 4, 1);
+        $between = Carbon::createFromDate(2022, 6, 1);
+        $after = Carbon::createFromDate(2022, 8, 1);
+
+        $this->assertFalse($expense->applicable($before), 'Start date should be respected.');
+        $this->assertTrue($expense->applicable($between), 'Start and end date should be respected start date and end date.');
+        $this->assertFalse($expense->applicable($after), 'End date should be respected.');
+    }
+
+    /** @test */
+    public function end_date_is_null() {
+        $expense_end_is_null = Expense::factory()->make([
+            'bank_account_id' => $this->user->bankAccounts->first()->id,
+            'description'     => 'test expense',
+            'category'        => Category::all()->random(1)->first()->value,
+            'frequency'       => Frequency::Monthly->value,
+            'due_date'        => DueDate::FirstOfMonth->value,
+            'amount'          => $this->faker->randomFloat(),
+            'start'           => Carbon::createFromDate(2022,05,01),
+            'end'             => null
+        ]);
+
+        $after = Carbon::createFromDate(2022, 8, 1);
+
+        $this->assertTrue($expense_end_is_null->applicable($after), 'End date was null.');
+    }
+
 }

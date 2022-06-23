@@ -6,5 +6,5 @@
     </x-slot>
 
 
-    <livewire:list-messages />
+    <livewire:list-items  />
 </x-app-layout>

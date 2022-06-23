@@ -27,8 +27,8 @@ enum Frequency: string implements EnumInterface
     public static function all(): Collection
     {
         return collect([
+            self::Monthly, // <- default for dropdown options
             self::Yearly,
-            self::Monthly,
             self::Weekly,
             self::Daily,
             self::Every6thMonth,

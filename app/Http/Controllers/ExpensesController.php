@@ -6,6 +6,7 @@ use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpensesRequest;
 use App\Models\Expense;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ExpensesController extends Controller
 {
@@ -14,9 +15,10 @@ class ExpensesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function list()
     {
-        //
+        $expenses = Auth::user()->expenses;
+        return response()->view('admin.expense.list', compact('expenses'));
     }
 
     /**
@@ -26,65 +28,23 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreExpenseRequest $request): Response
-    {
-        $expense = Expense::create($request->validated());
-
-        return response($expense->id);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Expense  $expenses
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Expense $expenses)
-    {
-        //
+        return response()->view('admin.expense.create');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Expense  $expenses
+     * @param  \App\Models\Expense  $expense
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function edit(Expense $expenses)
+    public function edit(Expense $expense)
     {
-        //
+        return view('admin.expense.edit', compact('expense'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateExpensesRequest  $request
-     * @param  \App\Models\Expense  $expenses
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateExpensesRequest $request, Expense $expenses)
+    public function charts(): Response
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Expense  $expenses
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Expense $expenses)
-    {
-        //
+        return response()->view('admin.expense.charts');
     }
 }

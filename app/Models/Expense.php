@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property \App\Models\BankAccount $account
  *
  * @method static self create(array $fillable)
+ * @method static self updateOrInsert(array $criteria, array $payload)
  *
  */
 class Expense extends Model
@@ -86,6 +87,11 @@ class Expense extends Model
      */
     protected function applicableDayOfMonth(Carbon $today): bool
     {
+        if ($this->start > $today) {
+            return false;
+        } elseif ($this->end instanceof \DateTimeInterface && $this->end < $today) {
+            return false;
+        }
         $now = clone $today;
         switch ($this->due_date) {
             case DueDate::Daily:

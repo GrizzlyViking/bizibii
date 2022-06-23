@@ -29,6 +29,18 @@ class PopulateWithBaseData extends Migration
             'personal_team' => false,
         ]));
 
+        $user->bankAccounts()->create([
+            'name' => 'standard account',
+            'description' => 'standard account',
+            'balance' => 1000
+        ]);
+
+        $user->bankAccounts()->create([
+            'name' => 'shared account',
+            'description' => 'budget account',
+            'balance' => 1000
+        ]);
+
         Schema::table('pages', function (Blueprint $table) {
             /** @var Page $page */
             $page = Page::create([

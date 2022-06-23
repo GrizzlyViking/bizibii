@@ -4,15 +4,15 @@ namespace App\Models;
 
 interface ListableInterface
 {
-    public function getTitle(): string;
+    public function getColumn1(): string;
 
-    public function getSubtitle(): string;
+    public function getColumn1Sub(): ?string;
 
-    public function getName(): string;
+    public function getColumn2(): ?string;
 
-    public function getPosition(): string;
+    public function getColumn3(): ?string;
 
-    public function getContent(int $char_limit = 20): string;
+    public function getColumn4(): ?string;
 
-    public function getRouteShow(): string;
+    public function getRouteShow(): ?string;
 }

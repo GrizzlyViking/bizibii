@@ -37,10 +37,10 @@ enum DueDate: string implements EnumInterface
     public static function all(): Collection
     {
         return collect([
-            self::FirstOfMonth,
             self::FirstWorkingDayOfMonth,
-            self::LastDayOfMonth,
+            self::FirstOfMonth,
             self::LastWorkingDayOfMonth,
+            self::LastDayOfMonth,
             self::FirstDayOfYear,
             self::Monday,
             self::Tuesday,
