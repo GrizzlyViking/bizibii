@@ -2,8 +2,31 @@
     <div class="md:grid md:grid-cols-3 md:gap-6">
         <div class="md:col-span-1">
             <div class="px-4 sm:px-0">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Expense</h3>
-                <p class="mt-1 text-sm text-gray-600">Enter details about an expense.</p>
+                @if($category == \App\Enums\Category::DayToDayConsumption->value)
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Expenses - {{ $category }}</h3>
+                    <p class="mt-3 text-sm text-gray-600">
+                        The {{ $category }} attempts to emulate daily food/cloths/leisure/and similar consumption during a month. These costs
+                        exclude fixed expenses. "Fixed" in the sense that the bills are regular, not that the amount can't change ex. a
+                        phone bill might fluctuate in amount, but you still have to pay it on the 1st every month
+                    </p>
+                    <p class="mt-3 text-sm text-gray-600">
+                        The figure is based on what a bank requires you to show that you have available for these sorts of expenses, to
+                        prove to them that you can afford to pay the mortgage. They recommend that you have 5000kr per grown up, and 2500
+                        per child.
+                    </p>
+                    <p class="mt-3 text-sm text-gray-600">
+                        To allow some flexibility, in the calculation, if needed, then this amount will be able to be adjusted downwards
+                        till half to represent a month when "we tighten the belt" due to bills.
+                    </p>
+                    <p class="mt-3 text-sm text-gray-600">
+                        The frequency is set to {{ $frequency }} and the due date to {{ $due_date }}. But the calculation is base on what is
+                        left over at the end of the month, and as much of the requested amount will be used divided over the month. Ex. if
+                        it's a little under then there be a little less per day.
+                    </p>
+                @else
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Expense</h3>
+                    <p class="mt-1 text-sm text-gray-600">Something</p>
+                @endif
             </div>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
@@ -14,19 +37,19 @@
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="account" class="block text-sm font-medium text-gray-700">Account</label>
-                                <select wire:model="bank_account_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if($submit === 'Update')'disabled'@endif>
-                                    @forelse(Auth::user()->bankAccounts as $account)
+                                <select wire:model="account_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if($submit === 'Update')'disabled'@endif>
+                                    @forelse(Auth::user()->accounts as $account)
                                             <option value="{{ $account->id }}">{{ ucwords($account->name) }}</option>
                                     @empty
                                         <option>No bank account(s)</option>
                                     @endforelse
                                 </select>
-                                @error('bank_account_id') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
+                                @error('account_id') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-                                <select wire:model="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <select wire:change="changeCategory" wire:model="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     @foreach(\App\Enums\Category::all() as $category)
                                         <option value="{{ $category->value }}">{{ ucwords($category->value) }}</option>
                                     @endforeach

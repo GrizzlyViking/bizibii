@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\BankAccount;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BankAccountSeeder extends Seeder
+class AccountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,6 +18,6 @@ class BankAccountSeeder extends Seeder
     {
         /** @var \App\Models\User $user */
         $user = User::where('email', 'sebastian@edelmann.co.uk')->first();
-        $user->bankAccounts()->save(BankAccount::factory()->make());
+        $user->accounts()->save(Account::factory()->make());
     }
 }

@@ -30,7 +30,7 @@ class StoreExpenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'bank_account_id' => 'required|exists:bank_accounts,id',
+            'account_id' => 'required|exists:accounts,id',
             'description'     => 'required',
             'category'        => ['required', new Enum(Category::class)],
             'frequency'       => ['required', new Enum(Frequency::class)],

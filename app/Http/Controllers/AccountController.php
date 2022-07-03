@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBankAccountRequest;
-use App\Http\Requests\UpdateBankAccountRequest;
-use App\Models\BankAccount;
+use App\Http\Requests\StoreAccountRequest;
+use App\Http\Requests\UpdateAccountRequest;
+use App\Models\Account;
 
-class BankAccountController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,11 @@ class BankAccountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBankAccountRequest  $request
+     * @param  \App\Http\Requests\StoreAccountRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBankAccountRequest $request)
+    public function store(StoreAccountRequest $request)
     {
         //
     }
@@ -42,10 +43,11 @@ class BankAccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(BankAccount $bankAccount)
+    public function show(Account $account)
     {
         //
     }
@@ -53,10 +55,11 @@ class BankAccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(BankAccount $bankAccount)
+    public function edit(Account $account)
     {
         //
     }
@@ -64,11 +67,12 @@ class BankAccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBankAccountRequest  $request
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Http\Requests\UpdateAccountRequest  $request
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBankAccountRequest $request, BankAccount $bankAccount)
+    public function update(UpdateAccountRequest $request, Account $account)
     {
         //
     }
@@ -76,10 +80,11 @@ class BankAccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BankAccount $bankAccount)
+    public function destroy(Account $account)
     {
         //
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpensesRequest;
 use App\Models\Expense;
+use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,6 +46,14 @@ class ExpensesController extends Controller
 
     public function charts(): Response
     {
-        return response()->view('admin.expense.charts');
+        $lineChartModel = (new LineChartModel())
+                        ->singleLine()
+                        ->setAnimated(false)
+                        ->setTitle('Balance per Month.')
+                        ->addPoint('first', 12)
+                        ->addPoint('third', 14)
+                        ->addPoint('4th', 4)
+                        ->addPoint('second', 2);
+        return response()->view('admin.expense.charts.line', compact('lineChartModel'));
     }
 }

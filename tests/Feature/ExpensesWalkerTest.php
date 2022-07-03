@@ -5,10 +5,11 @@ namespace Tests\Feature;
 use App\Enums\Category;
 use App\Enums\DueDate;
 use App\Enums\Frequency;
-use App\Models\BankAccount;
+use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
 use App\Services\ExpensesWalker;
+use App\Services\GraphExpenses;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
@@ -30,19 +31,16 @@ class ExpensesWalkerTest extends TestCase
         parent::setUp();
 
         $this->user = User::find(1);
-        $this->user->bankAccounts()->save(BankAccount::factory()->make([
+        $this->user->accounts()->save(Account::factory()->make([
             'balance' => 0,
         ]));
     }
 
     /** @test */
-    public function walk_through_one_week_with_one_expense()
+    public function walk_through_one_month_with_one_expense()
     {
-        $this->assertCount(1, $this->user->bankAccounts,
-            'the prerequisite user with Account is set up incorrectly');
-
-        /** @var BankAccount $account */
-        $account = $this->user->bankAccounts->first();
+        /** @var Account $account */
+        $account = $this->user->accounts->first();
 
         $account->expenses()->create([
             'category' => Category::House,
@@ -52,24 +50,20 @@ class ExpensesWalkerTest extends TestCase
             'amount' => 5800.00
         ]);
 
-        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1,1), Carbon::createFromDate(2022, 2,1), 0);
+        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1,1), Carbon::createFromDate(2022, 1,31));
 
-        $complete = $walker->process();
+        $complete = $walker->process()->graphBalance($account, ExpensesWalker::DAILY);
 
-        $this->assertTrue( is_array($complete));
-        $this->assertEquals(0.0, $complete['data']->get('2022-01-02')['balance']);
-        $this->assertEquals(-5800.0, $complete['data']->get('2022-01-03')['balance']);
-        $this->assertInstanceOf(Expense::class, $complete['data']->get('2022-01-03')['expenses']->first());
+        $this->assertInstanceOf(Collection::class, $complete);
+        $this->assertEquals($account->balance, $complete->get('2022-01-02'));
+        $this->assertEquals(($account->balance - 5800.0), $complete->get('2022-01-03'));
     }
 
     /** @test */
     public function walk_through_one_year_with_expenses_and_income()
     {
-        $this->assertCount(1, $this->user->bankAccounts,
-            'the prerequisite user with Account is set up incorrectly');
-
-        /** @var BankAccount $account */
-        $account = $this->user->bankAccounts->first();
+        /** @var Account $account */
+        $account = $this->user->accounts->first();
 
         $account->expenses()->create([
             'category' => Category::Income,
@@ -115,16 +109,39 @@ class ExpensesWalkerTest extends TestCase
             'amount' => 2600.00
         ]);
 
-        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1,1), Carbon::createFromDate(2023, 1,1), 0);
-        $walker->process();
-        $complete = $walker->getGraph();
+        Expense::create([
+            'account_id' => $account->id,
+            'category' => Category::House,
+            'description' => 'various',
+            'frequency' => Frequency::Monthly,
+            'start' => '2021-04-01',
+            'due_date' => DueDate::FirstWorkingDayOfMonth,
+            'amount' => 10500.00
+        ]);
 
-        $this->assertTrue($complete instanceof Collection);
+        Expense::create([
+            'account_id' => $account->id,
+            'category' => Category::DayToDayConsumption,
+            'description' => Category::DayToDayConsumption->value,
+            'frequency' => Frequency::Monthly,
+            'start' => '2021-04-01',
+            'due_date' => DueDate::LastDayOfMonth,
+            'amount' => 12500.00
+        ]);
 
-        $this->assertEquals(-700.0, $complete->get('2022-01-02')['balance']);
-        $this->assertEquals(-9450.0, $complete->get('2022-01-03')['balance']);
-        $this->assertInstanceOf(Expense::class, $walker->getData()->get('2022-01-03')['expenses']->first());
-        $this->assertEquals(140296, $walker->getGraph()->last()['balance']);
+        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1,1), Carbon::createFromDate(2022, 12,31), 0);
+
+        $complete = $walker->process()->graphBalance($account, ExpensesWalker::MONTHLY);
+
+        $this->assertInstanceOf(Collection::class, $complete);
+        $this->assertCount(12, $complete);
+
+
+        $this->assertEquals(4883.0, $complete->get('2022-01'));
+        $this->assertEquals(0, $complete->get('2022-02'));
+        $this->assertEquals(-4717.0, $complete->get('2022-03'));
+        $this->assertEquals(3749.0, $complete->get('2022-11'));
+
     }
 
 }

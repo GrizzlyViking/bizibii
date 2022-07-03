@@ -7,6 +7,6 @@
 
 
     <div class="py-12">
-        <livewire:list-expenses :items="$expenses" :columnHeaders="['Expense', 'Due', 'Amount', 'In a whole year', 'Edit']" />
+        <livewire:list-expenses :items="$expenses" />
     </div>
 </x-app-layout>

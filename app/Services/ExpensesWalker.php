@@ -2,13 +2,20 @@
 
 namespace App\Services;
 
+use App\Enums\Category;
+use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\NoReturn;
 
 class ExpensesWalker
 {
+
+    public const MONTHLY = 'monthly';
+
+    public const DAILY = 'daily';
 
     /**
      * @var \App\Models\User
@@ -26,39 +33,37 @@ class ExpensesWalker
     public function __construct(
         User $user,
         Carbon $start,
-        Carbon $end,
-        ?float $starting_balance = null
+        Carbon $end
     ) {
         $this->user = $user;
         $this->now = $start;
         $this->end = $end;
-        $this->starting_balance = ($starting_balance ?: $this->user->bankAccounts->first()->balance ?? 0);
         $this->data = collect();
     }
 
-    public function process()
+    public function process(): self
     {
-        $balance = $this->starting_balance;
         $day = clone $this->now;
         while ($day < $this->end) {
-            $this->step($day, $balance);
+            $this->step($day);
             $day->addDay();
         }
 
-        return $this->completed();
+        return $this;
     }
 
     /**
      * @return \Illuminate\Support\Collection<array>
      */
-    public function getGraph(): Collection
+    public function graphBalance(Account $account, string $type = 'daily'): Collection
     {
-        return $this->data->map(function ($expenses) {
-            return [
-                'cost' => $expenses['expenses']->count() != 0 ? $expenses['expenses']->sum(fn (Expense $expense) => $expense->getCost()) : 0,
-                'balance' => $expenses['balance']
-            ];
-        });
+        switch ($type) {
+            case self::DAILY:
+            default:
+                return $this->daily($account);
+            case self::MONTHLY:
+                return $this->graphMonthly($account);
+        }
     }
 
     /**
@@ -72,36 +77,43 @@ class ExpensesWalker
     protected function completed(): array
     {
         return [
-            'data' => $this->data,
-            'completed' => 'success'
+            'data'      => $this->data,
+            'completed' => 'success',
         ];
     }
 
-    /**
-     * @param  Carbon  $day
-     *  Day being assessed, whether it has any expenses
-     *
-     * @param  float  $balance
-     *
-     * @return void
-     */
-    private function step(Carbon $day, float &$balance)
+    private function step(Carbon $day)
     {
-        $expenses = $this->user->expenses->filter(function (Expense $expense) use (&$balance, $day) {
-            try {
-                if ($expense->applicable($day)) {
-                    $balance -= $expense->getCost();
-                    return true;
-                }
-            } catch (\Exception $e) {
-                return false;
-            }
+        $expenses = $this->user->expenses->filter(function (Expense $expense) use ($day) {
+            return $expense->applicable($day);
         });
 
-        $this->data->put($day->format('Y-m-d'), [
-            'expenses' => $expenses,
-            'balance' => $balance,
-        ]);
+        $this->data->put($day->format('Y-m-d'), $expenses);
+    }
+
+    public function graphMonthly(?Account $account = null): Collection
+    {
+        $balance = $account->balance;
+        return $this->data->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
+        ) => $expense->account_id == $account->id))->map(function (Collection $expenses) use (&$balance) {
+            $expenses->each(function (Expense $expense) use (&$balance) {
+                $expense->applyCost($balance);
+            });
+            return $balance;
+        })->groupBy(fn ($day, $date) => date_create($date)->format('Y-m'))
+            ->map(fn (Collection $month) =>$month->last());
+    }
+
+    public function daily(?Account $account = null): Collection
+    {
+        $balance = $account->balance;
+        return $this->data->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
+        ) => $expense->account_id == $account->id))->map(function (Collection $expenses) use (&$balance) {
+            $expenses->each(function (Expense $expense) use (&$balance) {
+                $expense->applyCost($balance);
+            });
+            return $balance;
+        });
     }
 
 }

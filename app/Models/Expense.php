@@ -5,13 +5,16 @@ namespace App\Models;
 use App\Enums\Category;
 use App\Enums\Frequency;
 use App\Enums\DueDate;
+use DateTimeInterface;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int $bank_account_id
+ * @property int $account_id
  * @property string $description
  * @property Category $category
  * @property float $amount
@@ -24,7 +27,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property \App\Models\User $user
- * @property \App\Models\BankAccount $account
+ * @property \App\Models\Account $account
  *
  * @method static self create(array $fillable)
  * @method static self updateOrInsert(array $criteria, array $payload)
@@ -32,7 +35,6 @@ use Illuminate\Support\Carbon;
  */
 class Expense extends Model
 {
-
     use HasFactory;
 
     protected $dates = [
@@ -48,7 +50,7 @@ class Expense extends Model
     ];
 
     protected $fillable = [
-        'bank_account_id',
+        'account_id',
         'description',
         'category',
         'frequency',
@@ -60,20 +62,28 @@ class Expense extends Model
         'end',
     ];
 
-    public function user()
+    protected $with = ['account', 'user'];
+
+    public function user(): Relation
     {
-        return $this->hasOneThrough(User::class, BankAccount::class);
+        return $this->hasOneThrough(
+            User::class,
+            Account::class,
+            'user_id',
+            'id',
+            'account_id'
+        );
     }
 
-    public function account()
+    public function account(): Relation
     {
-        return $this->belongsTo(BankAccount::class);
+        return $this->belongsTo(Account::class, 'account_id', 'id');
     }
 
     /**
      * @param  \Illuminate\Support\Carbon  $today
      *
-     * @return void
+     * @return bool
      * @throws \Exception
      */
     public function applicable(Carbon $today): bool
@@ -89,7 +99,7 @@ class Expense extends Model
     {
         if ($this->start > $today) {
             return false;
-        } elseif ($this->end instanceof \DateTimeInterface && $this->end < $today) {
+        } elseif ($this->end instanceof DateTimeInterface && $this->end < $today) {
             return false;
         }
         $now = clone $today;
@@ -129,7 +139,7 @@ class Expense extends Model
                     }
                     return $now->startOfDay() == $today->startOfDay();
                 }
-                throw new \Exception('Due Date is ' . $this->due_date->name . ' but no sensible due date meta was set.');
+                throw new Exception('Due Date is ' . $this->due_date->name . ' but no sensible due date meta was set.');
         }
 
         return false;
@@ -166,7 +176,7 @@ class Expense extends Model
 
     public function getCost(): float
     {
-        return $this->category === Category::Income ? abs($this->amount) * -1 : abs($this->amount);
+        return $this->category === Category::Income ? abs($this->amount) : abs($this->amount) * -1;
     }
 
     /**
@@ -183,4 +193,18 @@ class Expense extends Model
         return array_values($matched);
     }
 
+    public function applyCost(&$balance): float
+    {
+        if ($this->category->equals(Category::DayToDayConsumption)) {
+            if ($balance >= ($this->getCost() * -1)) {
+                return $balance += $this->getCost();
+            } elseif ($balance < ($this->getCost() * -1) && $balance >= ($this->getCost() / 2 * -1)) {
+                return $balance = 0;
+            } else {
+                return $balance + ($this->getCost() / 2);
+            }
+        }
+
+        return $balance += $this->getCost();
+    }
 }

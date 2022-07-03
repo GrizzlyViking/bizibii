@@ -30,7 +30,7 @@ class UpdateExpensesRequest extends FormRequest
     public function rules()
     {
         return [
-            'bank_account_id' => 'sometimes|required|exists:bank_accounts,id',
+            'account_id' => 'sometimes|required|exists:accounts,id',
             'description'     => 'sometimes|required',
             'category'        => ['sometimes', 'required', new Enum(Category::class)],
             'frequency'       => ['sometimes', 'required', new Enum(Frequency::class)],

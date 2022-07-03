@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @property int $user_id
  * @property string $name
  * @property string $description
+ * @property float $balance
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  *
@@ -19,9 +20,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Transaction>
  *     $transactions
  */
-class BankAccount extends Model
+class Account extends Model
 {
-    protected $table = 'bank_accounts';
+    protected $table = 'accounts';
     use HasFactory;
 
     protected $fillable = [
@@ -51,4 +52,12 @@ class BankAccount extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function addFunds(float $amount): float
+    {
+        $this->update([
+            'balance' => $this->balance + $amount
+        ]);
+
+        return $this->balance;
+    }
 }

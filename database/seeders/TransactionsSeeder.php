@@ -18,6 +18,6 @@ class TransactionsSeeder extends Seeder
     {
         /** @var \App\Models\User $user */
         $user = User::where('email', 'sebastian@edelmann.co.uk')->first();
-        $user->bankAccounts()->first()->transactions()->saveMany(Transaction::factory(1000)->make());
+        $user->accounts()->first()->transactions()->saveMany(Transaction::factory(1000)->make());
     }
 }

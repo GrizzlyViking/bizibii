@@ -1,6 +1,7 @@
 <div>
     <div class="pt-1 px-12 pb-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <a href="{{ route('expenses.create') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Add</a>
             <div class="mt-6 bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -53,15 +54,14 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    {{ $item->amount }}
+                                                <div class="text-sm font-medium text-{{ $item->category->colour() }}-500">
+                                                    {{ number_format($item->amount) }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="{{ route('expenses.edit', $item->id) }}"
-                                                   class="text-indigo-600 hover:text-indigo-900">edit</a>
-                                                <a wire:click.prevent="delete({{ $item->id }})"
-                                                   class="text-red-400 hover:text-indigo-900">delete</a>
+                                                <a href="{{ route('expenses.edit', $item->id) }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Edit</a>
+                                                <button type="button" wire:click="delete({{ $item->id }})" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Delete</button>
+
                                             </td>
                                         </tr>
                                     @endforeach

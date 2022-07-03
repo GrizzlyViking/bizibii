@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\BankAccount;
+use App\Models\Account;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBankAccountRequest extends FormRequest
+class StoreAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreBankAccountRequest extends FormRequest
      */
     public function authorize()
     {
-        $account = BankAccount::find($this->route('BankAccount'));
+        $account = Account::find($this->route('Account'));
 
         return $account && $this->user()->can('store', $account);
     }

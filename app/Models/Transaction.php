@@ -9,14 +9,14 @@ use Illuminate\Support\Collection;
 
 /**
  * @property int $id
- * @property int $bank_account_id
+ * @property int $account_id
  * @property \App\Enums\Category $category
  * @property float $amount
  * @property string $description
  * @property \DateTimeInterface $created_at
  * @property \DateTimeInterface $updated_at
  *
- * @property \App\Models\BankAccount $bankAccount
+ * @property \App\Models\Account $account
  * @property Collection<\App\Models\Tag> $tags
  */
 class Transaction extends Model
@@ -28,9 +28,9 @@ class Transaction extends Model
         'category' => Category::class,
     ];
 
-    public function bankAccount()
+    public function account()
     {
-        return $this->belongsTo(BankAccount::class);
+        return $this->belongsTo(Account::class);
     }
 
     public function tags()

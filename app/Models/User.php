@@ -17,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property \Illuminate\Support\Carbon $email_verified_at
  *
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Expense> $expenses
- * @property \Illuminate\Database\Eloquent\Collection<\App\Models\BankAccount> $bankAccounts
+ * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Account> $accounts
  */
 class User extends Authenticatable
 {
@@ -79,13 +79,13 @@ class User extends Authenticatable
         return $user;
     }
 
-    public function bankAccounts(): Relation
+    public function accounts(): Relation
     {
-        return $this->hasMany(BankAccount::class);
+        return $this->hasMany(Account::class);
     }
 
     public function expenses(): Relation
     {
-        return $this->hasManyThrough(Expense::class, BankAccount::class);
+        return $this->hasManyThrough(Expense::class, Account::class);
     }
 }

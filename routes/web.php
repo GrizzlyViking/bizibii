@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
@@ -59,7 +59,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
         Route::get('expenses/charts', [ExpensesController::class, 'charts'])->name('charts');
     });
 
-    Route::resource('bankAccount', BankAccountController::class);
+    Route::resource('account', AccountController::class);
     Route::resource('transaction', TransactionsController::class);
 });
 

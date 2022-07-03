@@ -11,6 +11,8 @@ enum Category: string implements EnumInterface
 
     case Income = 'income';
 
+    case DayToDayConsumption = 'day-to-day consumption';
+
     case Entertainment = 'entertainment';
 
     case Utilities = 'utilities';
@@ -32,6 +34,7 @@ enum Category: string implements EnumInterface
         return collect([
             self::Transport,
             self::Income,
+            self::DayToDayConsumption,
             self::Entertainment,
             self::Utilities,
             self::Miscellaneous,
@@ -46,11 +49,19 @@ enum Category: string implements EnumInterface
     public function colour(): string
     {
         return match ($this) {
-            Category::Tax, Category::Transport, Category::Entertainment, Category::Utilities, Category::Communication => 'red',
-            Category::Income => 'green',
-            Category::House, Category::Financial => 'blue',
-            Category::Miscellaneous => 'purple',
+            self::DayToDayConsumption, self::Tax, self::Transport, self::Entertainment, self::Utilities, self::Communication => 'red',
+            self::Income => 'green',
+            self::House, self::Financial => 'blue',
+            self::Miscellaneous => 'purple',
             self::Unknown => 'grey'
+        };
+    }
+
+    public function comments(): string
+    {
+        return match ($this) {
+            self::DayToDayConsumption => 'The daily consumption should be 5000kr per grown-up and 2500kr per child for a whole month. This is a requirement of a mortgage application.',
+            default => '',
         };
     }
 

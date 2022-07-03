@@ -20,7 +20,7 @@ class TagsSeeder extends Seeder
 
         /** @var \App\Models\User $user */
         $user = User::where('email', 'sebastian@edelmann.co.uk')->first();
-        $user->bankAccounts()->first()->transactions->map(function (Transaction $transaction) {
+        $user->accounts()->first()->transactions->map(function (Transaction $transaction) {
             $transaction->addTags(Tag::all()->random(3));
         });
     }

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\BankAccount;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BankAccountPolicy
+class AccountPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,11 @@ class BankAccountPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, BankAccount $bankAccount)
+    public function view(User $user, Account $account)
     {
         //
     }
@@ -48,10 +49,11 @@ class BankAccountPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, BankAccount $bankAccount)
+    public function update(User $user, Account $account)
     {
         //
     }
@@ -60,10 +62,11 @@ class BankAccountPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, BankAccount $bankAccount)
+    public function delete(User $user, Account $account)
     {
         //
     }
@@ -72,10 +75,11 @@ class BankAccountPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, BankAccount $bankAccount)
+    public function restore(User $user, Account $account)
     {
         //
     }
@@ -84,10 +88,11 @@ class BankAccountPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BankAccount  $bankAccount
+     * @param  \App\Models\Account  $account
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, BankAccount $bankAccount)
+    public function forceDelete(User $user, Account $account)
     {
         //
     }

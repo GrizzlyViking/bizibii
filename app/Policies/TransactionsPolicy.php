@@ -56,7 +56,7 @@ class TransactionsPolicy
      */
     public function update(User $user, Transaction $transactions)
     {
-        return $transactions->bankAccount->user->is($user);
+        return $transactions->account->user->is($user);
     }
 
     /**
@@ -69,7 +69,7 @@ class TransactionsPolicy
      */
     public function delete(User $user, Transaction $transactions)
     {
-        return $transactions->bankAccount->user->is($user);
+        return $transactions->account->user->is($user);
     }
 
     /**
@@ -82,7 +82,7 @@ class TransactionsPolicy
      */
     public function restore(User $user, Transaction $transactions)
     {
-        return $transactions->bankAccount->user->is($user);
+        return $transactions->account->user->is($user);
     }
 
     /**
@@ -95,6 +95,6 @@ class TransactionsPolicy
      */
     public function forceDelete(User $user, Transaction $transactions)
     {
-        return $transactions->bankAccount->user->is($user);
+        return $transactions->account->user->is($user);
     }
 }
