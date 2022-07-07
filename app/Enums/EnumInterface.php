@@ -12,5 +12,5 @@ interface EnumInterface
 {
     public static function all(): Collection;
 
-    public function equals(EnumInterface $enum): bool;
+    public function equals(EnumInterface|string $enum): bool;
 }

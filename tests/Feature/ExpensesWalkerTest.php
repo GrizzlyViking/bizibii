@@ -9,7 +9,6 @@ use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
 use App\Services\ExpensesWalker;
-use App\Services\GraphExpenses;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
@@ -142,6 +141,44 @@ class ExpensesWalkerTest extends TestCase
         $this->assertEquals(-4717.0, $complete->get('2022-03'));
         $this->assertEquals(3749.0, $complete->get('2022-11'));
 
+    }
+
+    /** @test */
+    public function transfer_between_accounts()
+    {
+        /** @var Account $accountFrom */
+        $accountFrom = Account::factory()->create([
+            'user_id' => $this->user->id,
+            'balance' => 10000
+        ]);
+        /** @var Account $accountTo */
+        $accountTo = Account::factory()->create([
+            'user_id' => $this->user->id,
+            'balance' => 100
+        ]);
+
+        Expense::create([
+            'account_id' => $accountFrom->id,
+            'transfer_to_account_id' => $accountTo->id,
+            'category' => Category::Transfer,
+            'description' => 'various',
+            'frequency' => Frequency::Monthly,
+            'start' => '2021-04-01',
+            'due_date' => DueDate::LastDayOfMonth,
+            'amount' => 9500.00,
+        ]);
+
+        $walker = (new ExpensesWalker(
+            $this->user,
+            Carbon::parse('2022-01-29'),
+            Carbon::parse('2022-02-02')
+        ))->process();
+
+        $balanceFrom = $walker->graphBalance($accountFrom);
+        $this->assertEquals(500, $balanceFrom->last());
+
+        $balanceTo = $walker->graphBalance($accountTo);
+        $this->assertEquals(9600, $balanceTo->last());
     }
 
 }

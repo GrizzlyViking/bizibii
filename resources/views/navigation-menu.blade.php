@@ -53,12 +53,26 @@
 
                             <x-slot name="content">
                                 <div class="w-60">
-                                    <!-- Team Management -->
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Manage Accounts') }}
+                                    </div>
+
+                                    <x-jet-dropdown-link href="{{ route('account.index') }}">
+                                        {{ __('List Accounts') }}
+                                    </x-jet-dropdown-link>
+
+                                    <x-jet-dropdown-link href="{{ route('account.create') }}">
+                                        {{ __('Create an Account') }}
+                                    </x-jet-dropdown-link>
+
+                                    <div class="border-t border-gray-100"></div>
+
+                                    <!-- Expenses Management -->
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Manage Expenses') }}
                                     </div>
 
-                                    <!-- Team Settings -->
                                     <x-jet-dropdown-link href="{{ route('expenses.list') }}">
                                         {{ __('List Expenses') }}
                                     </x-jet-dropdown-link>
@@ -66,6 +80,8 @@
                                     <x-jet-dropdown-link href="{{ route('expenses.create') }}">
                                         {{ __('Register New Expense') }}
                                     </x-jet-dropdown-link>
+
+                                    <div class="border-t border-gray-100 mt-2"></div>
 
                                     <x-jet-dropdown-link href="{{ route('expenses.charts') }}">
                                         {{ __('Livewire Charts') }}

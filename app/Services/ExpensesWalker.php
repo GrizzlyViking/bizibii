@@ -100,20 +100,25 @@ class ExpensesWalker
                 $expense->applyCost($balance);
             });
             return $balance;
-        })->groupBy(fn ($day, $date) => date_create($date)->format('Y-m'))
-            ->map(fn (Collection $month) =>$month->last());
+        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
+            ->map(fn(Collection $month) => $month->last());
     }
 
     public function daily(?Account $account = null): Collection
     {
         $balance = $account->balance;
         return $this->data->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
-        ) => $expense->account_id == $account->id))->map(function (Collection $expenses) use (&$balance) {
-            $expenses->each(function (Expense $expense) use (&$balance) {
-                $expense->applyCost($balance);
+        ) => $expense->account_id == $account->id || ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id)))
+            ->map(function (Collection $expenses) use ($account, &$balance) {
+                $expenses->each(function (Expense $expense) use ($account, &$balance) {
+                    if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
+                        $expense->applyTransfer($balance);
+                    } else {
+                        $expense->applyCost($balance);
+                    }
+                });
+                return $balance;
             });
-            return $balance;
-        });
     }
 
 }

@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpensesRequest;
 use App\Models\Expense;
+use App\Models\User;
+use App\Services\ExpensesWalker;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ExpensesController extends Controller
 {
@@ -16,7 +20,7 @@ class ExpensesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function list(): Response
     {
         $expenses = Auth::user()->expenses;
         return response()->view('admin.expense.list', compact('expenses'));
@@ -27,7 +31,7 @@ class ExpensesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): Response
     {
         return response()->view('admin.expense.create');
     }
@@ -39,21 +43,26 @@ class ExpensesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit(Expense $expense)
+    public function edit(Expense $expense): View
     {
         return view('admin.expense.edit', compact('expense'));
     }
 
     public function charts(): Response
     {
+        /** @var User $user */
+        $user = Auth::user();
+        $balance = new ExpensesWalker($user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear());
+
+        $graph = $balance->process()->graphBalance($user->accounts->first(), ExpensesWalker::MONTHLY);
+
         $lineChartModel = (new LineChartModel())
                         ->singleLine()
                         ->setAnimated(false)
-                        ->setTitle('Balance per Month.')
-                        ->addPoint('first', 12)
-                        ->addPoint('third', 14)
-                        ->addPoint('4th', 4)
-                        ->addPoint('second', 2);
+                        ->setTitle('Balance per Month.');
+        $graph->each(function ($balance, $date) use ($lineChartModel) {
+            $lineChartModel->addPoint($date, $balance);
+        });
         return response()->view('admin.expense.charts.line', compact('lineChartModel'));
     }
 }

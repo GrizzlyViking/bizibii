@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $account_id
+ * @property int $transfer_to_account_id
  * @property string $description
  * @property Category $category
  * @property float $amount
@@ -28,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  * @property \App\Models\User $user
  * @property \App\Models\Account $account
+ * @property \App\Models\Account $transferToAccount;
  *
  * @method static self create(array $fillable)
  * @method static self updateOrInsert(array $criteria, array $payload)
@@ -35,6 +37,7 @@ use Illuminate\Support\Carbon;
  */
 class Expense extends Model
 {
+
     use HasFactory;
 
     protected $dates = [
@@ -51,6 +54,7 @@ class Expense extends Model
 
     protected $fillable = [
         'account_id',
+        'transfer_to_account_id',
         'description',
         'category',
         'frequency',
@@ -78,6 +82,11 @@ class Expense extends Model
     public function account(): Relation
     {
         return $this->belongsTo(Account::class, 'account_id', 'id');
+    }
+
+    public function transferToAccount(): Relation
+    {
+        return $this->belongsTo(Account::class, 'transfer_to_account_id', 'id');
     }
 
     /**
@@ -207,4 +216,10 @@ class Expense extends Model
 
         return $balance += $this->getCost();
     }
+
+    public function applyTransfer(&$balance): float
+    {
+        return $balance -= $this->getCost();
+    }
+
 }

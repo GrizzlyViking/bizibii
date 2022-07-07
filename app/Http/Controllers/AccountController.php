@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAccountRequest;
-use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
@@ -13,9 +14,10 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        $accounts = Auth::user()->accounts;
+        return response()->view('admin.account.list', compact('accounts'));
     }
 
     /**
@@ -23,33 +25,9 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): Response
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAccountRequest  $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAccountRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Account $account)
-    {
-        //
+        return response()->view('admin.account.create');
     }
 
     /**
@@ -57,35 +35,10 @@ class AccountController extends Controller
      *
      * @param  \App\Models\Account  $account
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(Account $account)
+    public function edit(Account $account): View
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateAccountRequest  $request
-     * @param  \App\Models\Account  $account
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateAccountRequest $request, Account $account)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Account  $account
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Account $account)
-    {
-        //
+        return view('admin.account.edit', compact('account'));
     }
 }

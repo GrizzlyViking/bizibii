@@ -49,13 +49,27 @@
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-                                <select wire:change="changeCategory" wire:model="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    @foreach(\App\Enums\Category::all() as $category)
-                                        <option value="{{ $category->value }}">{{ ucwords($category->value) }}</option>
+                                <select wire:model="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    @foreach(\App\Enums\Category::all() as $option)
+                                        <option value="{{ $option->value }}">{{ ucwords($option->value) }}</option>
                                     @endforeach
                                 </select>
                                 @error('category') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                             </div>
+
+                            @if($show_transfer_to_accounts)
+                                <div class="col-span-6 sm:col-span-3">
+                                    <label for="transfer_to_account_id" class="block text-sm font-medium text-gray-700">Transfer to account</label>
+                                    <select wire:model="transfer_to_account_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if($submit === 'Update')'disabled'@endif>
+                                    @forelse(Auth::user()->accounts as $account)
+                                        <option value="{{ $account->id }}">{{ ucwords($account->name) }}</option>
+                                    @empty
+                                        <option>No bank account(s)</option>
+                                        @endforelse
+                                        </select>
+                                        @error('transfer_to_account_id') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
+                                </div>
+                            @endif
 
                             <div class="col-span-6">
                                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>

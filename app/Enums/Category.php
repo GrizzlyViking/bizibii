@@ -29,6 +29,8 @@ enum Category: string implements EnumInterface
 
     case Unknown = 'unknown';
 
+    case Transfer = 'transfer';
+
     public static function all(): Collection
     {
         return collect([
@@ -42,6 +44,7 @@ enum Category: string implements EnumInterface
             self::Tax,
             self::Financial,
             self::House,
+            self::Transfer,
             self::Unknown,
         ]);
     }
@@ -51,7 +54,7 @@ enum Category: string implements EnumInterface
         return match ($this) {
             self::DayToDayConsumption, self::Tax, self::Transport, self::Entertainment, self::Utilities, self::Communication => 'red',
             self::Income => 'green',
-            self::House, self::Financial => 'blue',
+            self::House, self::Financial, self::Transfer => 'blue',
             self::Miscellaneous => 'purple',
             self::Unknown => 'grey'
         };
@@ -65,8 +68,12 @@ enum Category: string implements EnumInterface
         };
     }
 
-    public function equals(EnumInterface $enum): bool
+    public function equals(EnumInterface|string $enum): bool
     {
-        return $this->value == $enum->value && $this->name == $enum->name;
+        if ($enum instanceof EnumInterface) {
+            return $this->value == $enum->value && $this->name == $enum->name;
+        }
+
+        return $this->value == $enum || $this->name == $enum;
     }
 }

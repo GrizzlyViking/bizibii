@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Account;
+use App\Models\Expense;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +18,8 @@ return new class extends Migration {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('transfer_to_account_id')->nullable();
+            $table->foreign('transfer_to_account_id')->references('id')->on('accounts')->nullOnDelete();
             $table->string('description');
             $table->string('category');
             $table->float('amount', 16, 2);

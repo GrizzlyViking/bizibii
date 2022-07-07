@@ -17,10 +17,11 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  *
  * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Tag> $tags
- * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Transaction>
- *     $transactions
+ * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Transaction> $transactions
+ *
+ * @method static self updateOrInsert(array $comparison, array $payload)
  */
-class Account extends Model
+class Account extends Model implements ListableInterface
 {
     protected $table = 'accounts';
     use HasFactory;
@@ -60,4 +61,35 @@ class Account extends Model
 
         return $this->balance;
     }
+
+    public function getColumn1(): string
+    {
+        return $this->name;
+    }
+
+    public function getColumn1Sub(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getColumn2(): ?string
+    {
+        return $this->balance;
+    }
+
+    public function getColumn3(): ?string
+    {
+        return null;
+    }
+
+    public function getColumn4(): ?string
+    {
+        return null;
+    }
+
+    public function getRouteShow(): ?string
+    {
+        return route('account.edit', $this);
+    }
+
 }

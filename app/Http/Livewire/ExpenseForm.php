@@ -19,9 +19,11 @@ class ExpenseForm extends Component
     /** @var int */
     public $account_id;
 
+    public $transfer_to_account_id;
+
     public $description;
 
-    public $category;
+    public string $category = '';
 
     public $frequency;
 
@@ -35,6 +37,8 @@ class ExpenseForm extends Component
 
     public $end;
 
+    public bool $show_transfer_to_accounts = false;
+
     public $submit = 'Save';
 
      protected array $messages = [
@@ -44,6 +48,8 @@ class ExpenseForm extends Component
     protected array $validationAttributes = [
         'start' => 'start date',
         'end'   => 'end date',
+        'transfer_to_account_id' => 'account to transfer to',
+        'account_id' => 'account'
     ];
 
 
@@ -52,7 +58,13 @@ class ExpenseForm extends Component
         return [
             'account_id' => 'required|exists:accounts,id',
             'description'     => 'required',
-            'category'        => ['required', new Enum(Category::class)],
+            'transfer_to_account_id' => [
+                'nullable',
+                Rule::requiredIf(fn() => $this->category == Category::Transfer->value),
+                'different:account_id',
+                Rule::prohibitedIf(fn () => $this->category !== Category::Transfer->value)
+            ],
+            'category'        => ['required'],
             'frequency'       => ['required'],
             'due_date'        => ['required', new Enum(DueDate::class), new DueDateRules()],
             'due_date_meta'   => [Rule::requiredIf(fn() => $this->due_date == DueDate::DateInMonth->value)],
@@ -81,15 +93,16 @@ class ExpenseForm extends Component
             $this->frequency = Frequency::all()->first()->value;
         } else {
             $this->expense_id = $expense->id;
+            $this->transfer_to_account_id = $expense->transfer_to_account_id;
             $this->description = $expense->description;
             $this->amount = $expense->amount;
             $this->due_date_meta = $expense->due_date_meta;
             $this->start = $expense->start?->format('Y-m-d');;
             $this->end = $expense->end?->format('Y-m-d');
-            $this->account_id = $expense->bank_account_id;
-            $this->category = $expense->category?->value;
-            $this->due_date = $expense->due_date?->value;
-            $this->frequency = $expense->frequency?->value;
+            $this->account_id = $expense->account_id;
+            $this->category = $expense->category->value;
+            $this->due_date = $expense->due_date->value;
+            $this->frequency = $expense->frequency->value;
             $this->submit = 'Update';
         }
     }
@@ -130,6 +143,13 @@ class ExpenseForm extends Component
         if ($this->category == Category::DayToDayConsumption->value) {
             $this->due_date = DueDate::LastDayOfMonth->value;
             $this->frequency = Frequency::Daily->value;
+        } elseif (Category::Transfer->equals($this->category)) {
+            $this->due_date = DueDate::LastWorkingDayOfMonth->value;
+            $this->frequency = Frequency::Monthly->value;
+            $this->show_transfer_to_accounts = true;
+        } else {
+            $this->transfer_to_account_id = null;
+            $this->show_transfer_to_accounts = false;
         }
     }
 }
