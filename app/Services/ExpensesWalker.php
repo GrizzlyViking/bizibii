@@ -26,8 +26,6 @@ class ExpensesWalker
 
     private Carbon $now;
 
-    private float $starting_balance;
-
     private Collection $data;
 
     public function __construct(
@@ -50,20 +48,6 @@ class ExpensesWalker
         }
 
         return $this;
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection<array>
-     */
-    public function graphBalance(Account $account, string $type = 'daily'): Collection
-    {
-        switch ($type) {
-            case self::DAILY:
-            default:
-                return $this->daily($account);
-            case self::MONTHLY:
-                return $this->graphMonthly($account);
-        }
     }
 
     /**
@@ -91,34 +75,46 @@ class ExpensesWalker
         $this->data->put($day->format('Y-m-d'), $expenses);
     }
 
-    public function graphMonthly(?Account $account = null): Collection
+    public function graphBalance(?Account $account = null): Collection
     {
         $balance = $account->balance;
-        return $this->data->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
-        ) => $expense->account_id == $account->id))->map(function (Collection $expenses) use (&$balance) {
-            $expenses->each(function (Expense $expense) use (&$balance) {
-                $expense->applyCost($balance);
+        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses) use ($account, &$balance) {
+            $expenses->each(function (Expense $expense) use ($account, &$balance) {
+                if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
+                    $expense->applyTransfer($balance);
+                } else {
+                    $expense->applyCost($balance);
+                }
             });
             return $balance;
-        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
+        });
+    }
+
+    public function graphBalanceMonthly(?Account $account = null): Collection
+    {
+        return $this->graphBalance($account)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
             ->map(fn(Collection $month) => $month->last());
     }
 
-    public function daily(?Account $account = null): Collection
+    public function graphExpensesMonthly(Account $account): Collection
     {
-        $balance = $account->balance;
+        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses) {
+            return $expenses->sum(fn(Expense $expense
+            ) => $expense->category->equals(Category::Income) || $expense->category->type() == Category::ADMINISTRATIVE ? 0 : -$expense->getCost());
+        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
+    }
+
+    public function graphIncomeMonthly(Account $account): Collection
+    {
+        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses) {
+            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->getCost() : 0);
+        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
+    }
+
+    public function filterExpensesByAccount(Account $account): Collection
+    {
         return $this->data->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
-        ) => $expense->account_id == $account->id || ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id)))
-            ->map(function (Collection $expenses) use ($account, &$balance) {
-                $expenses->each(function (Expense $expense) use ($account, &$balance) {
-                    if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
-                        $expense->applyTransfer($balance);
-                    } else {
-                        $expense->applyCost($balance);
-                    }
-                });
-                return $balance;
-            });
+        ) => $expense->account_id == $account->id || ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id)));
     }
 
 }

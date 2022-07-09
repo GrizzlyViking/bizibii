@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpensesRequest;
+use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
 use App\Services\ExpensesWalker;
+use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -22,8 +25,13 @@ class ExpensesController extends Controller
      */
     public function list(): Response
     {
-        $expenses = Auth::user()->expenses;
-        return response()->view('admin.expense.list', compact('expenses'));
+        /** @var User $user */
+        $user = Auth::user();
+        $expenses = $user->expenses;
+        $walker = (new ExpensesWalker($user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear()))->process();
+        $lineChartModel = $this->getGraphMultiLine($user->accounts, $walker);
+        $expensesBarChart = $this->getBarChart($user->accounts, $walker);
+        return response()->view('admin.expense.list', compact('expenses', 'lineChartModel', 'expensesBarChart'));
     }
 
     /**
@@ -52,17 +60,73 @@ class ExpensesController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $balance = new ExpensesWalker($user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear());
+        $walker = (new ExpensesWalker($user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear()))->process();
+        $lineChartModel = $this->getGraphLine($user->accounts->first(), $walker);
 
-        $graph = $balance->process()->graphBalance($user->accounts->first(), ExpensesWalker::MONTHLY);
+        return response()->view('admin.expense.charts.line', compact('lineChartModel'));
+    }
+
+    public function getGraphLine(Account $account, ExpensesWalker $walker)
+    {
+        $graph = $walker->graphBalanceMonthly($account);
 
         $lineChartModel = (new LineChartModel())
-                        ->singleLine()
-                        ->setAnimated(false)
-                        ->setTitle('Balance per Month.');
+            ->singleLine()
+            ->setAnimated(false)
+            ->setTitle('Balance per Month.');
         $graph->each(function ($balance, $date) use ($lineChartModel) {
             $lineChartModel->addPoint($date, $balance);
         });
-        return response()->view('admin.expense.charts.line', compact('lineChartModel'));
+
+        return $lineChartModel;
     }
+
+    public function getGraphMultiLine(Collection $accounts, ExpensesWalker $walker): LineChartModel
+    {
+        $graphs = collect();
+        $accounts->each(function (Account $account) use ($walker, &$graphs) {
+            $graphs->put($account->name, $walker->graphBalanceMonthly($account));
+        });
+
+        $lineChartModel = (new LineChartModel())
+            ->multiLine()
+            ->setTitle('Balance per Month.');
+        $graphs->each(function ($graph, $name) use ($lineChartModel) {
+            $graph->each(function ($balance, $date) use ($name, $lineChartModel) {
+                $lineChartModel->addSeriesPoint($name, $this->getMonth($date), $balance);
+            });
+        });
+
+        return $lineChartModel;
+    }
+
+    protected function getBarChart(mixed $accounts, ExpensesWalker $walker): ColumnChartModel
+    {
+        $graphs = collect();
+        $accounts->each(function (Account $account) use ($walker, &$graphs) {
+            $graphs->put($account->name, $walker->graphExpensesMonthly($account));
+        });
+
+        $barChart = (new ColumnChartModel())
+            ->multiColumn()
+            ->stacked()
+            ->setTitle('Expenses per month');
+        $graphs->each(function ($graph, $name) use ($barChart) {
+            $graph->each(function ($expenses, $date) use ($name, $barChart) {
+                $barChart->addSeriesColumn($name, $this->getMonth($date), $expenses);
+            });
+        });
+
+        return $barChart;
+    }
+
+    private function getMonth(string $yearMonth): string
+    {
+        if (preg_match('/(\d{4})-(\d{2})/', $yearMonth, $matched)) {
+            return Carbon::create($matched[1], $matched[2], '1')->monthName;
+        }
+
+        return $yearMonth;
+    }
+
 }

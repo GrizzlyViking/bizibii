@@ -179,12 +179,12 @@ class ExpenseLiveWireTest extends TestCase
             ->set('due_date', DueDate::LastDayOfMonth->value)
             ->set('amount', $this->faker->randomFloat())
             ->call('submit')
-            ->assertHasErrors(['transfer_to_account_id' => 'different']);
+            ->assertHasErrors(['transfer_to_account_id'])
+            ->assertSee('The account transferred to must be different from the account transfered from.');
 
         Livewire::test(ExpenseForm::class)
             ->set('account_id', $this->user->accounts->first()->id)
             ->set('transfer_to_account_id', $accountTo->id)
-            ->set('show_transfer_to_accounts', true)
             ->set('description', 'test expense')
             ->set('category', Category::Transfer->value)
             ->set('frequency', Frequency::Monthly->value)

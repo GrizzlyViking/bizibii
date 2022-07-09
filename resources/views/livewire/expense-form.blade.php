@@ -38,8 +38,8 @@
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="account" class="block text-sm font-medium text-gray-700">Account</label>
                                 <select wire:model="account_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if($submit === 'Update')'disabled'@endif>
-                                    @forelse(Auth::user()->accounts as $account)
-                                            <option value="{{ $account->id }}">{{ ucwords($account->name) }}</option>
+                                    @forelse(Auth::user()->accounts as $option)
+                                            <option value="{{ $option->id }}">{{ ucwords($option->name) }}</option>
                                     @empty
                                         <option>No bank account(s)</option>
                                     @endforelse
@@ -57,12 +57,12 @@
                                 @error('category') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                             </div>
 
-                            @if($show_transfer_to_accounts)
+                            @if(\App\Enums\Category::Transfer->equals($category))
                                 <div class="col-span-6 sm:col-span-3">
                                     <label for="transfer_to_account_id" class="block text-sm font-medium text-gray-700">Transfer to account</label>
                                     <select wire:model="transfer_to_account_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if($submit === 'Update')'disabled'@endif>
-                                    @forelse(Auth::user()->accounts as $account)
-                                        <option value="{{ $account->id }}">{{ ucwords($account->name) }}</option>
+                                    @forelse(Auth::user()->accounts as $option)
+                                        <option value="{{ $option->id }}">{{ ucwords($option->name) }}</option>
                                     @empty
                                         <option>No bank account(s)</option>
                                         @endforelse
@@ -126,8 +126,8 @@
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                        <button type="button" wire:click="delete({{ $expense_id }})" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Delete</button>
-                        <button type="button" wire:click="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ $submit }}</button>
+                        <x-button class="focus:ring-red-500 bg-red-600 hover:bg-red-700" wire:click="delete({{ $expense_id }})">Delete</x-button>
+                        <x-button class="focus:ring-indigo-500 bg-indigo-600 hover:bg-indigo-700" wire:click="submit">{{ $submit }}</x-button>
                     </div>
                 </div>
             </form>

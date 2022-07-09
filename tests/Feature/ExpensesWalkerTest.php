@@ -42,16 +42,16 @@ class ExpensesWalkerTest extends TestCase
         $account = $this->user->accounts->first();
 
         $account->expenses()->create([
-            'category' => Category::House,
+            'category'    => Category::House,
             'description' => 'Mortgage',
-            'frequency' => Frequency::Monthly,
-            'due_date' => DueDate::FirstWorkingDayOfMonth,
-            'amount' => 5800.00
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 5800.00,
         ]);
 
-        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1,1), Carbon::createFromDate(2022, 1,31));
+        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1, 1), Carbon::createFromDate(2022, 1, 31));
 
-        $complete = $walker->process()->graphBalance($account, ExpensesWalker::DAILY);
+        $complete = $walker->process()->graphBalance($account);
 
         $this->assertInstanceOf(Collection::class, $complete);
         $this->assertEquals($account->balance, $complete->get('2022-01-02'));
@@ -65,72 +65,72 @@ class ExpensesWalkerTest extends TestCase
         $account = $this->user->accounts->first();
 
         $account->expenses()->create([
-            'category' => Category::Income,
+            'category'    => Category::Income,
             'description' => 'Wages from aller',
-            'frequency' => Frequency::Monthly,
-            'due_date' => DueDate::LastWorkingDayOfMonth,
-            'start' => '2021-11-01',
-            'amount' => 33633.00
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::LastWorkingDayOfMonth,
+            'start'       => '2021-11-01',
+            'amount'      => 33633.00,
         ]);
 
         $account->expenses()->create([
-            'category' => Category::House,
+            'category'    => Category::House,
             'description' => 'Food and drink',
-            'frequency' => Frequency::Daily,
-            'due_date' => DueDate::Daily,
-            'start' => '2021-11-01',
-            'amount' => 350.00
+            'frequency'   => Frequency::Daily,
+            'due_date'    => DueDate::Daily,
+            'start'       => '2021-11-01',
+            'amount'      => 350.00,
         ]);
 
         $account->expenses()->create([
-            'category' => Category::House,
+            'category'    => Category::House,
             'description' => 'Mortgage',
-            'frequency' => Frequency::Monthly,
-            'due_date' => DueDate::FirstWorkingDayOfMonth,
-            'amount' => 5800.00
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 5800.00,
         ]);
 
         $account->expenses()->create([
-            'category' => Category::House,
+            'category'    => Category::House,
             'description' => 'Mortgage',
-            'frequency' => Frequency::Every3rdMonth,
-            'start' => '2021-03-01',
-            'due_date' => DueDate::FirstWorkingDayOfMonth,
-            'amount' => 8600.00
+            'frequency'   => Frequency::Every3rdMonth,
+            'start'       => '2021-03-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 8600.00,
         ]);
 
         $account->expenses()->create([
-            'category' => Category::Utilities,
+            'category'    => Category::Utilities,
             'description' => 'Electricity',
-            'frequency' => Frequency::Monthly,
-            'start' => '2021-03-01',
-            'due_date' => DueDate::FirstWorkingDayOfMonth,
-            'amount' => 2600.00
+            'frequency'   => Frequency::Monthly,
+            'start'       => '2021-03-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 2600.00,
         ]);
 
         Expense::create([
-            'account_id' => $account->id,
-            'category' => Category::House,
+            'account_id'  => $account->id,
+            'category'    => Category::House,
             'description' => 'various',
-            'frequency' => Frequency::Monthly,
-            'start' => '2021-04-01',
-            'due_date' => DueDate::FirstWorkingDayOfMonth,
-            'amount' => 10500.00
+            'frequency'   => Frequency::Monthly,
+            'start'       => '2021-04-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 10500.00,
         ]);
 
         Expense::create([
-            'account_id' => $account->id,
-            'category' => Category::DayToDayConsumption,
+            'account_id'  => $account->id,
+            'category'    => Category::DayToDayConsumption,
             'description' => Category::DayToDayConsumption->value,
-            'frequency' => Frequency::Monthly,
-            'start' => '2021-04-01',
-            'due_date' => DueDate::LastDayOfMonth,
-            'amount' => 12500.00
+            'frequency'   => Frequency::Monthly,
+            'start'       => '2021-04-01',
+            'due_date'    => DueDate::LastDayOfMonth,
+            'amount'      => 12500.00,
         ]);
 
-        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1,1), Carbon::createFromDate(2022, 12,31), 0);
+        $walker = new ExpensesWalker($this->user, Carbon::createFromDate(2022, 1, 1), Carbon::createFromDate(2022, 12, 31), 0);
 
-        $complete = $walker->process()->graphBalance($account, ExpensesWalker::MONTHLY);
+        $complete = $walker->process()->graphBalanceMonthly($account);
 
         $this->assertInstanceOf(Collection::class, $complete);
         $this->assertCount(12, $complete);
@@ -140,7 +140,6 @@ class ExpensesWalkerTest extends TestCase
         $this->assertEquals(0, $complete->get('2022-02'));
         $this->assertEquals(-4717.0, $complete->get('2022-03'));
         $this->assertEquals(3749.0, $complete->get('2022-11'));
-
     }
 
     /** @test */
@@ -149,36 +148,131 @@ class ExpensesWalkerTest extends TestCase
         /** @var Account $accountFrom */
         $accountFrom = Account::factory()->create([
             'user_id' => $this->user->id,
-            'balance' => 10000
+            'balance' => 10000,
         ]);
         /** @var Account $accountTo */
         $accountTo = Account::factory()->create([
             'user_id' => $this->user->id,
-            'balance' => 100
+            'balance' => 100,
         ]);
 
         Expense::create([
-            'account_id' => $accountFrom->id,
+            'account_id'             => $accountFrom->id,
             'transfer_to_account_id' => $accountTo->id,
-            'category' => Category::Transfer,
-            'description' => 'various',
-            'frequency' => Frequency::Monthly,
-            'start' => '2021-04-01',
-            'due_date' => DueDate::LastDayOfMonth,
-            'amount' => 9500.00,
+            'category'               => Category::Transfer,
+            'description'            => 'various',
+            'frequency'              => Frequency::Monthly,
+            'start'                  => '2021-04-01',
+            'due_date'               => DueDate::LastDayOfMonth,
+            'amount'                 => 9500.00,
         ]);
 
         $walker = (new ExpensesWalker(
             $this->user,
-            Carbon::parse('2022-01-29'),
-            Carbon::parse('2022-02-02')
+            Carbon::parse('2022-01-01'),
+            Carbon::parse('2022-12-31')
         ))->process();
 
         $balanceFrom = $walker->graphBalance($accountFrom);
-        $this->assertEquals(500, $balanceFrom->last());
+        $this->assertEquals(-94500.0, $balanceFrom->last());
 
         $balanceTo = $walker->graphBalance($accountTo);
-        $this->assertEquals(9600, $balanceTo->last());
+        $this->assertEquals(104600, $balanceTo->last());
+
+        $balanceTo = $walker->graphBalanceMonthly($accountTo);
+        $this->assertEquals(104600, $balanceTo->last());
+    }
+
+
+    /** @test */
+    public function chart_expenses()
+    {
+        /** @var Account $account */
+        $account = $this->user->accounts->first();
+
+        $account->expenses()->create([
+            'category'    => Category::Income,
+            'description' => 'Wages from aller',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::LastWorkingDayOfMonth,
+            'start'       => '2021-11-01',
+            'amount'      => 33633.00,
+        ]);
+
+        $account->expenses()->create([
+            'category'    => Category::House,
+            'description' => 'Mortgage',
+            'frequency'   => Frequency::Monthly,
+            'start'       => '2021-03-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 5600.00,
+        ]);
+
+        $account->expenses()->create([
+            'category'    => Category::House,
+            'description' => 'Mortgage',
+            'frequency'   => Frequency::Every3rdMonth,
+            'start'       => '2021-03-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 8600.00,
+        ]);
+
+        $walker = (new ExpensesWalker(
+            $this->user,
+            Carbon::parse('2022-01-01'),
+            Carbon::parse('2022-12-31')
+        ))->process();
+
+        $expenses = $walker->graphExpensesMonthly($account);
+        $this->assertEquals(5600.0, $expenses->get('2022-01'));
+        $this->assertEquals(14200.0, $expenses->get('2022-03'));
+        $this->assertEquals(5600.0, $expenses->get('2022-11'));
+        $this->assertEquals(14200.0, $expenses->get('2022-12'));
+    }
+
+
+    /** @test */
+    public function graph_income()
+    {
+        /** @var Account $account */
+        $account = $this->user->accounts->first();
+
+        $account->expenses()->create([
+            'category'    => Category::Income,
+            'description' => 'Wages from aller',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::LastWorkingDayOfMonth,
+            'start'       => '2021-11-01',
+            'amount'      => 33633.00,
+        ]);
+
+        $account->expenses()->create([
+            'category'    => Category::House,
+            'description' => 'Mortgage',
+            'frequency'   => Frequency::Monthly,
+            'start'       => '2021-03-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 5600.00,
+        ]);
+
+        $account->expenses()->create([
+            'category'    => Category::House,
+            'description' => 'Mortgage',
+            'frequency'   => Frequency::Every3rdMonth,
+            'start'       => '2021-03-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 8600.00,
+        ]);
+
+        $walker = (new ExpensesWalker(
+            $this->user,
+            Carbon::parse('2022-01-01'),
+            Carbon::parse('2022-12-31')
+        ))->process();
+
+        $expenses = $walker->graphIncomeMonthly($account);
+        $this->assertEquals(33633.0, $expenses->get('2022-01'));
+        $this->assertEquals(33633.0, $expenses->get('2022-12'));
     }
 
 }

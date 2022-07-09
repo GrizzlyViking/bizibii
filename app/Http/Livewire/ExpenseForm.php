@@ -14,6 +14,7 @@ use Livewire\Component;
 
 class ExpenseForm extends Component
 {
+
     public ?int $expense_id = null;
 
     /** @var int */
@@ -41,35 +42,37 @@ class ExpenseForm extends Component
 
     public $submit = 'Save';
 
-     protected array $messages = [
+    protected array $messages = [
         'amount.numeric' => 'The amount must be numeric, with no more than 2 decimals.',
     ];
 
     protected array $validationAttributes = [
-        'start' => 'start date',
-        'end'   => 'end date',
-        'transfer_to_account_id' => 'account to transfer to',
-        'account_id' => 'account'
+        'start'                  => 'start date',
+        'end'                    => 'end date',
+        'account_id'             => 'account',
     ];
-
 
     protected function getRules(): array
     {
         return [
-            'account_id' => 'required|exists:accounts,id',
-            'description'     => 'required',
+            'account_id'             => 'required|exists:accounts,id',
+            'description'            => 'required',
             'transfer_to_account_id' => [
                 'nullable',
                 Rule::requiredIf(fn() => $this->category == Category::Transfer->value),
-                'different:account_id',
-                Rule::prohibitedIf(fn () => $this->category !== Category::Transfer->value)
+                function ($attribute, $value, $fail) {
+                    if ($value == $this->account_id) {
+                        $fail('The account transferred to must be different from the account transfered from.');
+                    }
+                },
+                Rule::prohibitedIf(fn() => $this->category !== Category::Transfer->value),
             ],
-            'category'        => ['required'],
-            'frequency'       => ['required'],
-            'due_date'        => ['required', new Enum(DueDate::class), new DueDateRules()],
-            'due_date_meta'   => [Rule::requiredIf(fn() => $this->due_date == DueDate::DateInMonth->value)],
-            'amount'          => 'required|numeric',
-            'start'           => [
+            'category'               => ['required'],
+            'frequency'              => ['required'],
+            'due_date'               => ['required', new Enum(DueDate::class), new DueDateRules()],
+            'due_date_meta'          => [Rule::requiredIf(fn() => $this->due_date == DueDate::DateInMonth->value)],
+            'amount'                 => 'required|numeric',
+            'start'                  => [
                 'nullable',
                 Rule::requiredIf(function () {
                     return Frequency::all()->filter(function (Frequency $frequency) {
@@ -79,7 +82,7 @@ class ExpenseForm extends Component
                 'date',
                 'before_or_equal:now',
             ],
-            'end'             => 'nullable|date|after:start',
+            'end'                    => 'nullable|date|after:start',
         ];
     }
 
@@ -152,4 +155,5 @@ class ExpenseForm extends Component
             $this->show_transfer_to_accounts = false;
         }
     }
+
 }

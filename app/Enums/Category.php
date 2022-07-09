@@ -31,6 +31,10 @@ enum Category: string implements EnumInterface
 
     case Transfer = 'transfer';
 
+    public const ADMINISTRATIVE = 'administrative';
+    public const OUTGOING = 'outgoing';
+    public const INCOMING = 'incoming';
+
     public static function all(): Collection
     {
         return collect([
@@ -57,6 +61,24 @@ enum Category: string implements EnumInterface
             self::House, self::Financial, self::Transfer => 'blue',
             self::Miscellaneous => 'purple',
             self::Unknown => 'grey'
+        };
+    }
+
+    public function type(): string
+    {
+        return match ($this) {
+            self::Tax,
+            self::Transport,
+            self::Entertainment,
+            self::Utilities,
+            self::Miscellaneous,
+            self::House,
+            self::Financial,
+            self::Communication => self::OUTGOING,
+            self::Income => self::INCOMING,
+            self::Transfer,
+            self::DayToDayConsumption,
+            self::Unknown => self::ADMINISTRATIVE,
         };
     }
 

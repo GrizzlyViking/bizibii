@@ -83,6 +83,11 @@
 
                                     <div class="border-t border-gray-100 mt-2"></div>
 
+                                    <!-- Charts Management -->
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Charts') }}
+                                    </div>
+
                                     <x-jet-dropdown-link href="{{ route('expenses.charts') }}">
                                         {{ __('Livewire Charts') }}
                                     </x-jet-dropdown-link>
@@ -250,9 +255,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-jet-responsive-nav-link href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                    this.closest('form').submit();">
+                    <x-jet-responsive-nav-link href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-jet-responsive-nav-link>
                 </form>

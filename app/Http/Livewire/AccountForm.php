@@ -16,7 +16,7 @@ class AccountForm extends Component
     public ?string $name = null;
     public ?string $description = null;
     public ?int $account_id = null;
-    public float|string $balance = '';
+    public $balance;
     public string $submit = 'Save';
 
     protected array $rules = [
