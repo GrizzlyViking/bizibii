@@ -7,6 +7,7 @@ use App\Enums\DueDate;
 use App\Enums\Frequency;
 use App\Models\Account;
 use App\Models\Expense;
+use App\Models\Reality;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -80,7 +81,7 @@ class ExpenseTest extends TestCase
         $expense = Expense::create([
             'account_id'  => $this->user->accounts->first()->id,
             'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
+            'amount'      => $this->faker->randomFloat(2, 0, 4),
             'category'    => Category::Utilities,
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::FirstWorkingDayOfMonth,
@@ -100,7 +101,7 @@ class ExpenseTest extends TestCase
         $expense = Expense::create([
             'account_id'  => $this->user->accounts->first()->id,
             'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
+            'amount'      => $this->faker->randomFloat(2, 0, 4),
             'category'    => Category::Utilities,
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::LastDayOfMonth,
@@ -120,7 +121,7 @@ class ExpenseTest extends TestCase
         $expense = Expense::create([
             'account_id'  => $this->user->accounts->first()->id,
             'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
+            'amount'      => $this->faker->randomFloat(2, 0, 4),
             'category'    => Category::Utilities,
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::LastWorkingDayOfMonth,
@@ -140,7 +141,7 @@ class ExpenseTest extends TestCase
         $expense = Expense::create([
             'account_id'  => $this->user->accounts->first()->id,
             'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
+            'amount'      => $this->faker->randomFloat(2, 0, 4),
             'category'    => Category::Utilities,
             'frequency'   => Frequency::Yearly,
             'due_date'    => DueDate::FirstDayOfYear,
@@ -160,7 +161,7 @@ class ExpenseTest extends TestCase
         $expense = Expense::create([
             'account_id'  => $this->user->accounts->first()->id,
             'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
+            'amount'      => $this->faker->randomFloat(2, 0, 4),
             'category'    => Category::Utilities,
             'frequency'   => Frequency::Weekly,
             'due_date'    => DueDate::Tuesday,
@@ -178,10 +179,10 @@ class ExpenseTest extends TestCase
     public function is_the_expense_on_date(): void
     {
         $expense = Expense::create([
-            'account_id'  => $this->user->accounts->first()->id,
-            'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
-            'category'    => Category::Utilities,
+            'account_id'    => $this->user->accounts->first()->id,
+            'description'   => $this->faker->words(1, true),
+            'amount'        => $this->faker->randomFloat(2, 0, 4),
+            'category'      => Category::Utilities,
             'frequency'     => Frequency::Monthly,
             'due_date'      => DueDate::DateInMonth,
             'due_date_meta' => '17th in month',
@@ -199,10 +200,10 @@ class ExpenseTest extends TestCase
     public function is_the_expense_on_date_falls_on_weekend(): void
     {
         $expense = Expense::create([
-            'account_id'  => $this->user->accounts->first()->id,
-            'description' => $this->faker->words(1, true),
-            'amount'      => $this->faker->randomFloat(2,0,4),
-            'category'    => Category::Utilities,
+            'account_id'    => $this->user->accounts->first()->id,
+            'description'   => $this->faker->words(1, true),
+            'amount'        => $this->faker->randomFloat(2, 0, 4),
+            'category'      => Category::Utilities,
             'frequency'     => Frequency::Monthly,
             'due_date'      => DueDate::DateInMonth,
             'due_date_meta' => '14th in month',
@@ -219,10 +220,10 @@ class ExpenseTest extends TestCase
         $expense = Expense::create([
             'account_id'  => $this->user->accounts->first()->id,
             'description' => $this->faker->words(1, true),
-            'amount'     => 123.01,
+            'amount'      => 123.01,
             'category'    => Category::Financial,
-            'frequency'     => Frequency::Monthly,
-            'due_date'      => DueDate::LastWorkingDayOfMonth,
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::LastWorkingDayOfMonth,
         ]);
 
         $this->assertEquals(-123.01, $expense->getCost());
@@ -342,9 +343,35 @@ class ExpenseTest extends TestCase
         $this->assertTrue($expense_start_is_null->applicable($after), 'End date was null.');
     }
 
-    public function expense_adjusts_balance_and_returns_new_balance()
+    /** @test */
+    public function add_a_checkpoint_for_expense()
     {
-        $account = $this->user->accounts->first();
+        $expense = Expense::create([
+            'account_id'    => $this->user->accounts->first()->id,
+            'description'   => $this->faker->words(1, true),
+            'amount'        => $this->faker->randomFloat(2, 0, 4),
+            'category'      => Category::Utilities,
+            'frequency'     => Frequency::Monthly,
+            'due_date'      => DueDate::DateInMonth,
+            'due_date_meta' => '14th in month',
+        ]);
+
+        $expense->checkpoints()->create([
+            'checkpoint'      => 10.01,
+            'registered_date' => '2022-07-10',
+        ]);
+
+        $this->assertTrue(Reality::where('checkpointable_id', $expense->id)->where('checkpointable_type', Expense::class)->exists());
+
+        $expense->checkpoints()->create([
+            'checkpoint'      => 30.01,
+            'registered_date' => '2022-07-10',
+
+        ]);
+
+        $this->assertCount(2, $expense->checkpoints);
+
+        $this->assertInstanceOf(Carbon::class, $expense->checkpoints->first()->registered_date);
     }
 
 }

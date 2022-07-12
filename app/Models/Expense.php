@@ -30,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property \App\Models\User $user
  * @property \App\Models\Account $account
  * @property \App\Models\Account $transferToAccount;
+ * @property \App\Models\Reality $checkpoints;
  *
  * @method static self create(array $fillable)
  * @method static self updateOrInsert(array $criteria, array $payload)
@@ -87,6 +88,11 @@ class Expense extends Model
     public function transferToAccount(): Relation
     {
         return $this->belongsTo(Account::class, 'transfer_to_account_id', 'id');
+    }
+
+    public function checkpoints(): Relation
+    {
+        return $this->morphMany(Reality::class, 'checkpointable');
     }
 
     /**

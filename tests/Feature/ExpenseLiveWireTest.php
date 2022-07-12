@@ -34,13 +34,13 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Miscellaneous->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::FirstWorkingDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
-            ->set('start', '2022-01-01')
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Miscellaneous->value)
+            ->set('expense.frequency', Frequency::Monthly->value)
+            ->set('expense.due_date', DueDate::FirstWorkingDayOfMonth->value)
+            ->set('expense.amount', $this->faker->randomFloat())
+            ->set('expense.start', '2022-01-01')
             ->call('submit')
             ->assertHasNoErrors();
 
@@ -53,15 +53,15 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Miscellaneous->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::DateInMonth->value)
-            ->set('amount', $this->faker->randomFloat())
-            ->set('start', '2022-01-01')
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Miscellaneous)
+            ->set('expense.frequency', Frequency::Monthly)
+            ->set('expense.due_date', DueDate::DateInMonth)
+            ->set('expense.amount', $this->faker->randomFloat())
+            ->set('expense.start', '2022-01-01')
             ->call('submit')
-            ->assertHasErrors(['due_date_meta' => 'required']);
+            ->assertHasErrors(['expense.due_date_meta' => 'required']);
     }
 
     /** @test */
@@ -70,22 +70,22 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Miscellaneous->value)
-            ->set('frequency', Frequency::Every3rdMonth->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Miscellaneous)
+            ->set('expense.frequency', Frequency::Every3rdMonth)
+            ->set('expense.due_date', DueDate::LastDayOfMonth)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
-            ->assertHasErrors(['start' => 'required']);
+            ->assertHasErrors(['expense.start' => 'required']);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Miscellaneous->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Miscellaneous->value)
+            ->set('expense.frequency', Frequency::Monthly->value)
+            ->set('expense.due_date', DueDate::LastDayOfMonth->value)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
             ->assertHasNoErrors();
     }
@@ -96,12 +96,12 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Miscellaneous->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Miscellaneous->value)
+            ->set('expense.frequency', Frequency::Monthly->value)
+            ->set('expense.due_date', DueDate::LastDayOfMonth->value)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
             ->assertRedirect('/admin/expenses');
     }
@@ -112,24 +112,24 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::DayToDayConsumption->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::DayToDayConsumption->value)
+            ->set('expense.frequency', Frequency::Monthly->value)
+            ->set('expense.due_date', DueDate::LastDayOfMonth->value)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
             ->assertHasNoErrors();
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::DayToDayConsumption->value)
-            ->set('frequency', Frequency::Weekly->value)
-            ->set('due_date', DueDate::LastWorkingDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::DayToDayConsumption->value)
+            ->set('expense.frequency', Frequency::Weekly->value)
+            ->set('expense.due_date', DueDate::LastWorkingDayOfMonth->value)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
-            ->assertHasErrors(['due_date']);
+            ->assertHasErrors(['expense.due_date']);
     }
 
     /** @test */
@@ -138,14 +138,14 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Utilities->value)
-            ->set('frequency', Frequency::Weekly->value)
-            ->set('due_date', DueDate::FirstDayOfYear->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Utilities)
+            ->set('expense.frequency', Frequency::Weekly)
+            ->set('expense.due_date', DueDate::FirstDayOfYear)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
-            ->assertHasErrors(['due_date']);
+            ->assertHasErrors(['expense.due_date']);
     }
 
     /** @test */
@@ -161,38 +161,63 @@ class ExpenseLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Transfer->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Transfer)
+            ->set('expense.frequency', Frequency::Monthly)
+            ->set('expense.due_date', DueDate::LastDayOfMonth)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
-            ->assertHasErrors(['transfer_to_account_id' => 'required']);
+            ->assertHasErrors(['expense.transfer_to_account_id' => 'required']);
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('transfer_to_account_id', $this->user->accounts->first()->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Transfer->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.transfer_to_account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Transfer->value)
+            ->set('expense.frequency', Frequency::Monthly->value)
+            ->set('expense.due_date', DueDate::LastDayOfMonth->value)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
-            ->assertHasErrors(['transfer_to_account_id'])
+            ->assertHasErrors(['expense.transfer_to_account_id'])
             ->assertSee('The account transferred to must be different from the account transfered from.');
 
         Livewire::test(ExpenseForm::class)
-            ->set('account_id', $this->user->accounts->first()->id)
-            ->set('transfer_to_account_id', $accountTo->id)
-            ->set('description', 'test expense')
-            ->set('category', Category::Transfer->value)
-            ->set('frequency', Frequency::Monthly->value)
-            ->set('due_date', DueDate::LastDayOfMonth->value)
-            ->set('amount', $this->faker->randomFloat())
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.transfer_to_account_id', $accountTo->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Transfer)
+            ->set('expense.frequency', Frequency::Monthly)
+            ->set('expense.due_date', DueDate::LastDayOfMonth)
+            ->set('expense.amount', $this->faker->randomFloat())
             ->assertSee('Transfer to account')
             ->call('submit')
-            ->assertHasNoErrors(['transfer_to_account_id']);
+            ->assertHasNoErrors(['expense.transfer_to_account_id']);
+    }
+
+    /** @test */
+    public function there_must_be_no_errors_transferring_to_different_account()
+    {
+        $this->actingAs($this->user);
+
+        $accountTo = Account::create([
+            'user_id' => $this->user->id,
+            'name' => 'transferAccount',
+            'description' => 'transfer account',
+            'balance' => 0,
+        ]);
+
+        Livewire::test(ExpenseForm::class)
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.transfer_to_account_id', $accountTo->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Transfer)
+            ->set('expense.frequency', Frequency::Monthly)
+            ->set('expense.due_date', DueDate::LastDayOfMonth)
+            ->set('expense.amount', $this->faker->randomFloat())
+            ->assertSee('Transfer to account')
+            ->call('submit')
+            ->assertHasNoErrors(['expense.transfer_to_account_id']);
     }
 
 }

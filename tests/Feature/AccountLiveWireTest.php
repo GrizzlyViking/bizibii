@@ -35,9 +35,9 @@ class AccountLiveWireTest extends TestCase
         $this->actingAs($this->user);
 
         Livewire::test(AccountForm::class)
-            ->set('name', $this->faker->word)
-            ->set('description', 'test expense')
-            ->set('balance', 1000)
+            ->set('account.name', $this->faker->word)
+            ->set('account.description', 'test expense')
+            ->set('account.balance', 1000)
             ->call('submit')
             ->assertHasNoErrors();
 

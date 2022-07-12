@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @property string $name
  * @property string $description
  * @property float $balance
+ * @property \App\Models\Reality $checkpoints
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  *
@@ -92,4 +93,8 @@ class Account extends Model implements ListableInterface
         return route('account.edit', $this);
     }
 
+    public function checkpoints(): Relation
+    {
+        return $this->morphMany(Reality::class, 'checkpointable');
+    }
 }

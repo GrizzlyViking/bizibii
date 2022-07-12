@@ -19,13 +19,13 @@ class DueDateRules implements InvokableRule, DataAwareRule
     public function __invoke($attribute, $value, $fail)
     {
         if (
-            $this->data['category'] == Category::DayToDayConsumption->value &&
+            $this->data['expense']['category'] == Category::DayToDayConsumption->value &&
             $value != DueDate::LastDayOfMonth->value
         ) {
             $fail('If category is "'.Category::DayToDayConsumption->value.'" then Due Date must be '. DueDate::LastDayOfMonth->value);
         }
 
-        if ($value == DueDate::FirstDayOfYear->value && $this->data['frequency'] != Frequency::Yearly->value) {
+        if (DueDate::FirstDayOfYear->equals($value) && !Frequency::Yearly->equals($this->data['expense']['frequency'])) {
             $fail('If :attribute is "'.DueDate::FirstDayOfYear->value.'", then logically frequency can only be "'.Frequency::Yearly->value.'"');
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
+use App\Models\Reality;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -13,27 +14,32 @@ use Livewire\Redirector;
 
 class AccountForm extends Component
 {
-    public ?string $name = null;
-    public ?string $description = null;
-    public ?int $account_id = null;
-    public $balance;
+
+    public ?Account $account;
+
+    public $show_modal = false;
+
+    public $checkpoint_date;
+
+    public $checkpoint_amount;
+
     public string $submit = 'Save';
 
     protected array $rules = [
-        'name' => 'required',
-        'description' => 'nullable|string',
-        'balance' => 'required|numeric'
+        'account.name'        => 'required',
+        'account.description' => 'nullable|string',
+        'account.balance'     => 'required|numeric',
     ];
 
-    public function mount(?Account $account = null)
+    protected array $validationAttributes = [
+        'account.name'        => 'name of account',
+        'account.balance'     => 'account starting balance',
+        'account.description' => 'description',
+    ];
+
+    public function mount(?Account $account)
     {
-        if ($account instanceof Account) {
-            $this->name = $account->name;
-            $this->description = $account->description;
-            $this->balance = $account->balance;
-            $this->account_id = $account->id;
-            $this->submit = 'update';
-        }
+        $this->account = $account ?? new Account();
     }
 
     public function render(): Factory|View|Application
@@ -54,16 +60,13 @@ class AccountForm extends Component
 
     public function submit(): RedirectResponse|Redirector
     {
-        $account = $this->validate();
-        $account['user_id'] = Auth::id();
+        $this->validate();
 
-        Account::updateOrInsert(
-            [
-                'id' => $this->account_id,
-                'user_id' => Auth::id(),
-            ],
-            $account
-        );
+        if (!isset($this->account->user_id)) {
+            $this->account->user_id = Auth::id();
+        }
+
+        $this->account->save();
 
         return redirect()->route('account.index');
     }
@@ -74,4 +77,24 @@ class AccountForm extends Component
 
         return redirect()->route('account.index');
     }
+
+    public function addCheckpoint()
+    {
+        $validatedData = $this->validate([
+            'checkpoint_date'   => 'required|date',
+            'checkpoint_amount' => 'required|numeric',
+        ]);
+
+        Reality::create([
+            'checkpointable_id'   => $this->account->id,
+            'checkpointable_type' => $this->account::class,
+            'checkpoint'          => $validatedData['checkpoint_amount'],
+            'registered_date'     => $validatedData['checkpoint_date'],
+        ]);
+
+        $this->account = Account::find($this->account_id);
+
+        $this->show_modal = false;
+    }
+
 }

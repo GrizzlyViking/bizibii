@@ -90,7 +90,7 @@ enum Category: string implements EnumInterface
         };
     }
 
-    public function equals(EnumInterface|string $enum): bool
+    public function equals(EnumInterface|string|null $enum): bool
     {
         if ($enum instanceof EnumInterface) {
             return $this->value == $enum->value && $this->name == $enum->name;
