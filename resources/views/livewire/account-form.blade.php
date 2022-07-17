@@ -10,7 +10,7 @@
             <form action="#" method="POST">
                 <div class="shadow overflow-hidden sm:rounded-md">
                     <div class="px-4 py-5 bg-white sm:p-6">
-                        <div class="grid grid-cols-6 gap-6">
+                        <div class="grid grid-cols-4 gap-6">
 
                             <div class="col-span-6">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Name of account</label>
@@ -33,67 +33,67 @@
                                 @error('account.balance') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                             </div>
 
-
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         @if(isset($account->id))
                         <x-button class="focus:ring-gray-500 bg-gray-600 hover:bg-gray-700" wire:click="$set('show_modal', true)">Add Checkpoint</x-button>
-                        <x-button class="focus:ring-red-500 bg-red-600 hover:bg-red-700" wire:click="delete({{ $account?->id }})">Delete
-                        </x-button>
+                        <x-button class="focus:ring-red-500 bg-red-600 hover:bg-red-700" wire:click="delete({{ $account?->id }})">Delete</x-button>
                         @endif
                         <x-button class="focus:ring-indigo-500 bg-indigo-600 hover:bg-indigo-700"
                                   wire:click="submit">{{ isset($account->id) ? 'update' : 'save' }}</x-button>
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-
-    @if($account?->checkpoints->count() > 0)
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="mt-6 bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="flex flex-col">
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Registered on Date
-                                        </th>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Balance
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($account->checkpoints as $item)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-medium text-gray-500">
-                                                    {{ $item->registered_date->format('Y-m-d') }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-medium text-gray-500">
-                                                    {{ number_format($item->checkpoint) }}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+            @if($account?->checkpoints->count() > 0)
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <div class="mt-6 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col"
+                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Registered on Date
+                                                </th>
+                                                <th scope="col"
+                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Balance
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($account->checkpoints as $item)
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-500">
+                                                            {{ $item->registered_date->format('Y-m-d') }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-500">
+                                                            {{ number_format($item->checkpoint) }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-right whitespace-nowrap">
+                                                        <x-button class="focus:ring-red-500 text-sm bg-red-600 hover:bg-red-700" wire:click="deleteCheckpoint({{ $item->id }})">Delete</x-button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
-    @endif
+    </div>
 
     <x-checkpoint-modal :show="$show_modal" class="h-80">
         <x-slot name="title">

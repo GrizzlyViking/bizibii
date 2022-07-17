@@ -92,9 +92,15 @@ class AccountForm extends Component
             'registered_date'     => $validatedData['checkpoint_date'],
         ]);
 
-        $this->account = Account::find($this->account_id);
+        $this->account->refresh();
 
         $this->show_modal = false;
     }
 
+    public function deleteCheckpoint(Reality $reality)
+    {
+        $reality->delete();
+
+        $this->account->refresh();
+    }
 }

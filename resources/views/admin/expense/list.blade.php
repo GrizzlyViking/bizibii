@@ -22,6 +22,6 @@
     <!-- Chart end -->
 
     <div class="py-12">
-        <livewire:list-expenses :items="$expenses"/>
+        <livewire:list-expenses :user="Auth::user()" :items="$expenses"/>
     </div>
 </x-app-layout>

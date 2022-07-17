@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Enums\Category;
 use App\Enums\Frequency;
 use App\Enums\DueDate;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -30,7 +33,8 @@ use Illuminate\Support\Carbon;
  * @property \App\Models\User $user
  * @property \App\Models\Account $account
  * @property \App\Models\Account $transferToAccount;
- * @property \App\Models\Reality $checkpoints;
+ * @property CarbonInterface $date_to_check;
+ * @property \Illuminate\Support\Collection<\App\Models\Reality> $checkpoints;
  *
  * @method static self create(array $fillable)
  * @method static self updateOrInsert(array $criteria, array $payload)
@@ -38,7 +42,6 @@ use Illuminate\Support\Carbon;
  */
 class Expense extends Model
 {
-
     use HasFactory;
 
     protected $dates = [
@@ -69,6 +72,8 @@ class Expense extends Model
 
     protected $with = ['account', 'user'];
 
+    private CarbonInterface $date_to_check;
+
     public function user(): Relation
     {
         return $this->hasOneThrough(
@@ -95,7 +100,20 @@ class Expense extends Model
         return $this->morphMany(Reality::class, 'checkpointable');
     }
 
+    public function setDateToCheck(CarbonInterface|string $date): self
+    {
+        if ($date instanceof CarbonInterface) {
+            $this->date_to_check = (clone $date)->toImmutable();
+        } else {
+            $this->date_to_check = CarbonImmutable::parse($date);
+        }
+
+        return $this;
+    }
+
     /**
+     * Check day of month
+     *
      * @param  \Illuminate\Support\Carbon  $today
      *
      * @return bool
@@ -103,40 +121,45 @@ class Expense extends Model
      */
     public function applicable(Carbon $today): bool
     {
-        // check day of month
-        return $this->applicableDayOfMonth($today) && $this->applicableMonthOfYear($today);
+        $this->setDateToCheck($today);
+
+        if (($checkpoint = $this->getApplicableCheckpoints()) !== false) {
+            return $checkpoint->isNotEmpty();
+        }
+
+        return $this->applicableDayOfMonth() && $this->applicableMonthOfYear();
     }
 
     /**
      * @throws \Exception
      */
-    protected function applicableDayOfMonth(Carbon $today): bool
+    protected function applicableDayOfMonth(): bool
     {
-        if ($this->start > $today) {
+        if ($this->start > $this->date_to_check) {
             return false;
-        } elseif ($this->end instanceof DateTimeInterface && $this->end < $today) {
+        } elseif ($this->end instanceof DateTimeInterface && $this->end < $this->date_to_check) {
             return false;
         }
-        $now = clone $today;
+        $now = (clone $this->date_to_check)->toMutable();
         switch ($this->due_date) {
             case DueDate::Daily:
                 return true;
             case DueDate::FirstOfMonth:
-                return $today->startOfDay() == $now->firstOfMonth();
+                return $this->date_to_check->isSameDay($this->date_to_check->firstOfMonth());
             case DueDate::FirstWorkingDayOfMonth:
                 if ($now->firstOfMonth()->isWeekend()) {
                     $now->firstOfMonth(1);
                 }
-                return $now == $today->startOfDay();
+                return $this->date_to_check->isSameDay($now);
             case DueDate::LastDayOfMonth:
-                return $today->startOfDay() == $now->lastOfMonth();
+                return $this->date_to_check->isSameDay($now->lastOfMonth());
             case DueDate::LastWorkingDayOfMonth:
                 if ($now->lastOfMonth()->isWeekend()) {
                     $now->lastOfMonth(5);
                 }
-                return $today->startOfDay() == $now;
+                return $this->date_to_check->isSameDay($now);
             case DueDate::FirstDayOfYear:
-                return $now->firstOfYear() == $today->startOfDay();
+                return $this->date_to_check->isSameDay($now->firstOfYear());
             case DueDate::Monday:
             case DueDate::Tuesday:
             case DueDate::Wednesday:
@@ -144,15 +167,15 @@ class Expense extends Model
             case DueDate::Friday:
             case DueDate::Saturday:
             case DueDate::Sunday:
-                return $today->format('l') == $this->due_date->name;
+                return $this->date_to_check->format('l') == $this->due_date->name;
             case DueDate::DateInMonth:
                 if (preg_match('/\d+/', $this->due_date_meta, $matched)) {
-                    $now = Carbon::createFromDate($today->year, $today->month,
+                    $now = Carbon::createFromDate($this->date_to_check->year, $this->date_to_check->month,
                         $matched[0]);
                     while ($now->isWeekend()) {
                         $now->addDay();
                     }
-                    return $now->startOfDay() == $today->startOfDay();
+                    return $this->date_to_check->isSameDay($now);
                 }
                 throw new Exception('Due Date is ' . $this->due_date->name . ' but no sensible due date meta was set.');
         }
@@ -160,7 +183,7 @@ class Expense extends Model
         return false;
     }
 
-    public function applicableMonthOfYear(Carbon $today): bool
+    public function applicableMonthOfYear(): bool
     {
         switch ($this->frequency) {
             // month interval
@@ -175,8 +198,8 @@ class Expense extends Model
 
                 $start = clone $this->start;
 
-                while ($start->format('Y-m') <= $today->format('Y-m')) {
-                    if ($start->format('Y-m') == $today->format('Y-m')) {
+                while ($start->format('Y-m') <= $this->date_to_check->format('Y-m')) {
+                    if ($start->format('Y-m') == $this->date_to_check->format('Y-m')) {
                         return true;
                     }
 
@@ -191,7 +214,11 @@ class Expense extends Model
 
     public function getCost(): float
     {
-        return $this->category === Category::Income ? abs($this->amount) : abs($this->amount) * -1;
+        $amount = $this->amount;
+        if (($checkpoint = $this->getApplicableCheckpoints()) !== false) {
+            $amount = $checkpoint->isNotEmpty() ? $checkpoint->last()->amount : 0.0;
+        }
+        return $this->category === Category::Income ? abs($amount) : abs($amount) * -1;
     }
 
     /**
@@ -226,6 +253,31 @@ class Expense extends Model
     public function applyTransfer(&$balance): float
     {
         return $balance -= $this->getCost();
+    }
+
+    protected function getApplicableCheckpoints(): Collection|bool
+    {
+        if ($this->checkpoints->isEmpty()) {
+            return false;
+        }
+
+        // check day of month
+        if ($this->frequency->equals(Frequency::Monthly)) {
+            $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->between($this->date_to_check->startOfMonth()->format('Y-m-d'), $this->date_to_check->endOfMonth()->format('Y-m-d')));
+            // if checkpoint is within the relevant month
+            if ($checkpoints->isNotEmpty()) {
+                // then it is checkpoint date that is used.
+                return $checkpoints->filter(fn (Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
+            }
+        } elseif ($this->frequency->equals(Frequency::Weekly)) {
+            $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->between($this->date_to_check->startOfWeek(), $this->date_to_check->endOfWeek()));
+            if ($checkpoints->isNotEmpty()) {
+                return $checkpoints->filter(fn (Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
+            }
+        }
+
+        // if checkpoints exist but date fall outside relevant interval then false is returned
+        return false;
     }
 
 }

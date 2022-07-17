@@ -18,23 +18,16 @@ class ListExpenses extends Component
     /** @var ListableInterface[]|\Illuminate\Support\Collection */
     public $items;
 
-    private ?User $user;
-
-    /**
-     * @var \Asantibanez\LivewireCharts\Models\LineChartModel
-     */
-    public LineChartModel $lineChartModel;
-
-    public \Closure $graph;
+    private User $user;
 
     /**
      * @var \App\Services\ExpensesWalker
      */
     private ExpensesWalker $walker;
 
-    public function mount()
+    public function mount(User $user)
     {
-        $this->user = Auth::user();
+        $this->user = $user;
         $this->walker = (new ExpensesWalker($this->user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear()))->process();
     }
 
@@ -45,29 +38,8 @@ class ListExpenses extends Component
 
     public function delete(Expense $expense)
     {
-
-        $items = $this->items->filter(function (Expense $exp) use ($expense) {
-            return $exp->id != $expense->id;
-        });
-
-        $this->items = $items;
-
         $expense->delete();
-    }
 
-    public function generateLineChart(): LineChartModel
-    {
-        $graph = $this->walker->process()->graphBalanceMonthly($this->user->accounts->first());
-
-        $this->lineChartModel = (new LineChartModel())
-            ->singleLine()
-            ->setAnimated(false)
-            ->setTitle('Balance per Month.');
-
-        $graph->each(function ($balance, $date) {
-            $this->lineChartModel->addPoint($date, $balance);
-        });
-
-        return $this->lineChartModel;
+        $this->items = $this->user->expenses;
     }
 }

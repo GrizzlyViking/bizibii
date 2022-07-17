@@ -24,27 +24,30 @@ enum Frequency: string implements EnumInterface
 
     case Daily = 'daily';
 
+    case Single = 'one time only';
+
     public static function all(): Collection
     {
         return collect([
             self::Monthly, // <- default for dropdown options
-            self::Yearly,
             self::Weekly,
             self::Daily,
+            self::Yearly,
             self::Every6thMonth,
             self::Every3rdMonth,
+            self::Single,
         ]);
     }
 
     public function type(): string
     {
         return match ($this) {
-            self::Yearly, self::Monthly, self::Weekly, self::Daily => self::CalendarElement,
+            self::Yearly, self::Monthly, self::Weekly, self::Daily, self::Single => self::CalendarElement,
             self::Every3rdMonth, self::Every4thMonth, self::Every6thMonth => self::CalendarElementsGrouping
         };
     }
 
-    public function equals(EnumInterface|string $enum): bool
+    public function equals(EnumInterface|string|null $enum): bool
     {
         if ($enum instanceof EnumInterface) {
             return $this->value == $enum->value && $this->name == $enum->name;

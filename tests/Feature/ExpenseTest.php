@@ -357,21 +357,42 @@ class ExpenseTest extends TestCase
         ]);
 
         $expense->checkpoints()->create([
-            'checkpoint'      => 10.01,
+            'amount'          => 10.01,
             'registered_date' => '2022-07-10',
         ]);
 
         $this->assertTrue(Reality::where('checkpointable_id', $expense->id)->where('checkpointable_type', Expense::class)->exists());
 
         $expense->checkpoints()->create([
-            'checkpoint'      => 30.01,
+            'amount'          => 30.01,
             'registered_date' => '2022-07-10',
-
         ]);
 
         $this->assertCount(2, $expense->checkpoints);
 
         $this->assertInstanceOf(Carbon::class, $expense->checkpoints->first()->registered_date);
+    }
+
+    public function test_checkpoints_replace_expense()
+    {
+        $expense = Expense::create([
+            'account_id'    => $this->user->accounts->first()->id,
+            'description'   => $this->faker->words(1, true),
+            'amount'        => 2400.00,
+            'category'      => Category::Utilities,
+            'frequency'     => Frequency::Monthly,
+            'due_date'      => DueDate::DateInMonth,
+            'due_date_meta' => '14th in month',
+        ]);
+
+        $expense->checkpoints()->create([
+            'amount'          => 5000.00,
+            'registered_date' => '2022-07-10',
+        ]);
+
+        $this->assertTrue($expense->applicable(Carbon::parse('2022-07-10')), 'the date on the checkpoint should be used rather than the expenses.');
+        $this->assertFalse($expense->applicable(Carbon::parse('2022-07-14')), 'the date on the expense should no longer be used.');
+        $this->assertEquals(-5000, $expense->setDateToCheck('2022-07-10')->getCost());
     }
 
 }

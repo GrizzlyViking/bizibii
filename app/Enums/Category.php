@@ -38,11 +38,11 @@ enum Category: string implements EnumInterface
     public static function all(): Collection
     {
         return collect([
+            self::Utilities,
             self::Transport,
             self::Income,
             self::DayToDayConsumption,
             self::Entertainment,
-            self::Utilities,
             self::Miscellaneous,
             self::Communication,
             self::Tax,

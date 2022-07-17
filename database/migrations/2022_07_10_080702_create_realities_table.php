@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->morphs('checkpointable');
             $table->date('registered_date');
-            $table->float('checkpoint', 16);
+            $table->float('amount', 16);
             $table->timestamps();
         });
     }

@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @property string $name
  * @property string $description
  * @property float $balance
- * @property \App\Models\Reality $checkpoints
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  *
  * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Tag> $tags
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Transaction> $transactions
+ * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Reality> $checkpoints
  *
  * @method static self updateOrInsert(array $comparison, array $payload)
  */

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\Category;
 use App\Models\Account;
 use App\Models\Expense;
+use App\Models\Reality;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -42,7 +43,7 @@ class ExpensesWalker
     public function process(): self
     {
         $day = clone $this->now;
-        while ($day < $this->end) {
+        while ($day <= $this->end) {
             $this->step($day);
             $day->addDay();
         }
@@ -78,14 +79,21 @@ class ExpensesWalker
     public function graphBalance(?Account $account = null): Collection
     {
         $balance = $account->balance;
-        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses) use ($account, &$balance) {
-            $expenses->each(function (Expense $expense) use ($account, &$balance) {
-                if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
-                    $expense->applyTransfer($balance);
-                } else {
-                    $expense->applyCost($balance);
-                }
-            });
+
+        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) use ($account, &$balance) {
+            // If there is a checkpoint for balance for that day, that is used instead.
+            /** @var Reality $checkpoint */
+            if ($checkpoint = Reality::where('checkpointable_id', $account->id)->where('checkpointable_type', $account::class)->where('registered_date', $date)->first()) {
+                $balance = $checkpoint->amount;
+            } else {
+                $expenses->each(function (Expense $expense) use ($date, $account, &$balance) {
+                    if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
+                        $expense->setDateToCheck($date)->applyTransfer($balance);
+                    } else {
+                        $expense->setDateToCheck($date)->applyCost($balance);
+                    }
+                });
+            }
             return $balance;
         });
     }
