@@ -7,6 +7,7 @@ use App\Enums\DueDate;
 use App\Enums\Frequency;
 use App\Models\Expense;
 use App\Models\Reality;
+use App\Rules\DueDateMetaRules;
 use App\Rules\DueDateRules;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,10 @@ class ExpenseForm extends Component
             'expense.category'               => ['required'],
             'expense.frequency'              => ['required'],
             'expense.due_date'               => ['required', new Enum(DueDate::class), new DueDateRules()],
-            'expense.due_date_meta'          => [Rule::requiredIf(fn() => DueDate::DateInMonth->equals($this->expense->due_date))],
+            'expense.due_date_meta'          => [
+                Rule::requiredIf(fn() => DueDate::DateInMonth->equals($this->expense->due_date)),
+                new DueDateMetaRules()
+            ],
             'expense.amount'                 => 'required|numeric',
             'start_date'                     => [
                 'nullable',
@@ -124,17 +128,29 @@ class ExpenseForm extends Component
 
     public function changeCategory()
     {
-        if ($this->category == Category::DayToDayConsumption->value) {
-            $this->due_date = DueDate::LastDayOfMonth->value;
-            $this->frequency = Frequency::Daily->value;
-        } elseif (Category::Transfer->equals($this->category)) {
-            $this->due_date = DueDate::LastWorkingDayOfMonth->value;
-            $this->frequency = Frequency::Monthly->value;
-            $this->show_transfer_to_accounts = true;
+        if (Category::DayToDayConsumption->equals($this->expense->category)) {
+            $this->expense->due_date = DueDate::LastDayOfMonth->value;
+            $this->expense->frequency = Frequency::Daily->value;
+            if (empty($this->expense->description)) {
+                $this->expense->description = ucfirst(Category::DayToDayConsumption->value);
+            }
+        } elseif (Category::Transfer->equals($this->expense->category)) {
+            $this->expense->due_date = DueDate::LastWorkingDayOfMonth->value;
+            $this->expense->frequency = Frequency::Monthly->value;
+            $this->expense->transfer_to_account_id = $this->expense->user->accounts->get(1)->id;
         } else {
-            $this->transfer_to_account_id = null;
-            $this->show_transfer_to_accounts = false;
+            $this->expense->transfer_to_account_id = null;
         }
+    }
+
+    public function changeFrequency()
+    {
+        // TODO: set defaults when changing frequency
+    }
+
+    public function changeDueDate()
+    {
+        // TODO: set defaults when changing due date
     }
 
     public function addCheckpoint()

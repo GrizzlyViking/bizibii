@@ -65,6 +65,25 @@ class ExpenseLiveWireTest extends TestCase
     }
 
     /** @test */
+    function frequency_is_set_to_single_time_only_so_due_date_must_be_date_in_month_and_due_date_meta_must_be_set()
+    {
+        $this->actingAs($this->user);
+
+        Livewire::test(ExpenseForm::class)
+            ->set('expense.account_id', $this->user->accounts->first()->id)
+            ->set('expense.description', 'test expense')
+            ->set('expense.category', Category::Miscellaneous)
+            ->set('expense.frequency', Frequency::Single)
+            ->set('expense.due_date', DueDate::Friday)
+            ->set('expense.amount', $this->faker->randomFloat())
+            ->call('submit')
+            ->assertHasErrors([
+                'expense.due_date_meta' => 'required',
+                'expense.due_date'
+            ]);
+    }
+
+    /** @test */
     function expenses_start_is_required_if_frequency_is_intervals_longer_than_a_month()
     {
         $this->actingAs($this->user);

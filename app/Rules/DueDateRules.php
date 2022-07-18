@@ -11,6 +11,8 @@ use Illuminate\Contracts\Validation\InvokableRule;
 class DueDateRules implements InvokableRule, DataAwareRule
 {
 
+    protected array $data;
+
     public function setData($data)
     {
         $this->data = $data;
@@ -27,6 +29,10 @@ class DueDateRules implements InvokableRule, DataAwareRule
 
         if (DueDate::FirstDayOfYear->equals($value) && !Frequency::Yearly->equals($this->data['expense']['frequency'])) {
             $fail('If :attribute is "'.DueDate::FirstDayOfYear->value.'", then logically frequency can only be "'.Frequency::Yearly->value.'"');
+        }
+
+        if ($this->data['expense']['frequency'] == Frequency::Single->value && $value != DueDate::DateInMonth->value) {
+            $fail('Frequency is set to one time only, then due date must be "'.DueDate::DateInMonth->value.'"');
         }
     }
 

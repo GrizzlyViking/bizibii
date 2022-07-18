@@ -57,6 +57,7 @@
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
                                 <select wire:model="expense.category"
+                                        wire:change="changeCategory"
                                         class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     @foreach(\App\Enums\Category::all() as $option)
                                         <option value="{{ $option->value }}">{{ ucwords($option->value) }}</option>
@@ -119,11 +120,10 @@
                                 @error('due_date') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                             </div>
 
-                            @if(\App\Enums\DueDate::DateInMonth->equals($expense->due_date))
+                            @if(\App\Enums\DueDate::DateInMonth->equals($expense->due_date) || \App\Enums\Frequency::Single->equals($expense->frequency))
                                 <div class="col-span-6 sm:col-span-4">
-                                    <label for="due_date_meta" class="block text-sm font-medium text-gray-700">When in the month is the
-                                        expense due</label>
-                                    <input type="text" wire:model="expense.due_date_meta" autocomplete="due_date_meta"
+                                    <label for="due_date_meta" class="block text-sm font-medium text-gray-700">When in the month is the expense due</label>
+                                    <input type="{{ \App\Enums\Frequency::Single->equals($expense->frequency) ? 'date' : 'text' }}" wire:model="expense.due_date_meta" autocomplete="due_date_meta"
                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 </div>
                             @endif
