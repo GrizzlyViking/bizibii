@@ -106,16 +106,16 @@ class ExpensesWalker
 
     public function graphExpensesMonthly(Account $account): Collection
     {
-        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses) {
+        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) {
             return $expenses->sum(fn(Expense $expense
-            ) => $expense->category->equals(Category::Income) || $expense->category->type() == Category::ADMINISTRATIVE ? 0 : -$expense->getCost());
+            ) => $expense->category->equals(Category::Income) || $expense->category->type() == Category::ADMINISTRATIVE ? 0 : -$expense->setDateToCheck($date)->getCost());
         })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
     }
 
     public function graphIncomeMonthly(Account $account): Collection
     {
-        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses) {
-            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->getCost() : 0);
+        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) {
+            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->setDateToCheck($date)->getCost() : 0);
         })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
     }
 

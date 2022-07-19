@@ -106,6 +106,15 @@ class ExpensesController extends Controller
         $accounts->each(function (Account $account) use ($walker, &$graphs) {
             $graphs->put($account->name, $walker->graphExpensesMonthly($account));
         });
+        $income = collect();
+        $accounts->each(function (Account $account) use ($walker, &$income) {
+            $income->put($account->name, $walker->graphIncomeMonthly($account));
+        });
+
+        $disposable = $income->sumRecursive()->mergeRecursive($graphs->sumRecursive())
+            ->map(fn ($items) => $items[0]-$items[1]);
+
+        $graphs->put('disposable', $disposable);
 
         $barChart = (new ColumnChartModel())
             ->multiColumn()

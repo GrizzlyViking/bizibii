@@ -392,4 +392,79 @@ class ExpensesWalkerTest extends TestCase
         $this->assertEquals(6000, $expenses->get('2022-02-27'));
     }
 
+    /** @test */
+    public function checkpoints_for_expenses_replace_expense()
+    {
+        /** @var Account $account */
+        $account = $this->user->accounts()->create([
+            'name'        => 'checkpoint test',
+            'description' => 'checkpoint test',
+            'balance'     => 10000,
+        ]);
+
+        /** @var Expense $expense */
+        $expense = $account->expenses()->create([
+            'category'    => Category::Utilities,
+            'description' => 'Heating and Electricity',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::DateInMonth,
+            'due_date_meta' => '7th in month',
+            'amount'      => 3500.00,
+        ]);
+
+        $expense->checkpoints()->create([
+            'registered_date' => '2022-02-09',
+            'amount'      => 10000,
+        ]);
+
+        $walker = (new ExpensesWalker(
+            $this->user,
+            Carbon::parse('2022-01-01'),
+            Carbon::parse('2022-03-31')
+        ))->process();
+
+        $expenses = $walker->graphExpensesMonthly($account);
+
+        $this->assertEquals(3500, $expenses->get('2022-01'));
+        $this->assertEquals(10000, $expenses->get('2022-02'));
+        $this->assertEquals(3500, $expenses->get('2022-03'));
+    }
+
+    /** @test */
+    public function checkpoint_amount_replaces_income()
+    {
+        /** @var Account $account */
+        $account = $this->user->accounts()->create([
+            'name'        => 'checkpoint test',
+            'description' => 'checkpoint test',
+            'balance'     => 0,
+        ]);
+
+        /** @var Expense $income */
+        $income = $account->expenses()->create([
+            'category'    => Category::Income,
+            'description' => 'Wages',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::LastWorkingDayOfMonth,
+            'amount'      => 23000.00,
+        ]);
+
+        $income->checkpoints()->create([
+            'registered_date' => '2022-02-09',
+            'amount'      => 33000,
+        ]);
+
+        $walker = (new ExpensesWalker(
+            $this->user,
+            Carbon::parse('2022-01-01'),
+            Carbon::parse('2022-03-31')
+        ))->process();
+
+        $expenses = $walker->graphIncomeMonthly($account);
+
+        $this->assertEquals(23000, $expenses->get('2022-01'));
+        $this->assertEquals(33000, $expenses->get('2022-02'));
+        $this->assertEquals(23000, $expenses->get('2022-03'));
+    }
+
 }
