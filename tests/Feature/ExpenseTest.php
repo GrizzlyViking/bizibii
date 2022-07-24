@@ -226,7 +226,7 @@ class ExpenseTest extends TestCase
             'due_date'    => DueDate::LastWorkingDayOfMonth,
         ]);
 
-        $this->assertEquals(-123.01, $expense->getCost());
+        $this->assertEquals(-123, $expense->getCost());
     }
 
     /** @test */
@@ -238,7 +238,7 @@ class ExpenseTest extends TestCase
             'amount'     => 123.01,
         ]);
 
-        $this->assertEquals(123.01, $income->getCost());
+        $this->assertEquals(123, $income->getCost());
     }
 
     /** @test */
@@ -250,7 +250,7 @@ class ExpenseTest extends TestCase
             'amount'     => -123.01,
         ]);
 
-        $this->assertEquals(123.01, $income->getCost());
+        $this->assertEquals(123, $income->getCost());
     }
 
     /** @test
@@ -395,4 +395,29 @@ class ExpenseTest extends TestCase
         $this->assertEquals(-5000, $expense->setDateToCheck('2022-07-10')->getCost());
     }
 
+    /** @test **/
+    public function frequency_is_daily_and_checkpoint_is_same_date()
+    {
+        // Arrange
+        $expense = Expense::create([
+            'account_id'    => $this->user->accounts->first()->id,
+            'description'   => $this->faker->words(1, true),
+            'amount'        => 200.00,
+            'category'      => Category::Utilities,
+            'frequency'     => Frequency::Daily,
+            'due_date'      => DueDate::Daily,
+        ]);
+
+        $expense->checkpoints()->create([
+            'amount'          => 500.00,
+            'registered_date' => '2022-07-10',
+        ]);
+
+        // Assert
+        $this->assertTrue($expense->applicable(Carbon::parse('2022-07-10')), 'the date on the checkpoint should be used rather than the expenses.');
+        $this->assertEquals(-200, $expense->setDateToCheck(Carbon::parse('2022-07-09'))->getCost());
+        $this->assertEquals(-500, $expense->setDateToCheck(Carbon::parse('2022-07-10'))->getCost());
+        $this->assertEquals(-200, $expense->setDateToCheck(Carbon::parse('2022-07-11'))->getCost());
+
+    }
 }

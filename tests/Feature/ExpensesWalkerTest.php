@@ -333,9 +333,9 @@ class ExpensesWalkerTest extends TestCase
         $expenses = $walker->graphBalance($account);
         $this->assertEquals(1000, $expenses->get('2022-02-01'));
         $this->assertEquals(1000, $expenses->get('2022-02-06'));
-        $this->assertEquals(-500.02, $expenses->get('2022-02-07'));
-        $this->assertEquals(-620.02, $expenses->get('2022-02-14'));
-        $this->assertEquals(9379.98, $expenses->last());
+        $this->assertEquals(-500, $expenses->get('2022-02-07'));
+        $this->assertEquals(-620, $expenses->get('2022-02-14'));
+        $this->assertEquals(9380, $expenses->last());
 
         $account->checkpoints()->create([
             'registered_date' => '2022-03-07',
@@ -349,9 +349,9 @@ class ExpensesWalkerTest extends TestCase
         ))->process();
 
         $expenses = $walker->graphBalanceMonthly($account);
-        $this->assertEquals(9379.98, $expenses->get('2022-02'));
-        $this->assertEquals(4879.98, $expenses->get('2022-03'));
-        $this->assertEquals(5759.98, $expenses->get('2022-04'));
+        $this->assertEquals(9380, $expenses->get('2022-02'));
+        $this->assertEquals(4880, $expenses->get('2022-03'));
+        $this->assertEquals(5760, $expenses->get('2022-04'));
     }
 
     /** @test */

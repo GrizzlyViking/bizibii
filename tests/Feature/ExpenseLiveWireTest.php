@@ -78,7 +78,6 @@ class ExpenseLiveWireTest extends TestCase
             ->set('expense.amount', $this->faker->randomFloat())
             ->call('submit')
             ->assertHasErrors([
-                'expense.due_date_meta' => 'required',
                 'expense.due_date'
             ]);
     }

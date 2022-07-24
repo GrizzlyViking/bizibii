@@ -29,6 +29,8 @@ class ExpensesWalker
 
     private Collection $data;
 
+    protected array $excludeCategories = [];
+
     public function __construct(
         User $user,
         Carbon $start,
@@ -84,7 +86,7 @@ class ExpensesWalker
             // If there is a checkpoint for balance for that day, that is used instead.
             /** @var Reality $checkpoint */
             if ($checkpoint = Reality::where('checkpointable_id', $account->id)->where('checkpointable_type', $account::class)->where('registered_date', $date)->first()) {
-                $balance = $checkpoint->amount;
+                $balance = intval($checkpoint->amount);
             } else {
                 $expenses->each(function (Expense $expense) use ($date, $account, &$balance) {
                     if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
@@ -108,7 +110,7 @@ class ExpensesWalker
     {
         return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) {
             return $expenses->sum(fn(Expense $expense
-            ) => $expense->category->equals(Category::Income) || $expense->category->type() == Category::ADMINISTRATIVE ? 0 : -$expense->setDateToCheck($date)->getCost());
+            ) => $expense->category->equals(Category::Income) ? 0 : -$expense->setDateToCheck($date)->getCost());
         })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
     }
 
@@ -121,8 +123,17 @@ class ExpensesWalker
 
     public function filterExpensesByAccount(Account $account): Collection
     {
-        return $this->data->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
+        return $this->data->map(function (Collection $expenses) {
+            return $expenses->filter(fn (Expense $expense) => !in_array($expense->category, $this->excludeCategories));
+        })->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
         ) => $expense->account_id == $account->id || ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id)));
+    }
+
+    public function setExcludeCategories(...$categories): self
+    {
+        $this->excludeCategories = $categories;
+
+        return $this;
     }
 
 }

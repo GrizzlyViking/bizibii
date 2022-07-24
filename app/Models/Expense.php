@@ -212,11 +212,11 @@ class Expense extends Model
         }
     }
 
-    public function getCost(): float
+    public function getCost(): int
     {
         $amount = $this->amount;
         if (($checkpoint = $this->getApplicableCheckpoints()) !== false) {
-            $amount = $checkpoint->isNotEmpty() ? $checkpoint->last()->amount : 0.0;
+            $amount = $checkpoint->isNotEmpty() ? $checkpoint->last()->amount : 0;
         }
         return $this->category === Category::Income ? abs($amount) : abs($amount) * -1;
     }
@@ -250,7 +250,7 @@ class Expense extends Model
         return $balance += $this->getCost();
     }
 
-    public function applyTransfer(&$balance): float
+    public function applyTransfer(&$balance): int
     {
         return $balance -= $this->getCost();
     }
@@ -273,6 +273,11 @@ class Expense extends Model
             $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->between($this->date_to_check->startOfWeek(), $this->date_to_check->endOfWeek()));
             if ($checkpoints->isNotEmpty()) {
                 return $checkpoints->filter(fn (Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
+            }
+        } elseif ($this->frequency->equals(Frequency::Daily)) {
+            $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->isSameDay($this->date_to_check));
+            if ($checkpoints->isNotEmpty()) {
+                return $checkpoints;
             }
         }
 

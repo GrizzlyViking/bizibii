@@ -88,7 +88,7 @@ class AccountForm extends Component
         Reality::create([
             'checkpointable_id'   => $this->account->id,
             'checkpointable_type' => $this->account::class,
-            'checkpoint'          => $validatedData['checkpoint_amount'],
+            'amount'          => $validatedData['checkpoint_amount'],
             'registered_date'     => $validatedData['checkpoint_date'],
         ]);
 

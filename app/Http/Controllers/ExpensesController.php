@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Category;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpensesRequest;
 use App\Models\Account;
@@ -103,17 +104,20 @@ class ExpensesController extends Controller
     protected function getBarChart(mixed $accounts, ExpensesWalker $walker): ColumnChartModel
     {
         $graphs = collect();
-        $accounts->each(function (Account $account) use ($walker, &$graphs) {
-            $graphs->put($account->name, $walker->graphExpensesMonthly($account));
-        });
+
+        /** @var Account $budget_account */
+        $budget_account = $accounts->first();
+        $graphs->put(
+            $budget_account->name,
+            $walker->setExcludeCategories(Category::DayToDayConsumption)->graphExpensesMonthly($budget_account)
+        );
+
         $income = collect();
         $accounts->each(function (Account $account) use ($walker, &$income) {
             $income->put($account->name, $walker->graphIncomeMonthly($account));
         });
 
-        $disposable = $income->sumRecursive()->mergeRecursive($graphs->sumRecursive())
-            ->map(fn ($items) => $items[0]-$items[1]);
-
+        $disposable = $graphs->first()->mergeRecursive($income->sumRecursive())->map(fn ($values) => $values[1]-$values[0]);
         $graphs->put('disposable', $disposable);
 
         $barChart = (new ColumnChartModel())

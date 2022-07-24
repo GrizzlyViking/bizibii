@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('transfer_to_account_id')->nullable();
             $table->foreign('transfer_to_account_id')->references('id')->on('accounts')->nullOnDelete();
             $table->string('description');
+            $table->boolean('highlight')->default(false);
             $table->string('category');
             $table->float('amount', 16, 2);
             $table->boolean('applied')->default(false);
