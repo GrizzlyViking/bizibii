@@ -2,15 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\Category;
 use App\Models\Expense;
 use App\Models\ListableInterface;
 use App\Models\User;
 use App\Services\ExpensesWalker;
-use Asantibanez\LivewireCharts\Models\LineChartModel;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class ListExpenses extends Component
@@ -25,9 +23,10 @@ class ListExpenses extends Component
      */
     private ExpensesWalker $walker;
 
-    public function mount(User $user)
+    public function mount(User $user, Collection $items)
     {
         $this->user = $user;
+        $this->items = $items->sortBy(fn (Expense $expense) => Category::Income->equals($expense->category) ? -1 : Category::all()->search($expense->category));
         $this->walker = (new ExpensesWalker($this->user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear()))->process();
     }
 

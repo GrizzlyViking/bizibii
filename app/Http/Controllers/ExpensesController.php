@@ -29,7 +29,7 @@ class ExpensesController extends Controller
         /** @var User $user */
         $user = Auth::user();
         $expenses = $user->expenses;
-        $walker = (new ExpensesWalker($user, Carbon::now()->startOfYear(),Carbon::now()->endOfYear()))->process();
+        $walker = (new ExpensesWalker($user, Carbon::now()->startOfMonth(),Carbon::now()->addYear()->endOfMonth()))->process();
         $lineChartModel = $this->getGraphMultiLine($user->accounts, $walker);
         $expensesBarChart = $this->getBarChart($user->accounts, $walker);
         return response()->view('admin.expense.list', compact('expenses', 'lineChartModel', 'expensesBarChart'));

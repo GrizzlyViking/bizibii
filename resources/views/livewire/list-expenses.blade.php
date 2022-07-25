@@ -27,7 +27,7 @@
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($items as $item)
-                                        <tr>
+                                        <tr @if($item->highlight)class="bg-red-200"@endif>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="ml-4">

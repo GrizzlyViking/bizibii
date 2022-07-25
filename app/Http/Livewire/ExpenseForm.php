@@ -59,6 +59,7 @@ class ExpenseForm extends Component
             ],
             'expense.category'               => ['required'],
             'expense.frequency'              => ['required'],
+            'expense.highlight'              => 'nullable|boolean',
             'expense.due_date'               => ['required', new Enum(DueDate::class), new DueDateRules()],
             'expense.due_date_meta'          => [
                 Rule::requiredIf(fn() => DueDate::DateInMonth->equals($this->expense->due_date)),
@@ -111,7 +112,7 @@ class ExpenseForm extends Component
         }
 
         if ($this->end_date) {
-            $this->expense->start = $this->end_date;
+            $this->expense->end = $this->end_date;
         }
 
         $this->expense->save();

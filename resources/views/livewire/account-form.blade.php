@@ -75,7 +75,7 @@
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
                                                         <div class="text-sm font-medium text-gray-500">
-                                                            {{ number_format($item->checkpoint) }}
+                                                            {{ number_format($item->amount) }}
                                                         </div>
                                                     </td>
                                                     <td class="px-6 py-4 text-right whitespace-nowrap">

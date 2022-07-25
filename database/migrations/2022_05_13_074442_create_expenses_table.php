@@ -13,7 +13,7 @@ return new class extends Migration {
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
@@ -21,9 +21,9 @@ return new class extends Migration {
             $table->unsignedBigInteger('transfer_to_account_id')->nullable();
             $table->foreign('transfer_to_account_id')->references('id')->on('accounts')->nullOnDelete();
             $table->string('description');
-            $table->boolean('highlight')->default(false);
+            $table->boolean('highlight')->nullable(true)->default(false);
             $table->string('category');
-            $table->float('amount', 16, 2);
+            $table->float('amount', 16);
             $table->boolean('applied')->default(false);
             $table->string('frequency');
             $table->string('due_date');
@@ -41,7 +41,7 @@ return new class extends Migration {
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('expenses');
     }

@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
  * @property int $id
  * @property int $account_id
  * @property int $transfer_to_account_id
+ * @property bool $highlight
  * @property string $description
  * @property Category $category
  * @property float $amount
@@ -42,6 +43,7 @@ use Illuminate\Support\Collection;
  */
 class Expense extends Model
 {
+
     use HasFactory;
 
     protected $dates = [
@@ -51,6 +53,7 @@ class Expense extends Model
 
     protected $casts = [
         'applied'   => 'boolean',
+        'highlight' => 'boolean',
         'category'  => Category::class,
         'frequency' => Frequency::class,
         'due_date'  => DueDate::class,
@@ -59,6 +62,7 @@ class Expense extends Model
     protected $fillable = [
         'account_id',
         'transfer_to_account_id',
+        'highlight',
         'description',
         'category',
         'frequency',
@@ -263,16 +267,19 @@ class Expense extends Model
 
         // check day of month
         if ($this->frequency->equals(Frequency::Monthly)) {
-            $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->between($this->date_to_check->startOfMonth()->format('Y-m-d'), $this->date_to_check->endOfMonth()->format('Y-m-d')));
+            $checkpoints = $this->checkpoints->filter(fn(Reality $reality
+            ) => $reality->registered_date->between($this->date_to_check->startOfMonth()->format('Y-m-d'),
+                $this->date_to_check->endOfMonth()->format('Y-m-d')));
             // if checkpoint is within the relevant month
             if ($checkpoints->isNotEmpty()) {
                 // then it is checkpoint date that is used.
-                return $checkpoints->filter(fn (Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
+                return $checkpoints->filter(fn(Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
             }
         } elseif ($this->frequency->equals(Frequency::Weekly)) {
-            $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->between($this->date_to_check->startOfWeek(), $this->date_to_check->endOfWeek()));
+            $checkpoints = $this->checkpoints->filter(fn(Reality $reality
+            ) => $reality->registered_date->between($this->date_to_check->startOfWeek(), $this->date_to_check->endOfWeek()));
             if ($checkpoints->isNotEmpty()) {
-                return $checkpoints->filter(fn (Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
+                return $checkpoints->filter(fn(Reality $reality) => $reality->checkpoint_date == $this->date_to_check->format('Y-m-d'));
             }
         } elseif ($this->frequency->equals(Frequency::Daily)) {
             $checkpoints = $this->checkpoints->filter(fn(Reality $reality) => $reality->registered_date->isSameDay($this->date_to_check));

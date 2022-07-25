@@ -143,6 +143,14 @@
                                 @error('end_date') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                             </div>
 
+                            <div class="flex col-span-6 sm:col-span-3 justify-between">
+                                <div class="flex items-center">
+                                    <input wire:model="expense.highlight" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="highlight" class="ml-2 block text-sm text-gray-900"> Highlight to research later </label>
+                                </div>
+                                @error('expense.highlight') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
+                            </div>
+
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
