@@ -89,6 +89,7 @@ class ExpenseForm extends Component
         $this->expense->frequency = $expense->frequency ?? Frequency::all()->first();
         $this->expense->category = $expense->category ?? Category::all()->first();
         $this->expense->due_date = $expense->due_date ?? DueDate::all()->first();
+        $this->expense->highlight = $expense->highlight ?? false;
         $this->start_date = $expense->start?->format('Y-m-d');
         $this->end_date = $expense->end?->format('Y-m-d');
     }
