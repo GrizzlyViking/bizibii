@@ -1,6 +1,9 @@
 <div>
-    <div class="pt-1 px-12 pb-12">
+    <div class="pt-1 md:px-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="w-full text-right">
+                <x-button class="bg-green-600 hover:bg-green-700 focus:ring-green-500" wire:click="createExpense">Add</x-button>
+            </div>
             <div class="mt-6 bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -20,15 +23,12 @@
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Amount
                                         </th>
-                                        <th scope="col" class="relative px-6 py-3">
-                                            <a href="{{ route('expenses.create') }}" class="inline-flex justify-right py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-600 hover:bg-green-700 focus:ring-green-500">Add</a>
-                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($items as $item)
-                                        <tr @if($item->highlight)class="bg-red-200"@endif>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                        <tr @if($item->highlight)class="bg-red-200"@endif wire:click="editExpense({{ $item->id }})">
+                                            <td class="md:px-6 sm:px-2 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">
@@ -40,7 +40,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="md:px-6 sm:px-2 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">
@@ -57,7 +57,7 @@
                                                     {{ number_format($item->amount) }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <td class="sm:hidden px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <a href="{{ route('expenses.edit', $item->id) }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Edit</a>
                                                 <x-button class="focus:ring-red-500 bg-red-600 hover:bg-red-700" wire:click="delete({{ $item->id }})">Delete</x-button>
                                             </td>

@@ -7,9 +7,11 @@ use App\Models\Expense;
 use App\Models\ListableInterface;
 use App\Models\User;
 use App\Services\ExpensesWalker;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Component;
+use Livewire\Redirector;
 
 class ListExpenses extends Component
 {
@@ -33,6 +35,16 @@ class ListExpenses extends Component
     public function render()
     {
         return view('livewire.list-expenses');
+    }
+
+    public function editExpense(int $expense_id): RedirectResponse|Redirector
+    {
+        return response()->redirectToRoute('expenses.edit', $expense_id);
+    }
+
+    public function createExpense(): RedirectResponse|Redirector
+    {
+        return response()->redirectToRoute('expenses.create');
     }
 
     public function delete(Expense $expense)

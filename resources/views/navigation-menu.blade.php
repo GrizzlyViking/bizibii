@@ -240,6 +240,18 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <!-- Expenses -->
+                <x-jet-responsive-nav-link href="{{ route('account.index') }}" :active="request()->routeIs('account.index')">
+                    {{ __('Accounts') }}
+                </x-jet-responsive-nav-link>
+
+                <!-- Expenses -->
+                <x-jet-responsive-nav-link href="{{ route('expenses.list') }}" :active="request()->routeIs('expenses.list')">
+                    {{ __('Expenses') }}
+                </x-jet-responsive-nav-link>
+
+                <div class="border-t border-gray-200"></div>
+
                 <!-- Account Management -->
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}

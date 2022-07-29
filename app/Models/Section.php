@@ -66,9 +66,9 @@ class Section extends Model implements ListableInterface
         return $this->page->slug;
     }
 
-    public function getColumn4(int $char_limit = 20): string
+    public function getColumn4(int $char_limit = 20): ?string
     {
-        return Str::limit($this->content, $char_limit);
+        return null;
     }
 
     public function getRouteShow(): string

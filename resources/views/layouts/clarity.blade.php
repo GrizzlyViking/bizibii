@@ -18,7 +18,11 @@
 
 </head>
 <body>
-
+<!-- Brand -->
+<a class="navbar-brand d-sm-inline-block w-auto col-lg-2" href="{{ route('home') }}">
+    <img src="{{ asset('images/large_bizibii_text.png') }}" alt="logo_with_bee" class="embed-responsive h-100">
+</a>
+<!-- /Brand -->
 
 <!-- Navigation -->
 @include('clarity._partials.navigation')
@@ -65,7 +69,7 @@
             <div class="col-12">
 
                 <!-- Result Wrapper -->
-                <div id="page-search-result"></div>
+                <div id="page-search-result">Something</div>
                 <!-- /Result Wrapper -->
 
             </div>

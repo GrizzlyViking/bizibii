@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             AccountSeeder::class,
             TransactionsSeeder::class,
             TagsSeeder::class,
+            ExpensesSeeder::class,
         ]);
     }
 }

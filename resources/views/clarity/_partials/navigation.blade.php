@@ -8,35 +8,27 @@
         </div>
         <!-- /Navbar Toggler -->
 
-        <!-- Brand -->
-        <a class="navbar-brand d-sm-inline-block w-auto col-lg-2" href="{{ route('home') }}">
-            <img src="{{ asset('images/large_bizibii_text.png') }}" alt="logo_with_bee" class="embed-responsive h-100">
-        </a>
-        <!-- /Brand -->
+        <!-- Middle -->
+        <div id="navbar-fullscreen" class="navbar-nav-fullscreen">
+            <ul class="navbar-nav">
 
-        <!-- Right -->
-        <ul class="navbar-nav col-lg-2 justify-content-lg-end d-none d-lg-flex">
+                <!-- Navbar Item -->
+                <li class="nav-item">
+                    <a href="{{ route('login') }}" class="nav-link">Login</a>
+                </li>
+                <!-- Navbar Item -->
 
-            <!-- Navbar Item -->
-            <li class="nav-item">
-                <a href="{{ route('login') }}" class="nav-link">
-                    <i class="icon fa fa-sign-in"></i>
-                </a>
-            </li>
-            <!-- /Navbar Item -->
+                <!-- Navbar Item -->
+                @if (Route::has('register'))
+                <li class="nav-item">
+                    <a href="{{ route('register') }}" class="nav-link">Register</a>
+                </li>
+                @endif
+                <!-- Navbar Item -->
 
-            <!-- Navbar Item -->
-            @if (Route::has('register'))
-            <li class="nav-item">
-                <a href="{{ route('register') }}" class="nav-link">
-                    <i class="icon fa fa-user"></i>
-                </a>
-            </li>
-            @endif
-            <!-- /Navbar Item -->
-
-        </ul>
-        <!-- /Right -->
+            </ul>
+        </div>
+        <!-- /Middle -->
 
     </div>
 </nav>

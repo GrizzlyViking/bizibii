@@ -28,10 +28,21 @@ class ExpensesController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+        if ($user->accounts->isEmpty()) {
+            return response()->view('admin.utility.empty', [
+                'title' => 'No accounts',
+                'message' => 'Please create an account first.'
+            ]);
+        }
+
+        $lineChartModel = false;
+        $expensesBarChart = false;
         $expenses = $user->expenses;
-        $walker = (new ExpensesWalker($user, Carbon::now()->startOfMonth(),Carbon::now()->addYear()->endOfMonth()))->process();
-        $lineChartModel = $this->getGraphMultiLine($user->accounts, $walker);
-        $expensesBarChart = $this->getBarChart($user->accounts, $walker);
+        if ($user->expenses->isNotEmpty()) {
+            $walker = (new ExpensesWalker($user, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth()))->process();
+            $lineChartModel = $this->getGraphMultiLine($user->accounts, $walker);
+            $expensesBarChart = $this->getBarChart($user->accounts, $walker);
+        }
         return response()->view('admin.expense.list', compact('expenses', 'lineChartModel', 'expensesBarChart'));
     }
 

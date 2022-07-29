@@ -1,10 +1,5 @@
 <?php
 
-use App\Enums\Category;
-use App\Enums\DueDate;
-use App\Enums\Frequency;
-use App\Models\Account;
-use App\Models\Expense;
 use App\Models\Page;
 use App\Models\Section;
 use App\Models\User;

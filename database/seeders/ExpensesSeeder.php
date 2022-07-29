@@ -25,7 +25,7 @@ class ExpensesSeeder extends Seeder
 
         /** @var Account $account_standard */
         $account_standard = $user->accounts->where('name', 'standard account')->first();
-        $account_shared = $user->accounts->where('name', 'standard account')->first();
+        $account_shared = $user->accounts->where('name', 'shared account')->first();
 
         $account_standard->checkpoints()->create([
             'registered_date' => '2022-07-24',

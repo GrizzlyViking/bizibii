@@ -1,5 +1,6 @@
+@php /** @var \Illuminate\Support\Collection $items **/ @endphp
 <div>
-    <div class="pt-1 px-12 pb-12">
+    <div class="pt-1 md:px-12 pb-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-6 bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="flex flex-col">
@@ -20,16 +21,16 @@
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             {{ __($columnHeaders[2] ?? 'Status') }}
                                         </th>
-                                        @if(!empty($items->first()->getColumn4()))
+                                        @if($items->isNotEmpty() && !empty($items->first()->getColumn4()))
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             {{ __($columnHeaders[3] ?? 'Content') }}
                                         </th>
                                         @endif
-                                        @if(!empty($items->first()->getColumn4()))
+                                        @if($items->isNotEmpty() && !empty($items->first()->getColumn4()))
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __($columnHeaders[4]) ?? 'Column 4' }}
+                                            {{ __($columnHeaders[4] ?? 'Column 4') }}
                                         </th>
                                         @endif
                                         <th scope="col" class="relative px-6 py-3">
@@ -40,7 +41,7 @@
                                     <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($items as $item)
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="md:px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">

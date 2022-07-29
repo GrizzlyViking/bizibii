@@ -3,16 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Models\ListableInterface;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class ListItems extends Component
 {
     /** @var ListableInterface[] */
-    public $items;
+    public $items = null;
 
     public array $columnHeaders = [];
 
-    public function mount($items, array $columnHeaders = [])
+    public function mount(ListableInterface|Collection|null $items = null, array $columnHeaders = [])
     {
         $this->items = $items;
         $this->columnHeaders = $columnHeaders;

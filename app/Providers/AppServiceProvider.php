@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
                     return $new;
                 }
                 return $carry->mergeRecursive($new);
-            })->map(fn ($item) => array_sum($item));
+            })->map(fn ($item) => array_sum(Arr::wrap($item)));
         });
     }
 }
