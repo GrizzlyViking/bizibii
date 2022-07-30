@@ -2,27 +2,13 @@
 
 namespace App\Services;
 
-use App\Enums\Category;
-use App\Models\Account;
 use App\Models\Expense;
-use App\Models\Reality;
-use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use JetBrains\PhpStorm\NoReturn;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ExpensesWalker
 {
-
-    public const MONTHLY = 'monthly';
-
-    public const DAILY = 'daily';
-
-    /**
-     * @var \App\Models\User
-     */
-    private User $user;
-
     private Carbon $end;
 
     private Carbon $now;
@@ -31,12 +17,14 @@ class ExpensesWalker
 
     protected array $excludeCategories = [];
 
+    /** @var \Illuminate\Support\Collection<Expense>
+     */
+    protected Collection $expenses;
+
     public function __construct(
-        User $user,
         Carbon $start,
         Carbon $end
     ) {
-        $this->user = $user;
         $this->now = $start;
         $this->end = $end;
         $this->data = collect();
@@ -53,6 +41,21 @@ class ExpensesWalker
         return $this;
     }
 
+    public function setExpenses(Collection $expenses): self
+    {
+        $this->expenses = $expenses;
+
+        return $this;
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<Expense>
+     */
+    public function getExpenses(): Collection
+    {
+        return $this->expenses;
+    }
+
     /**
      * @return \Illuminate\Support\Collection<Expense>
      */
@@ -61,6 +64,10 @@ class ExpensesWalker
         return $this->data;
     }
 
+    #[ArrayShape([
+        'data' => Collection::class,
+        'completed' => "string"
+    ])]
     protected function completed(): array
     {
         return [
@@ -69,71 +76,13 @@ class ExpensesWalker
         ];
     }
 
-    private function step(Carbon $day)
+    private function step(Carbon $day): void
     {
-        $expenses = $this->user->expenses->filter(function (Expense $expense) use ($day) {
+        $expenses = $this->expenses->filter(function (Expense $expense) use ($day) {
             return $expense->applicable($day);
         });
 
         $this->data->put($day->format('Y-m-d'), $expenses);
-    }
-
-    public function graphBalance(?Account $account = null): Collection
-    {
-        $balance = $account->balance;
-
-        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) use ($account, &$balance) {
-            // If there is a checkpoint for balance for that day, that is used instead.
-            /** @var Reality $checkpoint */
-            if ($checkpoint = Reality::where('checkpointable_id', $account->id)->where('checkpointable_type', $account::class)->where('registered_date', $date)->first()) {
-                $balance = intval($checkpoint->amount);
-            } else {
-                $expenses->each(function (Expense $expense) use ($date, $account, &$balance) {
-                    if ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id) {
-                        $expense->setDateToCheck($date)->applyTransfer($balance);
-                    } else {
-                        $expense->setDateToCheck($date)->applyCost($balance);
-                    }
-                });
-            }
-            return $balance;
-        });
-    }
-
-    public function graphBalanceMonthly(?Account $account = null): Collection
-    {
-        return $this->graphBalance($account)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
-            ->map(fn(Collection $month) => $month->last());
-    }
-
-    public function graphExpensesMonthly(Account $account): Collection
-    {
-        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) {
-            return $expenses->sum(fn(Expense $expense
-            ) => $expense->category->equals(Category::Income) ? 0 : -$expense->setDateToCheck($date)->getCost());
-        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
-    }
-
-    public function graphIncomeMonthly(Account $account): Collection
-    {
-        return $this->filterExpensesByAccount($account)->map(function (Collection $expenses, $date) {
-            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->setDateToCheck($date)->getCost() : 0);
-        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
-    }
-
-    public function filterExpensesByAccount(Account $account): Collection
-    {
-        return $this->data->map(function (Collection $expenses) {
-            return $expenses->filter(fn (Expense $expense) => !in_array($expense->category, $this->excludeCategories));
-        })->map(fn(Collection $expenses) => $expenses->filter(fn(Expense $expense
-        ) => $expense->account_id == $account->id || ($expense->category->equals(Category::Transfer) && $expense->transfer_to_account_id == $account->id)));
-    }
-
-    public function setExcludeCategories(...$categories): self
-    {
-        $this->excludeCategories = $categories;
-
-        return $this;
     }
 
 }

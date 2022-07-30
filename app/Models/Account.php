@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\Category;
+use App\Services\ExpensesWalker;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -19,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Tag> $tags
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Transaction> $transactions
  * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Reality> $checkpoints
+ * @property \Illuminate\Support\Collection<\App\Models\Expense> $expenses
+ * @property \Illuminate\Support\Collection<\App\Models\Expense> $incomingTransfers
  *
  * @method static self updateOrInsert(array $comparison, array $payload)
  */
@@ -49,18 +55,14 @@ class Account extends Model implements ListableInterface
         return $this->hasMany(Transaction::class);
     }
 
-    public function expenses()
+    public function expenses(): Relation
     {
         return $this->hasMany(Expense::class);
     }
 
-    public function addFunds(float $amount): float
+    public function incomingTransfers(): Relation
     {
-        $this->update([
-            'balance' => $this->balance + $amount
-        ]);
-
-        return $this->balance;
+        return $this->hasMany(Expense::class, 'transfer_to_account_id');
     }
 
     public function getColumn1(): string
@@ -96,5 +98,56 @@ class Account extends Model implements ListableInterface
     public function checkpoints(): Relation
     {
         return $this->morphMany(Reality::class, 'checkpointable');
+    }
+
+    public function graphBalance(Carbon $startAt, Carbon $endAt): Collection
+    {
+        $balance = $this->balance;
+
+        $expenses = $this->expenses->merge($this->incomingTransfers);
+        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->process()->getData()->map(function (Collection $expenses, $date) use (&$balance) {
+            // If there is a checkpoint for balance for that day, that is used instead.
+            // TODO: replace this with relation.
+            /** @var Reality $checkpoint */
+            if ($checkpoint = Reality::where('checkpointable_id', $this->id)->where('checkpointable_type', self::class)->where('registered_date', $date)->first()) {
+                $balance = intval($checkpoint->amount);
+            } else {
+                $expenses->each(function (Expense $expense) use ($date, &$balance) {
+                    if ($expense->category->equals(Category::Transfer) && $expense->account_id != $this->id) {
+                        $expense->setDateToCheck($date)->applyTransfer($balance);
+                    } else {
+                        $expense->setDateToCheck($date)->applyCost($balance);
+                    }
+                });
+            }
+            return $balance;
+        });
+    }
+
+    public function graphBalanceMonthly(Carbon $startAt, Carbon $endAt): Collection
+    {
+        return $this->graphBalance($startAt, $endAt)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
+            ->map(fn(Collection $month) => $month->last());
+    }
+
+    public function graphExpensesMonthly(Carbon $startAt, Carbon $endAt): Collection
+    {
+        $expenses = $this->expenses->filter(fn (Expense $expense) => !$expense->category->equals(Category::DayToDayConsumption) );
+        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->process()->getData()
+            ->map(function (Collection $expenses, $date) {
+                return $expenses->sum(fn(Expense $expense
+                ) => $expense->category->equals(Category::Income) ? 0 : -$expense->setDateToCheck($date)->getCost());
+            })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
+    }
+
+    public function graphIncomeMonthly(Carbon $startAt, Carbon $endAt): Collection
+    {
+        return (new ExpensesWalker($startAt, $endAt))->setExpenses($this->expenses)->process()->getData()->map(function (
+            Collection $expenses,
+            $date
+        ) {
+            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->setDateToCheck($date)
+                ->getCost() : 0);
+        })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
     }
 }
