@@ -39,6 +39,7 @@ class ExpensesController extends Controller
         $expensesBarChart = false;
         $expenses = $user->expenses;
         if ($user->expenses->isNotEmpty()) {
+            $lineChartModel = $this->getGraphMultiLine($user->accounts, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
             $expensesBarChart = $this->getBarChart($user->accounts, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
         }
         return response()->view('admin.expense.list', compact('expenses', 'lineChartModel', 'expensesBarChart'));
@@ -85,6 +86,25 @@ class ExpensesController extends Controller
             ->setTitle('Balance per Month.');
         $graph->each(function ($balance, $date) use ($lineChartModel) {
             $lineChartModel->addPoint($date, $balance);
+        });
+
+        return $lineChartModel;
+    }
+
+    public function getGraphMultiLine(Collection $accounts, Carbon $startAt, Carbon $endAt): LineChartModel
+    {
+        $graphs = collect();
+        $accounts->each(function (Account $account) use ($startAt, $endAt, &$graphs) {
+            $graphs->put($account->name, $account->graphBalanceMonthly($startAt, $endAt));
+        });
+
+        $lineChartModel = (new LineChartModel())
+            ->multiLine()
+            ->setTitle('Balance per Month.');
+        $graphs->each(function ($graph, $name) use ($lineChartModel) {
+            $graph->each(function ($balance, $date) use ($name, $lineChartModel) {
+                $lineChartModel->addSeriesPoint($name, $this->getMonth($date), $balance);
+            });
         });
 
         return $lineChartModel;
