@@ -20,6 +20,13 @@ class PageController extends Controller
         return view('home', ['sections' => $page->sections()->get()->keyBy('slug')]);
     }
 
+    public function dashboard()
+    {
+        // starting from
+
+        return view('dashboard', ['lineChartModel' => false]);
+    }
+
     /**
      * Display a listing of the resource.
      *

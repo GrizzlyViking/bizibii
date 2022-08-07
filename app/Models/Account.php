@@ -132,12 +132,17 @@ class Account extends Model implements ListableInterface
 
     public function graphExpensesMonthly(Carbon $startAt, Carbon $endAt): Collection
     {
+        return $this->graphExpenses($startAt, $endAt)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
+    }
+
+    public function graphExpenses(Carbon $startAt, Carbon $endAt): Collection
+    {
         $expenses = $this->expenses->filter(fn (Expense $expense) => !$expense->category->equals(Category::DayToDayConsumption) );
         return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->process()->getData()
             ->map(function (Collection $expenses, $date) {
                 return $expenses->sum(fn(Expense $expense
                 ) => $expense->category->equals(Category::Income) ? 0 : -$expense->setDateToCheck($date)->getCost());
-            })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
+            });
     }
 
     public function graphIncomeMonthly(Carbon $startAt, Carbon $endAt): Collection

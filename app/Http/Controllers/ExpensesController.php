@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Category;
-use App\Http\Requests\StoreExpenseRequest;
-use App\Http\Requests\UpdateExpensesRequest;
 use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
-use App\Services\ExpensesWalker;
+use App\Services\Graph;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Illuminate\Http\Response;
@@ -98,16 +95,9 @@ class ExpensesController extends Controller
             $graphs->put($account->name, $account->graphBalanceMonthly($startAt, $endAt));
         });
 
-        $lineChartModel = (new LineChartModel())
-            ->multiLine()
-            ->setTitle('Balance per Month.');
-        $graphs->each(function ($graph, $name) use ($lineChartModel) {
-            $graph->each(function ($balance, $date) use ($name, $lineChartModel) {
-                $lineChartModel->addSeriesPoint($name, $this->getMonth($date), $balance);
-            });
-        });
-
-        return $lineChartModel;
+        return Graph::lineChart('Balance per Month.', $graphs->map(function ($graph, $name) {
+            return $graph->map(fn ($balance, $date) => [$name, $date, $balance]);
+        })->flatten(1));
     }
 
     protected function getBarChart(mixed $accounts, Carbon $startAt, Carbon $endAt): ColumnChartModel
@@ -129,17 +119,9 @@ class ExpensesController extends Controller
         $disposable = $graphs->first()->mergeRecursive($income->sumRecursive())->map(fn ($values) => $values[1]-$values[0]);
         $graphs->put('disposable', $disposable);
 
-        $barChart = (new ColumnChartModel())
-            ->multiColumn()
-            ->stacked()
-            ->setTitle('Expenses per month');
-        $graphs->each(function ($graph, $name) use ($barChart) {
-            $graph->each(function ($expenses, $date) use ($name, $barChart) {
-                $barChart->addSeriesColumn($name, $this->getMonth($date), $expenses);
-            });
-        });
-
-        return $barChart;
+        return Graph::barChart('Expenses per month', $graphs->map(function ($graph, $name) {
+            return $graph->map(fn ($balance, $date) => [$name, $date, $balance]);
+        })->flatten(1));
     }
 
     private function getMonth(string $yearMonth): string

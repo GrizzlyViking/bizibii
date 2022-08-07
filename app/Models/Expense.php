@@ -181,7 +181,7 @@ class Expense extends Model
                     }
                     return $this->date_to_check->isSameDay($now);
                 }
-                throw new Exception('Due Date is ' . $this->due_date->name . ' but no sensible due date meta was set.');
+                throw new Exception($this->description . '; Due Date is ' . $this->due_date->name . ' but no sensible due date meta was set.');
         }
 
         return false;
@@ -200,6 +200,9 @@ class Expense extends Model
                     $lengthOf,
                 ] = $this->parseFrequency($this->frequency);
 
+                if (!is_object($this->start)) {
+                    throw new Exception($this->description . ' start is not an object.' .var_export($this->start, true));
+                }
                 $start = clone $this->start;
 
                 while ($start->format('Y-m') <= $this->date_to_check->format('Y-m')) {

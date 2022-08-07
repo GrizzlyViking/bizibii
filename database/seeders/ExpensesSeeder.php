@@ -13,6 +13,7 @@ use Illuminate\Database\Seeder;
 
 class ExpensesSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *
@@ -29,25 +30,46 @@ class ExpensesSeeder extends Seeder
 
         $account_standard->checkpoints()->create([
             'registered_date' => '2022-07-24',
-            'amount'      => 2459.14,
+            'amount'          => 2459.14,
+        ]);
+
+        $account_standard->checkpoints()->create([
+            'registered_date' => '2022-08-05',
+            'amount'          => 3714,
         ]);
 
         $account_standard->expenses()->create([
             'category'    => Category::Income,
             'description' => 'Wages from aller',
             'frequency'   => Frequency::Monthly,
-            'due_date'    => DueDate::LastWorkingDayOfMonth,
+            'due_date'    => DueDate::FirstOfMonth,
             'start'       => '2021-11-01',
             'amount'      => 33633.00,
         ]);
 
         $account_standard->expenses()->create([
+            'category'      => Category::Income,
+            'description'   => 'Overførsel Børne- og Ungeydelse',
+            'frequency'     => Frequency::Every3rdMonth,
+            'due_date'      => DueDate::FirstOfMonth,
+            'due_date_meta' => '20th',
+            'start'         => '2021-10-20',
+            'amount'        => 1841.00,
+        ]);
+
+        $insurance = $account_standard->expenses()->create([
             'category'    => Category::House,
             'description' => 'Tryg',
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::FirstWorkingDayOfMonth,
             'amount'      => 2190,
         ]);
+
+        $insurance->checkpoints()->create([
+            'registered_date' => '2022-08-05',
+            'amount'          => 1771,
+        ]);
+
 
         $account_shared->expenses()->create([
             'category'    => Category::House,
@@ -66,8 +88,27 @@ class ExpensesSeeder extends Seeder
             'amount'      => 8134.00,
         ]);
 
+        $account_standard->expenses()->create([
+            'category'    => Category::House,
+            'description' => 'Student loan',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::FirstOfMonth,
+            'end'         => '2022-11-01',
+            'amount'      => 2200.00,
+        ]);
+
+        $account_shared->expenses()->create([
+            'category'      => Category::Utilities,
+            'description'   => 'EVIDA SERVICE NORD A',
+            'frequency'     => Frequency::Every3rdMonth,
+            'due_date'      => DueDate::DateInMonth,
+            'due_date_meta' => '6th in month',
+            'start'         => '2021-03-01',
+            'amount'        => 2386.00,
+        ]);
+
         /** @var Expense $energy */
-        $energy = $account_standard->expenses()->create([
+        $energy = $account_shared->expenses()->create([
             'category'    => Category::Utilities,
             'description' => 'Electricity and gas',
             'frequency'   => Frequency::Monthly,
@@ -77,57 +118,57 @@ class ExpensesSeeder extends Seeder
 
         $energy->checkpoints()->create([
             'registered_date' => '2021-09-07',
-            'amount'      => 1957.19,
+            'amount'          => 1957.19,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2021-10-07',
-            'amount'      => 2463.78,
+            'amount'          => 2463.78,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2021-11-08',
-            'amount'      => 3160.82,
+            'amount'          => 3160.82,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2021-12-07',
-            'amount'      => 3622.01,
+            'amount'          => 3622.01,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-01-07',
-            'amount'      => 4697.35,
+            'amount'          => 4697.35,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-02-07',
-            'amount'      => 5225.21,
+            'amount'          => 5225.21,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-03-07',
-            'amount'      => 2772.73,
+            'amount'          => 2772.73,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-04-07',
-            'amount'      => 3590.28,
+            'amount'          => 3590.28,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-05-09',
-            'amount'      => 6915.51,
+            'amount'          => 6915.51,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-06-07',
-            'amount'      => 3184.20,
+            'amount'          => 3184.20,
         ]);
 
         $energy->checkpoints()->create([
             'registered_date' => '2022-07-07',
-            'amount'      => 9478.95,
+            'amount'          => 9478.95,
         ]);
 
         $account_standard->expenses()->create([
@@ -136,6 +177,22 @@ class ExpensesSeeder extends Seeder
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::FirstWorkingDayOfMonth,
             'amount'      => 3410.00,
+        ]);
+
+        $account_standard->expenses()->create([
+            'category'    => Category::Transport,
+            'description' => 'Electric car - Clever',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 200.00,
+        ]);
+
+        $account_standard->expenses()->create([
+            'category'    => Category::Transport,
+            'description' => 'Electric car - Parking in Aller',
+            'frequency'   => Frequency::Weekly,
+            'due_date'    => DueDate::Friday,
+            'amount'      => 150.00,
         ]);
 
         $account_standard->expenses()->create([
@@ -183,90 +240,80 @@ class ExpensesSeeder extends Seeder
             'description' => 'Various bills to apple',
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::FirstWorkingDayOfMonth,
-            'amount'      => 524,
+            'amount'      => 424,
         ]);
 
         $account_standard->expenses()->create([
-            'category'    => Category::Communication,
-            'description' => 'Cyberghost',
-            'frequency'   => Frequency::Monthly,
-            'due_date'    => DueDate::DateInMonth,
+            'category'      => Category::Communication,
+            'description'   => 'Laracast',
+            'frequency'     => Frequency::Monthly,
+            'due_date'      => DueDate::DateInMonth,
             'due_date_meta' => '3rd of month',
-            'amount'      => 113.21,
+            'amount'        => 119,
         ]);
 
         $account_standard->expenses()->create([
-            'category'    => Category::Communication,
-            'description' => 'Laracast',
-            'frequency'   => Frequency::Monthly,
-            'due_date'    => DueDate::DateInMonth,
-            'due_date_meta' => '3rd of month',
-            'amount'      => 119,
-        ]);
-
-        $account_standard->expenses()->create([
-            'category'    => Category::Communication,
-            'description' => 'Ring monthly plan',
-            'frequency'   => Frequency::Monthly,
-            'due_date'    => DueDate::DateInMonth,
+            'category'      => Category::Communication,
+            'description'   => 'Ring monthly plan',
+            'frequency'     => Frequency::Monthly,
+            'due_date'      => DueDate::DateInMonth,
             'due_date_meta' => '5th of month',
-            'amount'      => 30.14,
+            'amount'        => 30.14,
         ]);
 
         $account_standard->expenses()->create([
-            'category'    => Category::Communication,
-            'description' => 'NordVPN',
-            'frequency'   => Frequency::Monthly,
-            'due_date'    => DueDate::DateInMonth,
+            'category'      => Category::Communication,
+            'description'   => 'NordVPN',
+            'frequency'     => Frequency::Monthly,
+            'due_date'      => DueDate::DateInMonth,
             'due_date_meta' => '10th of month',
-            'amount'      => 90.29,
+            'amount'        => 90.29,
         ]);
 
-        $account_standard->expenses()->create([
-            'category'    => Category::Income,
-            'description' => 'Overførsel Børne- og Ungeydelse',
-            'frequency'   => Frequency::Every3rdMonth,
-            'start'       => '2021-10-20',
-            'due_date'    => DueDate::DateInMonth,
-            'due_date_meta' => '20th',
-            'amount'      => 1841,
-        ]);
-
-        $account_standard->expenses()->create([
-            'category'    => Category::Utilities,
-            'description' => 'EVIDA SERVICE NORD A',
-            'frequency'   => Frequency::Every3rdMonth,
-            'start'       => '2021-10-06',
-            'due_date'    => DueDate::DateInMonth,
-            'due_date_meta' => '6th in month',
-            'amount'      => 2385.90,
-        ]);
-
-        $account_standard->expenses()->create([
-            'category'    => Category::Tax,
-            'description' => 'Council tax',
-            'frequency'   => Frequency::Every6thMonth,
-            'start'       => '2021-01-01',
-            'due_date'    => DueDate::DateInMonth,
+        $account_shared->expenses()->create([
+            'category'      => Category::Tax,
+            'description'   => 'Council tax',
+            'frequency'     => Frequency::Every6thMonth,
+            'start'         => '2021-01-01',
+            'due_date'      => DueDate::DateInMonth,
             'due_date_meta' => '7th in month',
-            'amount'      => 6660.90,
+            'amount'        => 6660.90,
         ]);
 
-        $account_standard->expenses()->create([
-            'category'    => Category::Transport,
-            'description' => 'Clever',
+        $account_shared->expenses()->create([
+            'category'    => Category::Miscellaneous,
+            'description' => 'Livia\'s børnehave',
             'frequency'   => Frequency::Monthly,
             'due_date'    => DueDate::FirstWorkingDayOfMonth,
-            'amount'      => 200,
+            'amount'      => 2843,
         ]);
 
         $account_standard->expenses()->create([
-            'category'    => Category::Transfer,
-            'transfer_to_account_id' => $account_shared->id,
-            'description' => 'Transfer to budget account',
+            'category'    => Category::Miscellaneous,
+            'description' => 'Apple watch',
             'frequency'   => Frequency::Monthly,
-            'due_date'    => DueDate::LastDayOfMonth,
-            'amount'      => 13000,
+            'start'       => '2022-11-01',
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 430,
+        ]);
+
+        $account_standard->expenses()->create([
+            'category'               => Category::Transfer,
+            'transfer_to_account_id' => $account_shared->id,
+            'description'            => 'Transfer to budget account',
+            'frequency'              => Frequency::Monthly,
+            'due_date'               => DueDate::LastDayOfMonth,
+            'amount'                 => 17000,
+        ]);
+
+        $account_standard->expenses()->create([
+            'category'               => Category::DayToDayConsumption,
+            'transfer_to_account_id' => $account_shared->id,
+            'description'            => 'Day to day expenses',
+            'frequency'              => Frequency::Monthly,
+            'due_date'               => DueDate::LastDayOfMonth,
+            'amount'                 => 12500,
         ]);
     }
+
 }

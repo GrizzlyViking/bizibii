@@ -74,7 +74,6 @@ class ExpenseForm extends Component
                     })->isNotEmpty();
                 }),
                 'date',
-                'before_or_equal:now',
             ],
             'end_date'                       => 'nullable|date|after:start',
             'checkpoint_date'                => 'nullable|date',

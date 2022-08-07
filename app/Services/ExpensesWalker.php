@@ -3,15 +3,16 @@
 namespace App\Services;
 
 use App\Models\Expense;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
 class ExpensesWalker
 {
-    private Carbon $end;
+    private CarbonInterface $end;
 
-    private Carbon $now;
+    private CarbonInterface $now;
 
     private Collection $data;
 
