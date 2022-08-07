@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Expense;
+use App\Models\User;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -31,9 +32,10 @@ class ExpensesWalker
         $this->data = collect();
     }
 
-    public function process(): self
+    protected function process(): self
     {
         $day = clone $this->now;
+        $day->toMutable();
         while ($day <= $this->end) {
             $this->step($day);
             $day->addDay();
@@ -62,7 +64,22 @@ class ExpensesWalker
      */
     public function getData(): Collection
     {
-        return $this->data;
+        return cache()->remember(
+            $this->getKey(),
+            60 * 60 * 8,
+            function () {
+                $this->process();
+                return $this->data;
+            }
+        );
+
+    }
+
+    private function getKey(): string
+    {
+        /** @var User $user */
+        $user = $this->expenses->first()->user;
+        return str_replace(' ', '_', $user->name ?? 'unknown') . '.' . $this->now->format('Y-m-d') . '.' . $this->end->format('Y-m-d') . '.' . md5($this->expenses->toJson());
     }
 
     #[ArrayShape([

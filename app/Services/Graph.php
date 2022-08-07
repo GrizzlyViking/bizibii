@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\Category;
 use App\Models\Account;
 use App\Models\Expense;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;

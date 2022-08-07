@@ -83,15 +83,16 @@ class Expense extends Model
         return $this->hasOneThrough(
             User::class,
             Account::class,
-            'user_id',
             'id',
-            'account_id'
+            'id',
+            'account_id',
+            'user_id'
         );
     }
 
     public function account(): Relation
     {
-        return $this->belongsTo(Account::class, 'account_id', 'id');
+        return $this->belongsTo(Account::class);
     }
 
     public function transferToAccount(): Relation

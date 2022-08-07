@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ExpenseTest extends TestCase
@@ -50,6 +51,28 @@ class ExpenseTest extends TestCase
         $expense->save();
 
         $this->assertTrue($expense instanceof Expense);
+    }
+
+    /** @test **/
+    public function user_is_connected_to_expense()
+    {
+        // Arrange
+        /** @var User $user */
+        $user = User::find(1);
+        [$standard_account, $shared_account] = $user->accounts;
+
+        // Act
+        /** @var Expense $energy */
+        $energy = $shared_account->expenses()->create([
+            'category'    => Category::Utilities,
+            'description' => 'Electricity and gas',
+            'frequency'   => Frequency::Monthly,
+            'due_date'    => DueDate::FirstWorkingDayOfMonth,
+            'amount'      => 4403.00,
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(User::class, $energy->user);
     }
 
     /**

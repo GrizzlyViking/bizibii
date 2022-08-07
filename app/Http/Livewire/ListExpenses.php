@@ -78,7 +78,7 @@ class ListExpenses extends Component
         $expenses = $account->expenses->filter(fn (Expense $expense) => $expense->category->type() != Category::ADMINISTRATIVE &&
             !$expense->category->equals(Category::Income));
         unset($walker);
-        $walker = (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->process();
+        $walker = (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses);
         $this->showPieChart = true;
         return Graph::pieChart('Expenses for that month',
             $walker->getData()->filter(fn (Collection $expenses) => $expenses->isNotEmpty())->flatten()

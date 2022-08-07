@@ -105,7 +105,7 @@ class Account extends Model implements ListableInterface
         $balance = $this->balance;
 
         $expenses = $this->expenses->merge($this->incomingTransfers);
-        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->process()->getData()->map(function (Collection $expenses, $date) use (&$balance) {
+        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->getData()->map(function (Collection $expenses, $date) use (&$balance) {
             // If there is a checkpoint for balance for that day, that is used instead.
             // TODO: replace this with relation.
             /** @var Reality $checkpoint */
@@ -138,7 +138,7 @@ class Account extends Model implements ListableInterface
     public function graphExpenses(Carbon $startAt, Carbon $endAt): Collection
     {
         $expenses = $this->expenses->filter(fn (Expense $expense) => !$expense->category->equals(Category::DayToDayConsumption) );
-        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->process()->getData()
+        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->getData()
             ->map(function (Collection $expenses, $date) {
                 return $expenses->sum(fn(Expense $expense
                 ) => $expense->category->equals(Category::Income) ? 0 : -$expense->setDateToCheck($date)->getCost());
@@ -147,7 +147,7 @@ class Account extends Model implements ListableInterface
 
     public function graphIncomeMonthly(Carbon $startAt, Carbon $endAt): Collection
     {
-        return (new ExpensesWalker($startAt, $endAt))->setExpenses($this->expenses)->process()->getData()->map(function (
+        return (new ExpensesWalker($startAt, $endAt))->setExpenses($this->expenses)->getData()->map(function (
             Collection $expenses,
             $date
         ) {
