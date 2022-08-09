@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
+use App\Services\ExpensesWalker;
 use App\Services\Graph;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
@@ -75,27 +76,21 @@ class ExpensesController extends Controller
 
     public function getGraphLine(Account $account, Carbon $startAt, Carbon $endAt): LineChartModel
     {
-        $graph = $account->graphBalanceMonthly($startAt,$endAt);
+        $walker = new ExpensesWalker($startAt, $endAt);
+        $graph = $account->graphBalanceMonthly($walker);
 
-        $lineChartModel = (new LineChartModel())
-            ->singleLine()
-            ->setAnimated(false)
-            ->setTitle('Balance per Month.');
-        $graph->each(function ($balance, $date) use ($lineChartModel) {
-            $lineChartModel->addPoint($date, $balance);
-        });
-
-        return $lineChartModel;
+        return Graph::lineChart('Balance per Month.', $graph);
     }
 
     public function getGraphMultiLine(Collection $accounts, Carbon $startAt, Carbon $endAt): LineChartModel
     {
         $graphs = collect();
-        $accounts->each(function (Account $account) use ($startAt, $endAt, &$graphs) {
-            $graphs->put($account->name, $account->graphBalanceMonthly($startAt, $endAt));
+        $walker = new ExpensesWalker($startAt, $endAt);
+        $accounts->each(function (Account $account) use ($walker, &$graphs) {
+            $graphs->put($account->name, $account->graphBalanceMonthly($walker));
         });
 
-        return Graph::lineChart('Balance per Month.', $graphs->map(function ($graph, $name) {
+        return Graph::multiLineChart('Balance per Month.', $graphs->map(function ($graph, $name) {
             return $graph->map(fn ($balance, $date) => [$name, $date, $balance]);
         })->flatten(1));
     }
@@ -104,16 +99,17 @@ class ExpensesController extends Controller
     {
         $graphs = collect();
 
+        $walker = new ExpensesWalker($startAt, $endAt);
         /** @var Account $budget_account */
         $budget_account = $accounts->first();
         $graphs->put(
             $budget_account->name,
-            $budget_account->graphExpensesMonthly($startAt, $endAt)
+            $budget_account->graphExpensesMonthly($walker)
         );
 
         $income = collect();
-        $accounts->each(function (Account $account) use ($endAt, $startAt, &$income) {
-            $income->put($account->name, $account->graphIncomeMonthly($startAt, $endAt));
+        $accounts->each(function (Account $account) use ($walker, &$income) {
+            $income->put($account->name, $account->graphIncomeMonthly($walker));
         });
 
         $disposable = $graphs->first()->mergeRecursive($income->sumRecursive())->map(fn ($values) => $values[1]-$values[0]);

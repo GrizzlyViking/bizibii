@@ -124,7 +124,7 @@ class Expense extends Model
      * @return bool
      * @throws \Exception
      */
-    public function applicable(Carbon $today): bool
+    public function applicable(CarbonInterface $today): bool
     {
         $this->setDateToCheck($today);
 

@@ -8,6 +8,7 @@ use App\Enums\Frequency;
 use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
+use App\Services\ExpensesWalker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
@@ -81,6 +82,29 @@ class AccountTest extends TestCase
         $this->assertDatabaseHas('expenses', ['transfer_to_account_id' => $accountTo->id]);
         $this->assertCount(1, $accountTo->incomingTransfers);
         $this->assertTrue($accountTo->incomingTransfers()->where('description', '=','test transfer')->exists());
+    }
+
+    /** @test **/
+    public function graph_income()
+    {
+        // Arrange
+        /** @var Account $account */
+        $account = User::find(1)->accounts->first();
+        $walker = new ExpensesWalker(Carbon::parse('2022-02'), Carbon::parse('2022-02-28'));
+        $income = Expense::create([
+            'account_id'             => $account->id,
+            'description'            => 'test graph income',
+            'category'               => Category::Income->value,
+            'frequency'              => Frequency::Monthly->value,
+            'due_date'               => DueDate::LastDayOfMonth->value,
+            'amount'                 => 50000,
+        ]);
+
+        // Act
+        $month = $account->graphIncomeMonthly($walker);
+
+        // Assert
+        $this->assertEquals(50000, $month->last());
     }
 
 }

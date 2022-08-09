@@ -100,12 +100,12 @@ class Account extends Model implements ListableInterface
         return $this->morphMany(Reality::class, 'checkpointable');
     }
 
-    public function graphBalance(Carbon $startAt, Carbon $endAt): Collection
+    public function graphBalance(ExpensesWalker $walker): Collection
     {
         $balance = $this->balance;
 
         $expenses = $this->expenses->merge($this->incomingTransfers);
-        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->getData()->map(function (Collection $expenses, $date) use (&$balance) {
+        return $walker->setExpenses($expenses)->getData('account_balance:' . $this->id)->map(function (Collection $expenses, $date) use (&$balance) {
             // If there is a checkpoint for balance for that day, that is used instead.
             // TODO: replace this with relation.
             /** @var Reality $checkpoint */
@@ -124,35 +124,34 @@ class Account extends Model implements ListableInterface
         });
     }
 
-    public function graphBalanceMonthly(Carbon $startAt, Carbon $endAt): Collection
+    public function graphBalanceMonthly(ExpensesWalker $walker): Collection
     {
-        return $this->graphBalance($startAt, $endAt)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
+        return $this->graphBalance($walker)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
             ->map(fn(Collection $month) => $month->last());
     }
 
-    public function graphExpensesMonthly(Carbon $startAt, Carbon $endAt): Collection
+    public function graphExpensesMonthly(ExpensesWalker $walker): Collection
     {
-        return $this->graphExpenses($startAt, $endAt)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
+        return $this->graphExpenses($walker)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
     }
 
-    public function graphExpenses(Carbon $startAt, Carbon $endAt): Collection
+    public function graphExpenses(ExpensesWalker $walker): Collection
     {
         $expenses = $this->expenses->filter(fn (Expense $expense) => !$expense->category->equals(Category::DayToDayConsumption) );
-        return (new ExpensesWalker($startAt, $endAt))->setExpenses($expenses)->getData()
+        return $walker->setExpenses($expenses)->getData('expenses.account:' . $this->id)
             ->map(function (Collection $expenses, $date) {
                 return $expenses->sum(fn(Expense $expense
                 ) => $expense->category->equals(Category::Income) ? 0 : -$expense->setDateToCheck($date)->getCost());
             });
     }
 
-    public function graphIncomeMonthly(Carbon $startAt, Carbon $endAt): Collection
+    public function graphIncomeMonthly(ExpensesWalker $walker): Collection
     {
-        return (new ExpensesWalker($startAt, $endAt))->setExpenses($this->expenses)->getData()->map(function (
+        return $walker->setExpenses($this->expenses)->getData('income.account:' . $this->id)->map(function (
             Collection $expenses,
             $date
         ) {
-            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->setDateToCheck($date)
-                ->getCost() : 0);
+            return $expenses->sum(fn(Expense $expense) => $expense->category->equals(Category::Income) ? $expense->setDateToCheck($date)->getCost() : 0);
         })->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))->map(fn(Collection $month) => $month->sum());
     }
 }

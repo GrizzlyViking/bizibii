@@ -24,11 +24,15 @@ class ExpensesWalker
     protected Collection $expenses;
 
     public function __construct(
-        Carbon $start,
-        Carbon $end
+        CarbonInterface $start,
+        CarbonInterface $end,
+        ?Collection $expenses = null
     ) {
         $this->now = $start;
         $this->end = $end;
+        if ($expenses instanceof Collection) {
+            $this->setExpenses($expenses);
+        }
         $this->data = collect();
     }
 
@@ -62,10 +66,10 @@ class ExpensesWalker
     /**
      * @return \Illuminate\Support\Collection<Expense>
      */
-    public function getData(): Collection
+    public function getData(string $context = ''): Collection
     {
         return cache()->remember(
-            $this->getKey(),
+            $this->getKey($context),
             60 * 60 * 8,
             function () {
                 $this->process();
@@ -75,11 +79,11 @@ class ExpensesWalker
 
     }
 
-    private function getKey(): string
+    private function getKey(string $context = ''): string
     {
         /** @var User $user */
         $user = $this->expenses->first()->user;
-        return str_replace(' ', '_', $user->name ?? 'unknown') . '.' . $this->now->format('Y-m-d') . '.' . $this->end->format('Y-m-d') . '.' . md5($this->expenses->toJson());
+        return str_replace(' ', '_', $user->name ?? 'unknown') . '.' . $context . '.' . $this->now->format('Y-m-d') . '.' . $this->end->format('Y-m-d') .'.'. md5($this->expenses->toJson());
     }
 
     #[ArrayShape([
@@ -94,7 +98,7 @@ class ExpensesWalker
         ];
     }
 
-    private function step(Carbon $day): void
+    private function step(CarbonInterface $day): void
     {
         $expenses = $this->expenses->filter(function (Expense $expense) use ($day) {
             return $expense->applicable($day);

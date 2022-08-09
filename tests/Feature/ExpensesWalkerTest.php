@@ -64,10 +64,8 @@ class ExpensesWalkerTest extends TestCase
         $walker = new ExpensesWalker(
             Carbon::parse('2022-01-01'),
             Carbon::parse('2022-12-31'),
+            $expenses
         );
-
-        // Act
-        $walker->setExpenses($expenses);
 
         // Assert
         $this->assertCount(4, $walker->getExpenses());
@@ -87,7 +85,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => 5800.00,
         ]);
 
-        $complete = $account->graphBalance(Carbon::createFromDate(2022, 1, 1), Carbon::createFromDate(2022, 1, 31));
+        $walker = new ExpensesWalker(Carbon::createFromDate(2022, 1, 1), Carbon::createFromDate(2022, 1, 31), $account->expenses);
+        $complete = $account->graphBalance($walker);
 
         $this->assertInstanceOf(Collection::class, $complete);
         $this->assertEquals($account->balance, $complete->get('2022-01-02'));
@@ -165,7 +164,8 @@ class ExpensesWalkerTest extends TestCase
         ]);
 
 
-        $complete = $account->graphBalanceMonthly(Carbon::createFromDate(2022, 1, 1), Carbon::createFromDate(2022, 12, 31));
+        $walker = new ExpensesWalker(Carbon::createFromDate(2022, 1, 1), Carbon::createFromDate(2022, 12, 31));
+        $complete = $account->graphBalanceMonthly($walker);
 
         $this->assertInstanceOf(Collection::class, $complete);
         $this->assertCount(12, $complete);
@@ -206,13 +206,13 @@ class ExpensesWalkerTest extends TestCase
         // $this->assertEquals(10000, $balanceFrom->get('2022-01-30'));
         // $this->assertEquals(500, $balanceFrom->get('2022-01-31'));
         // $this->assertEquals(-9000, $balanceFrom->get('2022-02-28'));
-
-        $balanceTo = $accountTo->graphBalance(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $balanceTo = $accountTo->graphBalance($walker);
         $this->assertEquals(100, $balanceTo->get('2022-01-30'));
         $this->assertEquals(9600, $balanceTo->get('2022-01-31'));
         $this->assertEquals(19100.0, $balanceTo->get('2022-02-28'));
 
-        $balanceTo = $accountTo->graphBalanceMonthly(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $balanceTo = $accountTo->graphBalanceMonthly($walker);
         $this->assertEquals(9600, $balanceTo->get('2022-01'));
         $this->assertEquals(19100, $balanceTo->get('2022-02'));
         $this->assertEquals(28600.0, $balanceTo->get('2022-03'));
@@ -252,7 +252,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => 8600.00,
         ]);
 
-        $expenses = $account->graphExpensesMonthly(Carbon::parse('2022-01-01'), Carbon::parse('2022-12-31'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-01-01'), Carbon::parse('2022-12-31'));
+        $expenses = $account->graphExpensesMonthly($walker);
         $this->assertEquals(5600.0, $expenses->get('2022-01'));
         $this->assertEquals(14200.0, $expenses->get('2022-03'));
         $this->assertEquals(5600.0, $expenses->get('2022-11'));
@@ -293,7 +294,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => 8600.00,
         ]);
 
-        $expenses = $account->graphIncomeMonthly(Carbon::parse('2022-01-01'), Carbon::parse('2022-12-31'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-01-01'), Carbon::parse('2022-12-31'));
+        $expenses = $account->graphIncomeMonthly($walker);
         $this->assertEquals(33633.0, $expenses->get('2022-01'));
         $this->assertEquals(33633.0, $expenses->get('2022-12'));
     }
@@ -341,7 +343,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'        => 120.00,
         ]);
 
-        $expenses = $account->graphBalance(Carbon::parse('2022-02-01'), Carbon::parse('2022-02-28'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-02-01'), Carbon::parse('2022-02-28'));
+        $expenses = $account->graphBalance($walker);
         $this->assertEquals(1000, $expenses->get('2022-02-01'));
         $this->assertEquals(1000, $expenses->get('2022-02-06'));
         $this->assertEquals(-500, $expenses->get('2022-02-07'));
@@ -353,7 +356,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => -5000.02,
         ]);
 
-        $expenses = $account->graphBalanceMonthly(Carbon::parse('2022-02-01'), Carbon::parse('2022-04-31'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-02-01'), Carbon::parse('2022-04-31'));
+        $expenses = $account->graphBalanceMonthly($walker);
         $this->assertEquals(9380, $expenses->get('2022-02'));
         $this->assertEquals(4880, $expenses->get('2022-03'));
         $this->assertEquals(5760, $expenses->get('2022-04'));
@@ -384,7 +388,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => 4000,
         ]);
 
-        $expenses = $account->graphBalance(Carbon::parse('2022-02-01'), Carbon::parse('2022-02-28'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-02-01'), Carbon::parse('2022-02-28'), $account->expenses);
+        $expenses = $account->graphBalance($walker);
         $this->assertEquals(10000, $expenses->get('2022-02-01'));
         $this->assertEquals(10000, $expenses->get('2022-02-07'));
         $this->assertEquals(6000, $expenses->get('2022-02-09'));
@@ -416,7 +421,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => 10000,
         ]);
 
-        $expenses = $account->graphExpensesMonthly(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $expenses = $account->graphExpensesMonthly($walker);
 
         $this->assertEquals(3500, $expenses->get('2022-01'));
         $this->assertEquals(10000, $expenses->get('2022-02'));
@@ -447,7 +453,8 @@ class ExpensesWalkerTest extends TestCase
             'amount'      => 33000,
         ]);
 
-        $expenses = $account->graphIncomeMonthly(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $walker = new ExpensesWalker(Carbon::parse('2022-01-01'), Carbon::parse('2022-03-31'));
+        $expenses = $account->graphIncomeMonthly($walker);
 
         $this->assertEquals(23000, $expenses->get('2022-01'));
         $this->assertEquals(33000, $expenses->get('2022-02'));

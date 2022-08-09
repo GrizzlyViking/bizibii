@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Category;
+use App\Models\Expense;
 use App\Models\Page;
+use App\Services\ExpensesWalker;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -23,8 +28,12 @@ class PageController extends Controller
     public function dashboard()
     {
         // starting from
-
-        return view('dashboard', ['lineChartModel' => false]);
+        $expenses = Auth::user()->accounts->first()->expenses->filter(fn (Expense $expense) => $expense->category->type() != Category::ADMINISTRATIVE);
+        $walker = new ExpensesWalker(Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth(), $expenses);
+        return view('dashboard', [
+            'expenses' => $expenses,
+            'walker' => $walker
+        ]);
     }
 
     /**
