@@ -53,7 +53,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-medium" style="color: {{ $item->category->colour() }}">
+                                                <div class="text-sm font-medium text-{{ $item->category->colour() }}">
                                                     {{ number_format($item->amount) }}
                                                 </div>
                                             </td>

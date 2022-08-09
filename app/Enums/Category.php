@@ -56,11 +56,11 @@ enum Category: string implements EnumInterface
     public function colour(): string
     {
         return match ($this) {
-            self::DayToDayConsumption, self::Tax, self::Transport, self::Entertainment, self::Utilities, self::Communication => '#FF604C',
-            self::Income => '#5AFF43',
-            self::House, self::Financial, self::Transfer => '#4B45FF',
-            self::Miscellaneous => '#EE45FF',
-            self::Unknown => '#6C6C6C'
+            self::DayToDayConsumption, self::Tax, self::Transport, self::Entertainment, self::Utilities, self::Communication => 'red-500',
+            self::Income => 'green-500',
+            self::House, self::Financial, self::Transfer => 'red-900',
+            self::Miscellaneous => 'pink-500',
+            self::Unknown => 'black'
         };
     }
 
