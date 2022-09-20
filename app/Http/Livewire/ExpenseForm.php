@@ -9,7 +9,13 @@ use App\Models\Expense;
 use App\Models\Reality;
 use App\Rules\DueDateMetaRules;
 use App\Rules\DueDateRules;
+use App\Services\ExpensesWalker;
+use App\Services\Graph;
+use App\Traits\MonthNameTrait;
+use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -17,6 +23,7 @@ use Livewire\Component;
 
 class ExpenseForm extends Component
 {
+    use MonthNameTrait;
 
     public Expense $expense;
 
@@ -95,7 +102,9 @@ class ExpenseForm extends Component
 
     public function render()
     {
-        return view('livewire.expense-form');
+        return view('livewire.expense-form', [
+            'barChart' => $this->getBarChart($this->expense, Carbon::now()->startOfYear(), Carbon::now()->endOfYear())
+        ]);
     }
 
     public function updated($propertName)
@@ -175,6 +184,25 @@ class ExpenseForm extends Component
         $reality->delete();
 
         $this->expense->refresh();
+    }
+
+    protected function getBarChart(Expense $expense, Carbon $startAt, Carbon $endAt): ColumnChartModel
+    {
+        $walker = new ExpensesWalker($startAt, $endAt);
+        $column_model = (new ColumnChartModel())
+            ->setTitle($expense->description)
+            ->withoutLegend()
+        ;
+
+        return $walker->setExpenses(collect([$expense]))
+            ->getData()
+            ->map(fn (Collection $expenses) => $expenses->sum(fn (Expense $expense) => $expense->getCost()))
+            ->groupBy(fn ($expenses, $date) => Carbon::parse($date)->format('Y-m'), true)
+            ->map(fn (Collection $month, $date) => [$date, abs($month->sum())])
+            ->reduce(function (ColumnChartModel $columnCart, $data) {
+                [$date, $value] = $data;
+                return $columnCart->addColumn($this->getMonth($date), $value, tailwind_colour_to_hex('red-200'));
+            }, $column_model);
     }
 
 }

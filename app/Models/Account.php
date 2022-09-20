@@ -126,8 +126,17 @@ class Account extends Model implements ListableInterface
 
     public function graphBalanceMonthly(ExpensesWalker $walker): Collection
     {
-        return $this->graphBalance($walker)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'))
-            ->map(fn(Collection $month) => $month->last());
+        return $this->graphBalance($walker)->groupBy(fn($day, $date) => date_create($date)->format('Y-m'), true)
+            ->map(function (Collection $month, $YearMonth) {
+                // get the second but last working day
+                $date = Carbon::parse(  $YearMonth . '-01')->endOfMonth();
+                while ($date->isWeekend())  {
+                    $date = $date->subDay();
+                }
+                $date = $date->subDay();
+
+                return $month->get($date->format('Y-m-d'));
+            });
     }
 
     public function graphExpensesMonthly(ExpensesWalker $walker): Collection

@@ -70,19 +70,4 @@ class ListExpenses extends Component
 
         $this->items = $this->user->expenses;
     }
-
-    public function pieChart(Account $account, string $startAt, string $endAt): PieChartModel
-    {
-        $startAt = Carbon::parse($startAt);
-        $endAt = Carbon::parse($endAt);
-        $expenses = $account->expenses->filter(fn (Expense $expense) => $expense->category->type() != Category::ADMINISTRATIVE &&
-            !$expense->category->equals(Category::Income));
-        unset($walker);
-        $walker = (new ExpensesWalker($startAt, $endAt, $expenses));
-        $this->showPieChart = true;
-        return Graph::pieChart('Expenses for that month',
-            $walker->getData()->filter(fn (Collection $expenses) => $expenses->isNotEmpty())->flatten()
-            ->groupBy(fn (Expense $expense) => $expense->category->value)
-        );
-    }
 }
