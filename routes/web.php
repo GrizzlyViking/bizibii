@@ -57,6 +57,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
         Route::get('expenses/{expense}/edit', [ExpensesController::class, 'edit'])->name('edit');
         Route::get('expenses/create', [ExpensesController::class, 'create'])->name('create');
         Route::get('expenses/charts', [ExpensesController::class, 'charts'])->name('charts');
+        Route::get('expenses/budget', [ExpensesController::class, 'export'])->name('budget');
     });
 
     Route::resource('account', AccountController::class);

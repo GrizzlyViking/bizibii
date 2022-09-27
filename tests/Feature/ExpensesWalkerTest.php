@@ -213,9 +213,10 @@ class ExpensesWalkerTest extends TestCase
         $this->assertEquals(19100.0, $balanceTo->get('2022-02-28'));
 
         $balanceTo = $accountTo->graphBalanceMonthly($walker);
-        $this->assertEquals(9600, $balanceTo->get('2022-01'));
-        $this->assertEquals(19100, $balanceTo->get('2022-02'));
-        $this->assertEquals(28600.0, $balanceTo->get('2022-03'));
+
+        $this->assertEquals(100, $balanceTo->get('2022-01'));
+        $this->assertEquals(9600, $balanceTo->get('2022-02'));
+        $this->assertEquals(19100, $balanceTo->get('2022-03'));
     }
 
 

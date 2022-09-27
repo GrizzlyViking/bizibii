@@ -105,7 +105,8 @@ class Account extends Model implements ListableInterface
         $balance = $this->balance;
 
         $expenses = $this->expenses->merge($this->incomingTransfers);
-        return $walker->setExpenses($expenses)->getData('account_balance:' . $this->id)->map(function (Collection $expenses, $date) use (&$balance) {
+        return $walker->setExpenses($expenses)->getData('account_balance:' . $this->id)
+            ->map(function (Collection $expenses, $date) use (&$balance) {
             // If there is a checkpoint for balance for that day, that is used instead.
             // TODO: replace this with relation.
             /** @var Reality $checkpoint */

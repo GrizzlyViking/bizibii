@@ -10,10 +10,10 @@ use App\Models\Reality;
 use App\Rules\DueDateMetaRules;
 use App\Rules\DueDateRules;
 use App\Services\ExpensesWalker;
-use App\Services\Graph;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use App\Traits\MonthNameTrait;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -129,7 +129,7 @@ class ExpenseForm extends Component
         return redirect()->route('expenses.list');
     }
 
-    public function delete(Expense $expense): RedirectResponse
+    public function delete(Expense $expense): RedirectResponse|Redirector
     {
         $expense->delete();
 

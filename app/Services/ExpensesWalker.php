@@ -68,6 +68,9 @@ class ExpensesWalker
      */
     public function getData(string $context = ''): Collection
     {
+        $this->process();
+        return $this->data;
+
         return cache()->remember(
             $this->getKey($context),
             60 * 60 * 8,

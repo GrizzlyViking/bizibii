@@ -2,21 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Category;
+use App\Exports\Budget;
 use App\Models\Account;
 use App\Models\Expense;
 use App\Models\User;
 use App\Services\ExpensesWalker;
 use App\Services\Graph;
+use App\Traits\MonthNameTrait;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExpensesController extends Controller
 {
+    use MonthNameTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -38,9 +46,10 @@ class ExpensesController extends Controller
         $expenses = $user->expenses;
         if ($user->expenses->isNotEmpty()) {
             $lineChartModel = $this->getGraphMultiLine($user->accounts, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
+            // $lineChartModel = $this->getGraphLine($user->accounts()->where('name', 'shared account')->first(), Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
             $expensesBarChart = $this->getBarChart($user->accounts, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
         }
-        return response()->view('admin.expense.list', compact('expenses', 'lineChartModel', 'expensesBarChart'));
+        return response()->view('admin.expense.list', compact('expenses'));
     }
 
     /**
@@ -77,7 +86,7 @@ class ExpensesController extends Controller
     public function getGraphLine(Account $account, Carbon $startAt, Carbon $endAt): LineChartModel
     {
         $walker = new ExpensesWalker($startAt, $endAt);
-        $graph = $account->graphBalanceMonthly($walker);
+        $graph = $account->graphBalance($walker);
 
         return Graph::lineChart('Balance per Month.', $graph);
     }
@@ -120,13 +129,9 @@ class ExpensesController extends Controller
         })->flatten(1));
     }
 
-    private function getMonth(string $yearMonth): string
+    public function export(): BinaryFileResponse
     {
-        if (preg_match('/(\d{4})-(\d{2})/', $yearMonth, $matched)) {
-            return Carbon::create($matched[1], $matched[2], '1')->monthName;
-        }
-
-        return $yearMonth;
+        return Excel::download(new Budget, 'budget.xlsx');
     }
 
 }

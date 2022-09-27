@@ -14,44 +14,57 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Redirector;
 
 class ListExpenses extends Component
 {
-    /** @var ListableInterface[]|\Illuminate\Support\Collection */
-    public $items;
-
     public User $user;
 
-    /** @var Carbon $startAt */
-    public $startAt;
-    /** @var Carbon $endAt */
-    public $endAt;
+    public array $sortBy = [];
 
-    /** @var Carbon $barChartMonth */
-    private $barChartMonth;
-    public bool $showPieChart = false;
+    public ?string $filterByAccount = null;
 
-    public function mount(User $user, Collection $items)
+    public function mount(User $user)
     {
-        $this->barChartMonth = CarbonImmutable::now();
         $this->user = $user;
-        $this->items = $items->sortBy(fn (Expense $expense) => Category::Income->equals($expense->category) ? -1 : Category::all()->search($expense->category));
     }
 
     public function render()
     {
-        return view('livewire.list-expenses');
+        return view('livewire.list-expenses', [
+            'items' => Auth::user()->expenses()->when($this->filterByAccount > 0, function ($query) {
+                return $query->where('account_id', $this->filterByAccount);
+            })->when(!empty($this->sortBy), function ($query) {
+                $query->orderBy($this->sortBy['column'], $this->sortBy['direction']);
+            })->get()
+        ]);
     }
 
-    public function handleOnColumnClick($column)
+    public function sortBy($type)
     {
-        $walk_months = clone $this->startAt;
-        while ($walk_months->monthName != $column['title']) {
-            $walk_months->addMonth();
+        if (!empty($this->sortBy['column']) && $this->sortBy['column'] == $type) {
+            $this->sortBy['direction'] == 'asc' ? $this->sortBy['direction'] = 'desc' : $this->sortBy = [];
+        } else {
+            $this->sortBy['column'] = $type;
+            $this->sortBy['direction'] = 'asc';
         }
-        $this->barChartMonth = $walk_months;
+    }
+
+    public function toggleFilterByAccount()
+    {
+        switch ($this->filterByAccount) {
+            default:
+                $this->filterByAccount = 1;
+                break;
+            case 1:
+                $this->filterByAccount = 2;
+                break;
+            case 2:
+                $this->filterByAccount = 0;
+                break;
+        }
     }
 
     public function editExpense(int $expense_id): RedirectResponse|Redirector
