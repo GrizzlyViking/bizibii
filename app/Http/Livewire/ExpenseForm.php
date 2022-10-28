@@ -114,7 +114,7 @@ class ExpenseForm extends Component
 
     public function submit()
     {
-        $validated = $this->validate();
+        $this->validate();
 
         if ($this->start_date) {
             $this->expense->start = $this->start_date;
@@ -126,7 +126,7 @@ class ExpenseForm extends Component
 
         $this->expense->save();
 
-        return redirect()->route('expenses.list');
+        return redirect()->route('expenses.edit', $this->expense->id);
     }
 
     public function delete(Expense $expense): RedirectResponse|Redirector

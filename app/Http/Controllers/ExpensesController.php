@@ -43,13 +43,11 @@ class ExpensesController extends Controller
 
         $lineChartModel = false;
         $expensesBarChart = false;
-        $expenses = $user->expenses;
         if ($user->expenses->isNotEmpty()) {
             $lineChartModel = $this->getGraphMultiLine($user->accounts, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
-            // $lineChartModel = $this->getGraphLine($user->accounts()->where('name', 'shared account')->first(), Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
             $expensesBarChart = $this->getBarChart($user->accounts, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
         }
-        return response()->view('admin.expense.list', compact('expenses'));
+        return response()->view('admin.expense.list', compact('lineChartModel', 'expensesBarChart'));
     }
 
     /**
@@ -76,9 +74,9 @@ class ExpensesController extends Controller
 
     public function charts(): Response
     {
-        /** @var User $user */
-        $user = Auth::user();
-        $lineChartModel = $this->getGraphLine($user->accounts->first(),  Carbon::now()->startOfYear(),Carbon::now()->endOfYear());
+        /** @var Account $shared_account */
+        $shared_account = Auth::user()->accounts()->where('name', 'shared account')->first();
+        $lineChartModel = $this->getGraphLine($shared_account, Carbon::now()->startOfMonth(), Carbon::now()->addYear()->endOfMonth());
 
         return response()->view('admin.expense.charts.line', compact('lineChartModel'));
     }
@@ -86,7 +84,7 @@ class ExpensesController extends Controller
     public function getGraphLine(Account $account, Carbon $startAt, Carbon $endAt): LineChartModel
     {
         $walker = new ExpensesWalker($startAt, $endAt);
-        $graph = $account->graphBalance($walker);
+        $graph = $account->graphBalanceMonthly($walker)->map(fn ($date, $value) => ['shared account', $value, $date]);
 
         return Graph::lineChart('Balance per Month.', $graph);
     }
@@ -95,9 +93,9 @@ class ExpensesController extends Controller
     {
         $graphs = collect();
         $walker = new ExpensesWalker($startAt, $endAt);
-        $accounts->each(function (Account $account) use ($walker, &$graphs) {
-            $graphs->put($account->name, $account->graphBalanceMonthly($walker));
-        });
+        /** @var Account $account */
+        $account = $accounts->where('name', 'shared account')->first();
+        $graphs->put($account->name, $account->graphBalanceMonthly($walker));
 
         return Graph::multiLineChart('Balance per Month.', $graphs->map(function ($graph, $name) {
             return $graph->map(fn ($balance, $date) => [$name, $date, $balance]);

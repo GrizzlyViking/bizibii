@@ -32,7 +32,7 @@ class Budget implements FromArray
             $column = $year . ' ' . $this->getMonth($date);
             $this->column_headers[$column] = null;
             $value->each(function (Expense $expense) use ($date, &$carry, $column) {
-                $carry[$expense->category->value][$column][] = $expense->setDateToCheck($date);
+                $carry[$expense->category->value . ' ' . $expense->description][$column][] = $expense->setDateToCheck($date);
             });
             return $carry;
         }, []);
