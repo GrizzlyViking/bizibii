@@ -31,8 +31,11 @@ class DueDateRules implements InvokableRule, DataAwareRule
             $fail('If :attribute is "'.DueDate::FirstDayOfYear->value.'", then logically frequency can only be "'.Frequency::Yearly->value.'"');
         }
 
-        if ($this->data['expense']['frequency'] == Frequency::Single->value && $value != DueDate::DateInMonth->value) {
-            $fail('Frequency is set to one time only, then due date must be "'.DueDate::DateInMonth->value.'"');
+        if (
+            Frequency::Single->equals($this->data['expense']['frequency']) &&
+            !DueDate::Date->equals($value)
+        ) {
+            $fail('Frequency is set to one time only, then due date must be ' . DueDate::Date->value);
         }
     }
 

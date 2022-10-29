@@ -95,6 +95,7 @@
                                 <label for="country" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Frequency</label>
                                 <div class="mt-1 sm:col-span-2 sm:mt-0">
                                     <select wire:model="expense.frequency"
+                                            wire:change="changeFrequency"
                                             id="frequency"
                                             name="frequency"
                                             autocomplete="frequency-id"
@@ -125,14 +126,12 @@
 
                             @if(DueDate::DateInMonth->equals($expense->due_date) || Frequency::Single->equals($expense->frequency))
                                 <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-                                    <label for="email" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Email
-                                        address</label>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                                        Which date?</label>
                                     <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <input wire:model="start_date"
-                                               id="email"
-                                               name="email"
+                                        <input wire:model="expense.due_date_meta"
                                                type="{{ Frequency::Single->equals($expense->frequency) ? 'date' : 'text' }}"
-                                               autocomplete="email"
+                                               autocomplete="due_date_meta"
                                                class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                         >
                                     </div>
@@ -140,6 +139,7 @@
                             @endif
                             @error('expense.due_date_meta') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
 
+                            @if(!$expense->due_date->equals(DueDate::Date))
                             <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                                 <label for="start_date" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Start date</label>
                                 <div class="mt-1 sm:col-span-2 sm:mt-0">
@@ -158,6 +158,7 @@
                                     @error('end_date') <span class="error text-sm text-red-400">{{ $message }}</span> @enderror
                                 </div>
                             </div>
+                            @endif
 
                         </div>
                     </div>

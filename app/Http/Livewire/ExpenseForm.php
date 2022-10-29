@@ -155,7 +155,13 @@ class ExpenseForm extends Component
 
     public function changeFrequency()
     {
-        // TODO: set defaults when changing frequency
+        if (Frequency::Single->equals($this->expense->frequency)) {
+            $this->expense->due_date = DueDate::Date;
+        } elseif (
+            DueDate::Date->equals($this->expense->due_date)
+        ) {
+            $this->expense->due_date = DueDate::FirstWorkingDayOfMonth;
+        }
     }
 
     public function changeDueDate()

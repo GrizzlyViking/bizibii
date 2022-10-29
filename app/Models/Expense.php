@@ -174,9 +174,8 @@ class Expense extends Model
             case DueDate::Sunday:
                 return $this->date_to_check->format('l') == $this->due_date->name;
             case DueDate::DateInMonth:
-                if (preg_match('/\d+/', $this->due_date_meta, $matched)) {
-                    $now = Carbon::createFromDate($this->date_to_check->year, $this->date_to_check->month,
-                        $matched[0]);
+                if (empty($this->due_date_meta) || preg_match('/\d+/', $this->due_date_meta, $matched)) {
+                    $now = Carbon::createFromDate($this->date_to_check->year, $this->date_to_check->month,$matched[0] ?? 1);
                     while ($now->isWeekend()) {
                         $now->addDay();
                     }
